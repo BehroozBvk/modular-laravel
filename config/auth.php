@@ -38,13 +38,24 @@ return [
     */
 
     'guards' => [
+        // Web Guards
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin-web' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        // API Guards
         'user-api' => [
             'driver' => 'passport',
             'provider' => 'users',
+        ],
+        'admin-api' => [
+            'driver' => 'passport',
+            'provider' => 'admins',
         ],
     ],
 
@@ -69,6 +80,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', Modules\User\Models\User::class),
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => Modules\Admin\Models\Admin::class,
         ],
 
         // 'users' => [
@@ -99,7 +114,13 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'user_password_reset_tokens'),
+            'table' => 'user_password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'admin_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
