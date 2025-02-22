@@ -1,0 +1,11 @@
+{
+    "Country": true,
+    "Core": true,
+    "Shared": true,
+    "User": true,
+    "Admin": true,
+    "StudentParent": true,
+    "Auth": true,
+    "AccessControl": true,
+    "Student": true
+}

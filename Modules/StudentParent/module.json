@@ -1,0 +1,11 @@
+{
+    "name": "StudentParent",
+    "alias": "studentparent",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\StudentParent\\Providers\\StudentParentServiceProvider"
+    ],
+    "files": []
+}
