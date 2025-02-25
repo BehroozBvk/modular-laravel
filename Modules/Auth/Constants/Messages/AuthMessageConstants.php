@@ -17,7 +17,9 @@ final class AuthMessageConstants
     public const STUDENT_PASSWORD_CHANGED = 'auth::messages.success.student.password_changed';
     public const STUDENT_PASSWORD_RESET_LINK_SENT = 'auth::messages.student.password_reset_link_sent';
     public const STUDENT_EMAIL_VERIFIED = 'auth::messages.student.email_verified';
-    STUDENT_PASSWORD_RESET_SUCCESS
+    public const STUDENT_PASSWORD_RESET_SUCCESS = 'auth::messages.student.password_reset_success';
+    public const STUDENT_VERIFICATION_EMAIL_SENT = 'auth::messages.student.verification_email_sent';
+    public const STUDENT_LOGGED_OUT = 'auth::messages.student.logged_out';
 
     // Error Messages
     public const STUDENT_INVALID_CREDENTIALS = 'auth::messages.student.invalid_credentials';
