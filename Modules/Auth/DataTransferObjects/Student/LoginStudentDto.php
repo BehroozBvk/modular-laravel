@@ -6,11 +6,11 @@ namespace Modules\Auth\DataTransferObjects\Student;
 
 use Modules\User\ValueObjects\Email;
 
-final class LoginStudentDto
+final readonly class LoginStudentDto
 {
     public function __construct(
-        public readonly Email $email,
-        public readonly string $password
+        public Email $email,
+        public string $password
     ) {}
 
     public static function fromArray(array $data): self

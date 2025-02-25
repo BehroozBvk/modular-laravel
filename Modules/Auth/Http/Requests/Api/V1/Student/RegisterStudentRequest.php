@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
 use OpenApi\Annotations as OA;
-use Modules\Shared\Rules\ImageRule;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
 use Modules\Core\Rules\{StringRule, EmailRule, PasswordRule, RelationRule};
+use Modules\Shared\Rules\ImageRule;
+use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
 
 /**
  * @OA\Schema(
@@ -55,21 +56,21 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.regex' => 'The name may only contain letters, spaces, and hyphens.',
-            'email.required' => 'The email field is required.',
-            'email.email' => 'The email must be a valid email address.',
-            'email.unique' => 'The email has already been taken.',
-            'password.required' => 'The password field is required.',
-            'password.confirmed' => 'The password confirmation does not match.',
-            'phone_number.regex' => 'Invalid phone number format.',
-            'phone_number.min' => 'Phone number must be at least 10 characters.',
-            'phone_number.max' => 'Phone number must not exceed 20 characters.',
-            'avatar.image' => 'The file must be an image.',
-            'avatar.mimes' => 'The image must be a file of type: jpg, png, jpeg, gif, or svg.',
-            'avatar.dimensions' => 'Image dimensions must be between 100x100 and 1000x1000 pixels.',
-            'avatar.max' => 'The image must not be larger than 2MB.',
-            'country_id.exists' => 'Selected country does not exist.',
+            'name.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REQUIRED),
+            'name.regex' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REGEX),
+            'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
+            'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
+            'email.unique' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_UNIQUE),
+            'password.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PASSWORD_REQUIRED),
+            'password.confirmed' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PASSWORD_CONFIRMED),
+            'phone_number.regex' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PHONE_NUMBER_REGEX),
+            'phone_number.min' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PHONE_NUMBER_MIN),
+            'phone_number.max' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PHONE_NUMBER_MAX),
+            'avatar.image' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_AVATAR_IMAGE),
+            'avatar.mimes' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_AVATAR_MIMES),
+            'avatar.dimensions' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_AVATAR_DIMENSIONS),
+            'avatar.max' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_AVATAR_MAX),
+            'country_id.exists' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_COUNTRY_ID_EXISTS),
         ];
     }
 
@@ -81,15 +82,15 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'full name',
-            'email' => 'email address',
-            'password' => 'password',
-            'role' => 'user role',
-            'phone_number' => 'phone number',
-            'avatar' => 'profile avatar',
-            'country_id' => 'country',
-            'first_name' => 'first name',
-            'last_name' => 'last name',
+            'name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_NAME),
+            'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
+            'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
+            'role' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_ROLE),
+            'phone_number' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
+            'avatar' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_AVATAR),
+            'country_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_COUNTRY_ID),
+            'first_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_FIRST_NAME),
+            'last_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_LAST_NAME),
         ];
     }
 

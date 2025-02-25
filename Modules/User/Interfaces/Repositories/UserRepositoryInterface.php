@@ -6,11 +6,12 @@ namespace Modules\User\Interfaces\Repositories;
 
 use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
 use Modules\User\Models\User;
+use Modules\User\ValueObjects\Email;
 
 interface UserRepositoryInterface
 {
     public function findById(int $id): ?User;
-    public function findByEmail(string $email): ?User;
+    public function findByEmail(Email $email): ?User;
     public function create(RegisterStudentDto $dto): User;
-    public function updatePassword(int $userId, string $hashedPassword): void;
+    public function updatePassword(int $userId, string $password): void;
 }

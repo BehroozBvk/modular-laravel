@@ -6,12 +6,12 @@ namespace Modules\User\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
-use Modules\User\Repositories\UserRepository;
+use Modules\User\Repositories\EloquentUserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
     }
 }

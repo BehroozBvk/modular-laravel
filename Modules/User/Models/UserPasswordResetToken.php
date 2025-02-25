@@ -7,7 +7,6 @@ namespace Modules\User\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
-// use Modules\User\Database\Factories\UserPasswordResetTokenFactory;
 
 class UserPasswordResetToken extends Model
 {
@@ -16,12 +15,10 @@ class UserPasswordResetToken extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['email', 'token'];
-
-    // protected static function newFactory(): UserPasswordResetTokenFactory
-    // {
-    //     // return UserPasswordResetTokenFactory::new();
-    // }
+    protected $fillable = [
+        'email',
+        'token'
+    ];
 
     /**
      * Create a new token for password reset

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\User\Database\Factories\UserFactory;
+use Modules\User\ValueObjects\Email;
 
 class User extends Authenticatable
 {
@@ -48,8 +51,28 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get and set the user's email.
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => new Email($value),
+            set: fn(Email|string $value) => $value instanceof Email ? (string)$value : $value,
+        );
+    }
+
+    /**
+     * Hash the user's password.
+     */
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => Hash::make($value),
+        );
     }
 
     // password Attribute to hash it before insert 

@@ -2,11 +2,12 @@
 
 namespace Modules\Auth\Providers;
 
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Modules\Auth\Providers\Student\StudentEventServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -36,33 +37,25 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(StudentEventServiceProvider::class);
     }
 
     /**
      * Register commands in the format of Command::class
      */
-    protected function registerCommands(): void
-    {
-        // $this->commands([]);
-    }
+    protected function registerCommands(): void {}
 
     /**
      * Register command Schedules.
      */
-    protected function registerCommandSchedules(): void
-    {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
-    }
+    protected function registerCommandSchedules(): void {}
 
     /**
      * Register translations.
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -102,10 +95,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'Resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
@@ -125,8 +118,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

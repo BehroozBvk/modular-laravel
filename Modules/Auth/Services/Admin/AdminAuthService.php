@@ -25,8 +25,7 @@ final class AdminAuthService
             throw new AuthenticationException('Invalid admin credentials');
         }
 
-        return $admin->createToken('admin-token');
+        return $admin->createToken('admin-access-token');
     }
 
-    // Add other admin authentication methods as needed...
 }

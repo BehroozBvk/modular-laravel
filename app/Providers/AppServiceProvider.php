@@ -4,32 +4,65 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Artisan;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+        if (!$this->app->environment('production')) {
+            $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
+        }
+    }
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        $this->runPailCommandIfApplicable();
+        Passport::loadKeysFrom(__DIR__ . '/../secrets/oauth');
+
+        Passport::hashClientSecrets();
+
+        Passport::tokensExpireIn(now()->addDays(15));
+
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+
+        JsonResource::withoutWrapping();
+
+        $this->registerPolicies();
+
+        $this->configureModels();
+        $this->configureCommands();
+    }
+
+    protected function registerPolicies() {}
+
+    /**
+     * Configure the application's models.
+     */
+    private function configureModels(): void
+    {
+        Model::shouldBeStrict();
+        Model::unguard();
     }
 
     /**
-     * Run the pail command with a timeout if the application is running in the console,
-     * in a local environment, and not on a Windows OS.
+     * Configure the application's commands.
      */
-    protected function runPailCommandIfApplicable(): void
+    private function configureCommands(): void
     {
-        if (app()->runningInConsole() && app()->environment('local') && strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-            Artisan::call('pail', ['--timeout' => 0]);
-        }
+        DB::prohibitDestructiveCommands(
+            $this->app->environment('production'),
+        );
     }
 }

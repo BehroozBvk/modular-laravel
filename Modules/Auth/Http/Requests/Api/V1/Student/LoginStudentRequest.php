@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
-use EmailRule;
-use PasswordRule;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Illuminate\Validation\Rule;
 use Modules\Auth\DataTransferObjects\Student\LoginStudentDto;
+use Modules\User\ValueObjects\Email;
 
+/**
+ * @OA\Schema(
+ *     schema="LoginStudentRequest",
+ *     required={"email", "password"},
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         example="student@example.com"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         example="password123"
+ *     )
+ * )
+ */
 final class LoginStudentRequest extends BaseApiV1FormRequest
 {
     /**
@@ -20,8 +36,8 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'email' => EmailRule::default(),
-            'password' => PasswordRule::default(),
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string', 'min:8'],
         ];
     }
 
@@ -56,6 +72,9 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
 
     public function toDto(): LoginStudentDto
     {
-        return LoginStudentDto::fromArray($this->validated());
+        return new LoginStudentDto(
+            email: new Email($this->input('email')),
+            password: $this->input('password')
+        );
     }
 }
