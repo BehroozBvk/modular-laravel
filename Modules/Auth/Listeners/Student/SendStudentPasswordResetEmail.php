@@ -6,7 +6,7 @@ namespace Modules\Auth\Listeners\Student;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Auth\Mail\StudentPasswordResetMail;
+use Modules\Auth\Mail\Student\StudentPasswordResetMail;
 use Modules\Auth\Events\Student\StudentPasswordResetRequested;
 
 class SendStudentPasswordResetEmail implements ShouldQueue

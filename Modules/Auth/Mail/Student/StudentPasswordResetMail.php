@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Mail;
+namespace Modules\Auth\Mail\Student;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

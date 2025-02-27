@@ -7,5 +7,6 @@
     "StudentParent": true,
     "Auth": true,
     "AccessControl": true,
-    "Student": true
+    "Student": true,
+    "Teacher": true
 }

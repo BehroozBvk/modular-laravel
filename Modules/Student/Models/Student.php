@@ -4,7 +4,9 @@ namespace Modules\Student\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Student\Database\Factories\StudentFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\StudentParent\Models\StudentParent;
+use Modules\Student\Database\Factories\StudentFactory;
 
 class Student extends Model
 {
@@ -13,10 +15,23 @@ class Student extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'phone',
+        'address',
+        'city',
+        'state',
+        'zip',
+        'student_parent_id',
+    ];
 
-    // protected static function newFactory(): StudentFactory
-    // {
-    //     // return StudentFactory::new();
-    // }
+    public function parents(): BelongsTo
+    {
+        return $this->belongsTo(StudentParent::class);
+    }
+
+    protected static function newFactory(): StudentFactory
+    {
+        return StudentFactory::new();
+    }
 }
