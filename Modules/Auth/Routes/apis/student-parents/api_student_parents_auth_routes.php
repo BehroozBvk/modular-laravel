@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\Api\V1\Parent\{
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\{
     RegisterParentController,
     LoginParentController,
     LogoutParentController,
@@ -13,7 +13,7 @@ use Modules\Auth\Http\Controllers\Api\V1\Parent\{
     ResendVerificationEmailParentController
 };
 
-Route::prefix('v1/auth/parents')->as('v1.auth.parents.')->group(function () {
+Route::prefix('v1/auth/student-parents')->as('v1.auth.student-parents.')->group(function () {
     // Public routes
     Route::post('register', RegisterParentController::class)->name('register');
     Route::post('login', LoginParentController::class)->name('login');
