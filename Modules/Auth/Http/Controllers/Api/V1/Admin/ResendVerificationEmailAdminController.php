@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Controllers\Api\V1\Student;
+namespace Modules\Auth\Http\Controllers\Api\V1\Admin;
 
 use Exception;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
-    Http\Requests\Api\V1\Student\ResendVerificationEmailStudentRequest,
-    Services\Student\StudentAuthService,
+    Http\Requests\Api\V1\Admin\ResendVerificationEmailAdminRequest,
+    Services\Admin\AdminAuthService,
     Constants\Messages\AuthMessageConstants
 };
 
 /**
  * @OA\Post(
- *     path="/auth/student/resend-verification-email",
- *     tags={"Student Auth"},
- *     summary="Resend verification email to student",
+ *     path="/auth/admin/resend-verification-email",
+ *     tags={"Admin Auth"},
+ *     summary="Resend verification email to admin",
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/ResendVerificationEmailStudentRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/ResendVerificationEmailAdminRequest")
  *     ),
  *     @OA\Response(
  *         response=200,
@@ -34,7 +34,7 @@ use Modules\Auth\{
  *     ),
  *     @OA\Response(
  *         response=404,
- *         description="Student not found",
+ *         description="Admin not found",
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     ),
  *     @OA\Response(
@@ -44,19 +44,19 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class ResendVerificationEmailStudentController extends BaseApiV1Controller
+final class ResendVerificationEmailAdminController extends BaseApiV1Controller
 {
     public function __construct(
-        private readonly StudentAuthService $studentAuthService
+        private readonly AdminAuthService $adminAuthService
     ) {}
 
-    public function __invoke(ResendVerificationEmailStudentRequest $request)
+    public function __invoke(ResendVerificationEmailAdminRequest $request)
     {
         try {
-            $this->studentAuthService->resendVerificationEmail($request->toDto());
+            $this->adminAuthService->resendVerificationEmail($request->toDto());
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_VERIFICATION_EMAIL_SENT)
+                message: AuthMessageConstants::get(AuthMessageConstants::ADMIN_VERIFICATION_EMAIL_SENT)
             );
         } catch (Exception $e) {
             return $this->errorResponse(

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\User\Database\Factories\UserFactory;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 
 class User extends Authenticatable
 {

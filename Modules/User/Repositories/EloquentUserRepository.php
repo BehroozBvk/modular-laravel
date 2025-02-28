@@ -6,25 +6,32 @@ namespace Modules\User\Repositories;
 
 use Modules\User\Models\User;
 use Modules\User\Enums\UserTypeEnum;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
+    private User $userModel;
+
+    public function __construct(User $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
     public function findById(int $id): ?User
     {
-        return User::find($id);
+        return $this->userModel->find($id);
     }
 
     public function findByEmail(Email $email): ?User
     {
-        return User::where('email', (string) $email)->first();
+        return $this->userModel->where('email', (string) $email)->first();
     }
 
     public function create(RegisterStudentDto $dto): User
     {
-        return User::create([
+        return $this->userModel->create([
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => $dto->password,
@@ -34,7 +41,7 @@ class EloquentUserRepository implements UserRepositoryInterface
 
     public function updatePassword(int $userId, string $password): void
     {
-        User::where('id', $userId)->update([
+        $this->userModel->where('id', $userId)->update([
             'password' => $password
         ]);
     }

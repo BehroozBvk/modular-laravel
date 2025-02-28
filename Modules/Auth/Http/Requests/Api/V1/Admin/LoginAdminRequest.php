@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
+use Illuminate\Contracts\Validation\Rule;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
 use Modules\Auth\DataTransferObjects\Admin\LoginAdminDto;
-use Modules\User\ValueObjects\Email;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 /**
  * @OA\Schema(
@@ -36,8 +38,15 @@ final class LoginAdminRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string', 'min:8'],
+            'email' => [
+                'required',
+                'string',
+                'email'
+            ],
+            'password' => [
+                'required',
+                'string'
+            ],
         ];
     }
 
@@ -49,11 +58,9 @@ final class LoginAdminRequest extends BaseApiV1FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Invalid email format',
-            'email.max' => 'Email must not exceed 255 characters',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 8 characters',
+            'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
+            'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
+            'password.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PASSWORD_REQUIRED),
         ];
     }
 
@@ -65,8 +72,8 @@ final class LoginAdminRequest extends BaseApiV1FormRequest
     public function attributes(): array
     {
         return [
-            'email' => 'email address',
-            'password' => 'password',
+            'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
+            'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
         ];
     }
 

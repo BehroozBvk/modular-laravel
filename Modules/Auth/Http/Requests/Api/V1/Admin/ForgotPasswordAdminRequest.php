@@ -6,7 +6,7 @@ namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Admin\PasswordResetAdminDto;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(

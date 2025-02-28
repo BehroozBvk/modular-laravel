@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Auth\DataTransferObjects\Student;
 
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 use Modules\User\Enums\UserTypeEnum;
 
 final class RegisterStudentDto

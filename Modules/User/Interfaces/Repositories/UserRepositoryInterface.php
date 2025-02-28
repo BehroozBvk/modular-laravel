@@ -6,7 +6,7 @@ namespace Modules\User\Interfaces\Repositories;
 
 use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
 use Modules\User\Models\User;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 
 interface UserRepositoryInterface
 {

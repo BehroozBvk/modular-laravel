@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\User\ValueObjects;
+namespace Modules\Shared\ValueObjects;
 
 use InvalidArgumentException;
 

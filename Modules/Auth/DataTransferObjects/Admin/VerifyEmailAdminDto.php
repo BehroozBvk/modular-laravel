@@ -7,14 +7,14 @@ namespace Modules\Auth\DataTransferObjects\Admin;
 final readonly class VerifyEmailAdminDto
 {
     public function __construct(
-        public int $userId,
+        public int $adminId,
         public string $hash
     ) {}
 
     public function toArray(): array
     {
         return [
-            'userId' => $this->userId,
+            'adminId' => $this->adminId,
             'hash' => $this->hash,
         ];
     }
@@ -22,7 +22,7 @@ final readonly class VerifyEmailAdminDto
     public static function fromArray(array $data): self
     {
         return new self(
-            userId: $data['userId'],
+            adminId: $data['adminId'],
             hash: $data['hash']
         );
     }

@@ -6,7 +6,8 @@ namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Admin\ResendVerificationEmailAdminDto;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
 
 /**
  * @OA\Schema(
@@ -25,7 +26,28 @@ final class ResendVerificationEmailAdminRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email', 'exists:users,email'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'exists:admins,email'
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
+            'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
+            'email.exists' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EXISTS),
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
         ];
     }
 

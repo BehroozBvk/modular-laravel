@@ -7,7 +7,7 @@ namespace Modules\Auth\DataTransferObjects\Admin;
 final class ChangePasswordAdminDto
 {
     public function __construct(
-        public readonly int $userId,
+        public readonly int $adminId,
         public readonly string $currentPassword,
         public readonly string $newPassword
     ) {}
@@ -15,7 +15,7 @@ final class ChangePasswordAdminDto
     public static function fromArray(array $data): self
     {
         return new self(
-            userId: $data['user_id'],
+            adminId: $data['admin_id'],
             currentPassword: $data['current_password'],
             newPassword: $data['password']
         );

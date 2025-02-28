@@ -6,7 +6,7 @@ namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Student\ResendVerificationEmailStudentDto;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(

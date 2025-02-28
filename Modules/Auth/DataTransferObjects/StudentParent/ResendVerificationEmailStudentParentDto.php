@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Auth\DataTransferObjects\StudentParent;
 
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 
 final readonly class ResendVerificationEmailStudentParentDto
 {

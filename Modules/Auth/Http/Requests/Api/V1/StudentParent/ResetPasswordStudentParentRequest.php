@@ -6,7 +6,7 @@ namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\StudentParent\ResetPasswordStudentParentDto;
-use Modules\User\ValueObjects\Email;
+use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 
 /**

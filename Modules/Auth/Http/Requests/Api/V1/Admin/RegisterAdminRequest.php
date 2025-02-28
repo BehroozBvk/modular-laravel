@@ -10,20 +10,35 @@ use Modules\Core\Rules\{StringRule, EmailRule, PasswordRule, RelationRule};
 use Modules\Shared\Rules\ImageRule;
 use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="RegisterAdminRequest",
  *     required={"name", "email", "password", "password_confirmation"},
- *     @OA\Property(property="name", type="string", example="John Doe"),
- *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
- *     @OA\Property(property="password", type="string", format="password", example="StrongPass123!"),
- *     @OA\Property(property="password_confirmation", type="string", format="password", example="StrongPass123!"),
- *     @OA\Property(property="phone_number", type="string", nullable=true, example="+1234567890"),
- *     @OA\Property(property="avatar", type="string", format="binary", nullable=true),
- *     @OA\Property(property="country_id", type="integer", nullable=true, example=1),
- *     @OA\Property(property="first_name", type="string", nullable=true, example="John"),
- *     @OA\Property(property="last_name", type="string", nullable=true, example="Doe")
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         example="John Doe"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         example="admin@example.com"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         example="password123"
+ *     ),
+ *     @OA\Property(
+ *         property="password_confirmation",
+ *         type="string",
+ *         format="password",
+ *         example="password123"
+ *     )
  * )
  */
 final class RegisterAdminRequest extends BaseApiV1FormRequest
@@ -36,10 +51,26 @@ final class RegisterAdminRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'name' => StringRule::name(),
-            'email' => EmailRule::default(unique: true),
-            'password' => PasswordRule::default(confirmed: true),
-            'password_confirmation' => PasswordRule::confirmation(),
+            'name' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z\s]+$/',
+                'min:3',
+                'max:255'
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'unique:admins,email'
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:255',
+                'confirmed'
+            ],
             'phone_number' => StringRule::phone(),
             'avatar' => ImageRule::avatar(),
             'country_id' => RelationRule::belongsTo('countries', required: false),
@@ -96,6 +127,10 @@ final class RegisterAdminRequest extends BaseApiV1FormRequest
 
     public function toDto(): RegisterAdminDto
     {
-        return RegisterAdminDto::fromArray($this->validated());
+        return new RegisterAdminDto(
+            name: $this->input('name'),
+            email: new Email($this->input('email')),
+            password: $this->input('password')
+        );
     }
 }
