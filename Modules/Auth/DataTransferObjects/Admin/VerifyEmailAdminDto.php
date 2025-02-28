@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\DataTransferObjects\Student;
+namespace Modules\Auth\DataTransferObjects\Admin;
 
-final readonly class VerifyEmailStudentDto
+final readonly class VerifyEmailAdminDto
 {
     public function __construct(
         public int $userId,

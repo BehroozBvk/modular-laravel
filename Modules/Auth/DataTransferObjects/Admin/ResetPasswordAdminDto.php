@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\DataTransferObjects\Student;
+namespace Modules\Auth\DataTransferObjects\Admin;
 
 use Modules\User\ValueObjects\Email;
 
-final readonly class ResetPasswordStudentDto
+final readonly class ResetPasswordAdminDto
 {
     public function __construct(
         public Email $email,
