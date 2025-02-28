@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Requests\Api\V1\Student;
+namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Student\LoginStudentDto;
+use Illuminate\Validation\Rule;
 use Modules\User\ValueObjects\Email;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Auth\DataTransferObjects\StudentParent\LoginStudentParentDto;
 
 /**
  * @OA\Schema(
@@ -26,7 +28,7 @@ use Modules\User\ValueObjects\Email;
  *     )
  * )
  */
-final class LoginStudentRequest extends BaseApiV1FormRequest
+final class LoginStudentParentRequest extends BaseApiV1FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -36,8 +38,15 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string', 'min:8'],
+            'email' => [
+                'required',
+                'string',
+                'email'
+            ],
+            'password' => [
+                'required',
+                'string'
+            ],
         ];
     }
 
@@ -49,11 +58,9 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Invalid email format',
-            'email.max' => 'Email must not exceed 255 characters',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 8 characters',
+            'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
+            'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
+            'password.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_PASSWORD_REQUIRED),
         ];
     }
 
@@ -65,14 +72,14 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
     public function attributes(): array
     {
         return [
-            'email' => 'email address',
-            'password' => 'password',
+            'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
+            'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
         ];
     }
 
-    public function toDto(): LoginStudentDto
+    public function toDto(): LoginStudentParentDto
     {
-        return new LoginStudentDto(
+        return new LoginStudentParentDto(
             email: new Email($this->input('email')),
             password: $this->input('password')
         );

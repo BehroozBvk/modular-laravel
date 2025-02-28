@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Controllers\Api\V1\Student;
+namespace Modules\Auth\Http\Controllers\Api\V1\Admin;
 
 use Exception;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
-    Http\Requests\Api\V1\Student\LoginStudentRequest,
-    Http\Resources\Api\V1\Student\LoginStudentResource,
-    Services\Student\StudentAuthService,
+    Http\Requests\Api\V1\Admin\LoginAdminRequest,
+    Http\Resources\Api\V1\Admin\LoginAdminResource,
+    Services\Admin\AdminAuthService,
     Constants\Messages\AuthMessageConstants
 };
 
 /**
  * @OA\Post(
- *     path="/auth/student/login",
- *     tags={"Student Auth"},
- *     summary="Login a student",
+ *     path="/auth/admin/login",
+ *     tags={"Admin Auth"},
+ *     summary="Login a admin",
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/LoginStudentRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/LoginAdminRequest")
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="Student logged in successfully",
+ *         description="Admin logged in successfully",
  *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
  *     ),
  *     @OA\Response(
@@ -40,20 +40,20 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class LoginStudentController extends BaseApiV1Controller
+final class LoginAdminController extends BaseApiV1Controller
 {
     public function __construct(
-        private readonly StudentAuthService $studentAuthService
+        private readonly AdminAuthService $adminAuthService
     ) {}
 
-    public function __invoke(LoginStudentRequest $request)
+    public function __invoke(LoginAdminRequest $request)
     {
         try {
-            $token = $this->studentAuthService->login($request->toDto());
+            $token = $this->adminAuthService->login($request->toDto());
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_LOGGED_IN),
-                data: new LoginStudentResource($token)
+                message: AuthMessageConstants::get(AuthMessageConstants::ADMIN_LOGGED_IN),
+                data: new LoginAdminResource($token)
             );
         } catch (Exception $e) {
             return $this->errorResponse(

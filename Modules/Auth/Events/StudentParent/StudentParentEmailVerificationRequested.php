@@ -8,12 +8,11 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\User\Models\User;
 
-final class StudentParentPasswordResetRequested
+final class StudentParentEmailVerificationRequested
 {
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public readonly User $user,
-        public readonly string $token
+        public readonly User $user
     ) {}
 }

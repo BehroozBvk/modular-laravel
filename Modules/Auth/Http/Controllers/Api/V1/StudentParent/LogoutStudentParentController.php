@@ -11,13 +11,13 @@ use Modules\Auth\Constants\Messages\AuthMessageConstants;
 
 /**
  * @OA\Post(
- *     path="/auth/student/logout",
- *     tags={"Student Auth"},
- *     summary="Logout a student",
+ *     path="/auth/student-parents/logout",
+ *     tags={"Student Parent Auth"},
+ *     summary="Logout a student parent",
  *     security={{"bearerAuth":{}}},
  *     @OA\Response(
  *         response=200,
- *         description="Student logged out successfully",
+ *         description="Student parent logged out successfully",
  *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
  *     ),
  *     @OA\Response(
@@ -32,7 +32,7 @@ use Modules\Auth\Constants\Messages\AuthMessageConstants;
  *     )
  * )
  */
-final class LogoutStudentController extends BaseApiV1Controller
+final class LogoutStudentParentController extends BaseApiV1Controller
 {
     public function __invoke()
     {
@@ -40,7 +40,7 @@ final class LogoutStudentController extends BaseApiV1Controller
             request()->user()->token()->revoke();
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_LOGGED_OUT)
+                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_LOGGED_OUT)
             );
         } catch (Exception $e) {
             return $this->errorResponse(

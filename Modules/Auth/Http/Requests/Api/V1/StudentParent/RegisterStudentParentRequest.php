@@ -2,57 +2,74 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Requests\Api\V1\Student;
+namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use OpenApi\Annotations as OA;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Core\Rules\{StringRule, EmailRule, PasswordRule, RelationRule};
-use Modules\Shared\Rules\ImageRule;
-use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\RegisterStudentParentDto;
+use Modules\User\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 
-/**
- * @OA\Schema(
- *     schema="RegisterStudentRequest",
- *     required={"name", "email", "password", "password_confirmation"},
- *     @OA\Property(property="name", type="string", example="John Doe"),
- *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
- *     @OA\Property(property="password", type="string", format="password", example="StrongPass123!"),
- *     @OA\Property(property="password_confirmation", type="string", format="password", example="StrongPass123!"),
- *     @OA\Property(property="phone_number", type="string", nullable=true, example="+1234567890"),
- *     @OA\Property(property="avatar", type="string", format="binary", nullable=true),
- *     @OA\Property(property="country_id", type="integer", nullable=true, example=1),
- *     @OA\Property(property="first_name", type="string", nullable=true, example="John"),
- *     @OA\Property(property="last_name", type="string", nullable=true, example="Doe")
- * )
- */
-final class RegisterStudentRequest extends BaseApiV1FormRequest
+final class RegisterStudentParentRequest extends BaseApiV1FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'name' => StringRule::name(),
-            'email' => EmailRule::default(unique: true),
-            'password' => PasswordRule::default(confirmed: true),
-            'password_confirmation' => PasswordRule::confirmation(),
-            'phone_number' => StringRule::phone(),
-            'avatar' => ImageRule::avatar(),
-            'country_id' => RelationRule::belongsTo('countries', required: false),
-            'first_name' => StringRule::default(required: false),
-            'last_name' => StringRule::default(required: false),
+            'name' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z\s]+$/',
+                'min:3',
+                'max:255'
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'unique:users,email'
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:255',
+                'confirmed'
+            ],
+            'phone_number' => [
+                'nullable',
+                'string',
+                'regex:/^[0-9]+$/',
+                'min:10',
+                'max:15'
+            ],
+            'first_name' => [
+                'nullable',
+                'string',
+                'regex:/^[a-zA-Z\s]+$/',
+                'min:3',
+                'max:255'
+            ],
+            'last_name' => [
+                'nullable',
+                'string',
+                'regex:/^[a-zA-Z\s]+$/',
+                'min:3',
+                'max:255'
+            ],
+            'avatar' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:2048',
+                'dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+            ],
+            'country_id' => [
+                'nullable',
+                'integer',
+                'exists:countries,id'
+            ],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [
@@ -74,18 +91,12 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
         ];
     }
 
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array<string, string>
-     */
     public function attributes(): array
     {
         return [
             'name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_NAME),
             'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
             'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
-            'role' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_ROLE),
             'phone_number' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
             'avatar' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_AVATAR),
             'country_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_COUNTRY_ID),
@@ -94,8 +105,17 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
         ];
     }
 
-    public function toDto(): RegisterStudentDto
+    public function toDto(): RegisterStudentParentDto
     {
-        return RegisterStudentDto::fromArray($this->validated());
+        return new RegisterStudentParentDto(
+            name: $this->input('name'),
+            email: new Email($this->input('email')),
+            password: $this->input('password'),
+            phoneNumber: $this->input('phone_number'),
+            firstName: $this->input('first_name'),
+            lastName: $this->input('last_name'),
+            avatar: $this->file('avatar')?->store('avatars', 'public'),
+            countryId: $this->input('country_id'),
+        );
     }
 }

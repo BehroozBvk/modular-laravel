@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Requests\Api\V1\Student;
+namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Student\ResendVerificationEmailStudentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\ResendVerificationEmailStudentParentDto;
 use Modules\User\ValueObjects\Email;
 
 /**
  * @OA\Schema(
- *     schema="ResendVerificationEmailStudentRequest",
+ *     schema="ResendVerificationEmailStudentParentRequest",
  *     required={"email"},
  *     @OA\Property(
  *         property="email",
@@ -20,19 +20,19 @@ use Modules\User\ValueObjects\Email;
  *     )
  * )
  */
-final class ResendVerificationEmailStudentRequest extends BaseApiV1FormRequest
+final class ResendVerificationEmailStudentParentRequest extends BaseApiV1FormRequest
 {
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email', 'exists:users,email'],
+            'email' => ['required', 'email'],
         ];
     }
 
-    public function toDto(): ResendVerificationEmailStudentDto
+    public function toDto(): ResendVerificationEmailStudentParentDto
     {
-        return new ResendVerificationEmailStudentDto(
-            email: new Email($this->input('email'))
+        return new ResendVerificationEmailStudentParentDto(
+            new Email($this->input('email'))
         );
     }
 }

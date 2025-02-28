@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Controllers\Api\V1\Student;
+namespace Modules\Auth\Http\Controllers\Api\V1\Teacher;
 
 use Exception;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
-    Http\Requests\Api\V1\Student\ResetPasswordStudentRequest,
-    Services\Student\StudentAuthService,
+    Http\Requests\Api\V1\Teacher\ResetPasswordTeacherRequest,
+    Services\Teacher\TeacherAuthService,
     Constants\Messages\AuthMessageConstants
 };
 
 /**
  * @OA\Post(
- *     path="/auth/student/reset-password",
- *     tags={"Student Auth"},
- *     summary="Reset student's password",
+ *     path="/auth/teacher/reset-password",
+ *     tags={"Teacher Auth"},
+ *     summary="Reset teacher's password",
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/ResetPasswordStudentRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/ResetPasswordTeacherRequest")
  *     ),
  *     @OA\Response(
  *         response=200,
@@ -34,7 +34,7 @@ use Modules\Auth\{
  *     ),
  *     @OA\Response(
  *         response=404,
- *         description="Student not found",
+ *         description="Teacher not found",
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     ),
  *     @OA\Response(
@@ -44,19 +44,19 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class ResetPasswordStudentController extends BaseApiV1Controller
+final class ResetPasswordTeacherController extends BaseApiV1Controller
 {
     public function __construct(
-        private readonly StudentAuthService $studentAuthService
+        private readonly TeacherAuthService $teacherAuthService
     ) {}
 
-    public function __invoke(ResetPasswordStudentRequest $request)
+    public function __invoke(ResetPasswordTeacherRequest $request)
     {
         try {
-            $this->studentAuthService->resetPassword($request->toDto());
+            $this->teacherAuthService->resetPassword($request->toDto());
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_PASSWORD_RESET_SUCCESS)
+                message: AuthMessageConstants::get(AuthMessageConstants::TEACHER_PASSWORD_RESET_SUCCESS)
             );
         } catch (Exception $e) {
             return $this->errorResponse(

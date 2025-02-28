@@ -21,11 +21,11 @@ use Modules\Auth\{
  *     summary="Register a new student parent",
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/RegisterStudentRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/RegisterStudentParentRequest")
  *     ),
  *     @OA\Response(
  *         response=201,
- *         description="Student registered successfully",
+ *         description="Student parent registered successfully",
  *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
  *     ),
  *     @OA\Response(
@@ -40,7 +40,7 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class RegisterStudentController extends BaseApiV1Controller
+final class RegisterStudentParentController extends BaseApiV1Controller
 {
     public function __construct(
         private readonly StudentParentAuthService $studentParentAuthService
@@ -58,7 +58,7 @@ final class RegisterStudentController extends BaseApiV1Controller
             );
         } catch (Exception $e) {
             return $this->errorResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_REGISTRATION_FAILED),
+                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_REGISTRATION_FAILED),
                 statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
             );
         }

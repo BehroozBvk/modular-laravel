@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Requests\Api\V1\Student;
+namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Student\VerifyEmailStudentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\VerifyEmailStudentParentDto;
 
 /**
  * @OA\Schema(
@@ -23,7 +23,7 @@ use Modules\Auth\DataTransferObjects\Student\VerifyEmailStudentDto;
  *     )
  * )
  */
-final class VerifyEmailStudentRequest extends BaseApiV1FormRequest
+final class VerifyEmailStudentParentRequest extends BaseApiV1FormRequest
 {
     public function rules(): array
     {
@@ -33,9 +33,9 @@ final class VerifyEmailStudentRequest extends BaseApiV1FormRequest
         ];
     }
 
-    public function toDto(): VerifyEmailStudentDto
+    public function toDto(): VerifyEmailStudentParentDto
     {
-        return new VerifyEmailStudentDto(
+        return new VerifyEmailStudentParentDto(
             userId: (int) $this->route('id'),
             hash: $this->route('hash')
         );

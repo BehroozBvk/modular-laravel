@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Controllers\Api\V1\Student;
+namespace Modules\Auth\Http\Controllers\Api\V1\StudentParent;
 
 use Exception;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
-    Http\Requests\Api\V1\Student\VerifyEmailStudentRequest,
-    Services\Student\StudentAuthService,
+    Http\Requests\Api\V1\StudentParent\VerifyEmailStudentParentRequest,
+    Services\StudentParent\StudentParentAuthService,
     Constants\Messages\AuthMessageConstants
 };
 
 /**
  * @OA\Post(
- *     path="/auth/student/verify-email/{id}/{hash}",
- *     tags={"Student Auth"},
- *     summary="Verify student's email address",
+ *     path="/auth/student-parents/verify-email/{id}/{hash}",
+ *     tags={"Student Parent Auth"},
+ *     summary="Verify student parent's email address",
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
  *         required=true,
- *         description="Student ID",
+ *         description="Student Parent ID",
  *         @OA\Schema(type="integer")
  *     ),
  *     @OA\Parameter(
@@ -44,7 +44,7 @@ use Modules\Auth\{
  *     ),
  *     @OA\Response(
  *         response=404,
- *         description="Student not found",
+ *         description="Student parent not found",
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     ),
  *     @OA\Response(
@@ -54,19 +54,19 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class VerifyEmailStudentController extends BaseApiV1Controller
+final class VerifyEmailStudentParentController extends BaseApiV1Controller
 {
     public function __construct(
-        private readonly StudentAuthService $studentAuthService
+        private readonly StudentParentAuthService $studentParentAuthService
     ) {}
 
-    public function __invoke(VerifyEmailStudentRequest $request)
+    public function __invoke(VerifyEmailStudentParentRequest $request)
     {
         try {
-            $this->studentAuthService->verifyEmail($request->toDto());
+            $this->studentParentAuthService->verifyEmail($request->toDto());
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_EMAIL_VERIFIED)
+                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_EMAIL_VERIFIED)
             );
         } catch (Exception $e) {
             return $this->errorResponse(
