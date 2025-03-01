@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Teacher;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Teacher\LoginTeacherDto;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Teacher\LoginTeacherDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="LoginTeacherRequest",
  *     required={"email", "password"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",
@@ -35,11 +36,11 @@ final class LoginTeacherRequest extends BaseApiV1FormRequest
             'email' => [
                 'required',
                 'string',
-                'email'
+                'email',
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
         ];
     }

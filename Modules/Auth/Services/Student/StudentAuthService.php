@@ -4,37 +4,30 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Services\Student;
 
-use Modules\User\Enums\UserTypeEnum;
-use Modules\User\Models\UserPasswordResetToken;
-use Illuminate\Support\Facades\{Hash};
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Student\ChangePasswordStudentDto;
+use Modules\Auth\DataTransferObjects\Student\LoginStudentDto;
+use Modules\Auth\DataTransferObjects\Student\PasswordResetStudentDto;
+use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
+use Modules\Auth\DataTransferObjects\Student\ResendVerificationEmailStudentDto;
+use Modules\Auth\DataTransferObjects\Student\ResetPasswordStudentDto;
+use Modules\Auth\DataTransferObjects\Student\VerifyEmailStudentDto;
+use Modules\Auth\Events\Student\StudentEmailVerificationRequested;
+use Modules\Auth\Events\Student\StudentEmailVerified;
+use Modules\Auth\Events\Student\StudentPasswordResetRequested;
 use Modules\Core\Exceptions\AuthenticationException;
-use Modules\Auth\DataTransferObjects\Student\{
-    LoginStudentDto,
-    ChangePasswordStudentDto,
-    PasswordResetStudentDto,
-    RegisterStudentDto,
-    ResetPasswordStudentDto,
-    VerifyEmailStudentDto,
-    ResendVerificationEmailStudentDto
-};
+use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 use Modules\User\Models\User;
-use Modules\Auth\Events\Student\{
-    StudentPasswordResetRequested,
-    StudentEmailVerificationRequested,
-    StudentEmailVerified
-};
-use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\User\Models\UserPasswordResetToken;
 
 /**
  * Service for handling student authentication
  */
 final class StudentAuthService
 {
-    /**
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         private readonly UserRepositoryInterface $userRepository
     ) {}
@@ -42,21 +35,22 @@ final class StudentAuthService
     /**
      * Authenticate a student and generate access token
      *
-     * @param LoginStudentDto $dto Login credentials
-     * @throws AuthenticationException If credentials are invalid
+     * @param  LoginStudentDto  $dto  Login credentials
      * @return PersonalAccessTokenResult Generated access token
+     *
+     * @throws AuthenticationException If credentials are invalid
      */
     public function login(LoginStudentDto $dto): PersonalAccessTokenResult
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_CREDENTIALS)
             );
         }
 
-        if (!Hash::check($dto->password, $user->password)) {
+        if (! Hash::check($dto->password, $user->password)) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_CREDENTIALS)
             );
@@ -68,21 +62,19 @@ final class StudentAuthService
     /**
      * Change student's password
      *
-     * @param ChangePasswordStudentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function changePassword(ChangePasswordStudentDto $dto): void
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_CREDENTIALS)
             );
         }
 
-        if (!Hash::check($dto->currentPassword, $user->password)) {
+        if (! Hash::check($dto->currentPassword, $user->password)) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_PASSWORD)
             );
@@ -94,15 +86,13 @@ final class StudentAuthService
     /**
      * Send password reset link to student's email
      *
-     * @param PasswordResetStudentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function sendPasswordResetLink(PasswordResetStudentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -116,15 +106,13 @@ final class StudentAuthService
     /**
      * Reset student's password
      *
-     * @param ResetPasswordStudentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function resetPassword(ResetPasswordStudentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -132,7 +120,7 @@ final class StudentAuthService
 
         $passwordReset = UserPasswordResetToken::findValidToken((string) $dto->email, $dto->token);
 
-        if (!$passwordReset) {
+        if (! $passwordReset) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_PASSWORD_RESET_TOKEN)
             );
@@ -145,9 +133,7 @@ final class StudentAuthService
     /**
      * Register a new student
      *
-     * @param RegisterStudentDto $dto
      * @throws AuthenticationException If registration fails
-     * @return User
      */
     public function register(RegisterStudentDto $dto): User
     {
@@ -168,15 +154,13 @@ final class StudentAuthService
     /**
      * Verify student's email
      *
-     * @param VerifyEmailStudentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function verifyEmail(VerifyEmailStudentDto $dto): void
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -188,7 +172,7 @@ final class StudentAuthService
             );
         }
 
-        if (!hash_equals($dto->hash, sha1($user->getEmailForVerification()))) {
+        if (! hash_equals($dto->hash, sha1($user->getEmailForVerification()))) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_EMAIL_VERIFICATION_LINK)
             );
@@ -201,15 +185,13 @@ final class StudentAuthService
     /**
      * Resend verification email to student
      *
-     * @param ResendVerificationEmailStudentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function resendVerificationEmail(ResendVerificationEmailStudentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );

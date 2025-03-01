@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Student\ChangePasswordStudentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 final class ChangePasswordStudentRequest extends BaseApiV1FormRequest
 {
@@ -14,7 +14,7 @@ final class ChangePasswordStudentRequest extends BaseApiV1FormRequest
         return [
             'current_password' => ['required', 'string', 'min:8'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required', 'string']
+            'password_confirmation' => ['required', 'string'],
         ];
     }
 
@@ -23,7 +23,7 @@ final class ChangePasswordStudentRequest extends BaseApiV1FormRequest
         return ChangePasswordStudentDto::fromArray([
             'user_id' => $this->user()->id,
             'current_password' => $this->current_password,
-            'password' => $this->password
+            'password' => $this->password,
         ]);
     }
 }

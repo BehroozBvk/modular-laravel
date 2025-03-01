@@ -6,20 +6,21 @@ namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\User\Database\Factories\UserFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\HasApiTokens;
 use Modules\Shared\ValueObjects\Email;
+use Modules\User\Database\Factories\UserFactory;
 use Modules\User\Enums\UserTypeEnum;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Modules\User\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -63,8 +64,8 @@ class User extends Authenticatable
     protected function email(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => new Email($value),
-            set: fn(Email|string $value) => $value instanceof Email ? (string)$value : $value,
+            get: fn (string $value) => new Email($value),
+            set: fn (Email|string $value) => $value instanceof Email ? (string) $value : $value,
         );
     }
 
@@ -74,7 +75,7 @@ class User extends Authenticatable
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => Hash::make($value),
+            set: fn (string $value) => Hash::make($value),
         );
     }
 

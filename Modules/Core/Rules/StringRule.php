@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Core\Rules;
 
 use Illuminate\Validation\Rule;
-use Modules\Core\Rules\{EmailRule, PasswordRule};
 
 class StringRule
 {
@@ -87,7 +86,7 @@ class StringRule
         return [
             'nullable',
             'string',
-            'max:' . $maxLength,
+            'max:'.$maxLength,
         ];
     }
 

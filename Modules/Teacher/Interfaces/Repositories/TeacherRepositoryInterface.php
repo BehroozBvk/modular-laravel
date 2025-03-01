@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Teacher\Interfaces\Repositories;
 
-use Modules\Teacher\Models\Teacher;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
+use Modules\Shared\ValueObjects\Email;
+use Modules\Teacher\Models\Teacher;
 
 interface TeacherRepositoryInterface
 {

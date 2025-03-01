@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
 use Illuminate\Validation\Rule;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\StudentParent\LoginStudentParentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="LoginStudentRequest",
  *     required={"email", "password"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",
@@ -41,11 +42,11 @@ final class LoginStudentParentRequest extends BaseApiV1FormRequest
             'email' => [
                 'required',
                 'string',
-                'email'
+                'email',
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
         ];
     }

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Resources\Api\V1\Student;
 
+use Carbon\CarbonInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Models\User;
-use Carbon\CarbonInterface;
 use OpenApi\Annotations as OA;
 
 /**
  * @property-read User $resource
- * 
+ *
  * @OA\Schema(
  *     schema="RegisterStudentResource",
  *     required={"id", "name", "email", "type", "created_at"},
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="John Doe"),
  *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),

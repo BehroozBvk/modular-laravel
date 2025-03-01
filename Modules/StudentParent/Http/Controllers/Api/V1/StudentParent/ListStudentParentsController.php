@@ -2,8 +2,8 @@
 
 namespace Modules\StudentParent\Http\Controllers\Api\V1\StudentParent;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class ListStudentParentsController extends Controller
 {

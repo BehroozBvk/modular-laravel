@@ -2,8 +2,9 @@
 
 namespace Modules\AccessControl\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 // use Modules\AccessControl\Database\Factories\UserPermissionFactory;
 
 class UserPermission extends Model

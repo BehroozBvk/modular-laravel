@@ -2,8 +2,8 @@
 
 namespace Modules\Admin\Http\Controllers\Api\V1\Admin;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class ListAdminsController extends Controller
 {

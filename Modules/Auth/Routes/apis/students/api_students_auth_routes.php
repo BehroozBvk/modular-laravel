@@ -3,15 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\Api\V1\Student\{
-    RegisterStudentController,
-    LoginStudentController,
-    LogoutStudentController,
-    ForgotPasswordStudentController,
-    ResetPasswordStudentController,
-    VerifyEmailStudentController,
-    ResendVerificationEmailStudentController
-};
+use Modules\Auth\Http\Controllers\Api\V1\Student\ForgotPasswordStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\LoginStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\LogoutStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\RegisterStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\ResendVerificationEmailStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\ResetPasswordStudentController;
+use Modules\Auth\Http\Controllers\Api\V1\Student\VerifyEmailStudentController;
 
 Route::prefix('v1/auth/students')->as('v1.auth.students.')->group(function () {
     // Public routes

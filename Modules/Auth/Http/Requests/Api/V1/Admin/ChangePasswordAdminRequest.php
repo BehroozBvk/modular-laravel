@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Admin\ChangePasswordAdminDto;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Admin\ChangePasswordAdminDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 /**
  * @OA\Schema(
  *     schema="ChangePasswordAdminRequest",
  *     required={"current_password", "password", "password_confirmation"},
+ *
  *     @OA\Property(
  *         property="current_password",
  *         type="string",
@@ -40,7 +41,7 @@ final class ChangePasswordAdminRequest extends BaseApiV1FormRequest
             'current_password' => [
                 'required',
                 'string',
-                'current_password'
+                'current_password',
             ],
             'password' => [
                 'required',
@@ -48,7 +49,7 @@ final class ChangePasswordAdminRequest extends BaseApiV1FormRequest
                 'min:8',
                 'max:255',
                 'confirmed',
-                'different:current_password'
+                'different:current_password',
             ],
         ];
     }

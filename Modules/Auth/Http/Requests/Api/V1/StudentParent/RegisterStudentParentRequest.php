@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\StudentParent\RegisterStudentParentDto;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\StudentParent\RegisterStudentParentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 final class RegisterStudentParentRequest extends BaseApiV1FormRequest
 {
@@ -19,53 +19,53 @@ final class RegisterStudentParentRequest extends BaseApiV1FormRequest
                 'string',
                 'regex:/^[a-zA-Z\s]+$/',
                 'min:3',
-                'max:255'
+                'max:255',
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                'unique:users,email'
+                'unique:users,email',
             ],
             'password' => [
                 'required',
                 'string',
                 'min:8',
                 'max:255',
-                'confirmed'
+                'confirmed',
             ],
             'phone_number' => [
                 'nullable',
                 'string',
                 'regex:/^[0-9]+$/',
                 'min:10',
-                'max:15'
+                'max:15',
             ],
             'first_name' => [
                 'nullable',
                 'string',
                 'regex:/^[a-zA-Z\s]+$/',
                 'min:3',
-                'max:255'
+                'max:255',
             ],
             'last_name' => [
                 'nullable',
                 'string',
                 'regex:/^[a-zA-Z\s]+$/',
                 'min:3',
-                'max:255'
+                'max:255',
             ],
             'avatar' => [
                 'nullable',
                 'image',
                 'mimes:jpeg,png,jpg',
                 'max:2048',
-                'dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000'
+                'dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
             ],
             'country_id' => [
                 'nullable',
                 'integer',
-                'exists:countries,id'
+                'exists:countries,id',
             ],
         ];
     }

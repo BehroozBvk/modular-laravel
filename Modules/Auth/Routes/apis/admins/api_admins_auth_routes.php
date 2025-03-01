@@ -3,14 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\Api\V1\Admin\{
-    LoginAdminController,
-    LogoutAdminController,
-    ForgotPasswordAdminController,
-    ResetPasswordAdminController,
-    VerifyEmailAdminController,
-    ResendVerificationEmailAdminController
-};
+use Modules\Auth\Http\Controllers\Api\V1\Admin\ForgotPasswordAdminController;
+use Modules\Auth\Http\Controllers\Api\V1\Admin\LoginAdminController;
+use Modules\Auth\Http\Controllers\Api\V1\Admin\LogoutAdminController;
+use Modules\Auth\Http\Controllers\Api\V1\Admin\ResendVerificationEmailAdminController;
+use Modules\Auth\Http\Controllers\Api\V1\Admin\ResetPasswordAdminController;
+use Modules\Auth\Http\Controllers\Api\V1\Admin\VerifyEmailAdminController;
 
 Route::prefix('v1/auth/admins')->as('v1.auth.admins.')->group(function () {
     // Public routes

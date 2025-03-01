@@ -3,15 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\Api\V1\StudentParent\{
-    RegisterStudentParentController,
-    LoginStudentParentController,
-    LogoutStudentParentController,
-    ForgotPasswordStudentParentController,
-    ResetPasswordStudentParentController,
-    VerifyEmailStudentParentController,
-    ResendVerificationEmailStudentParentController
-};
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\ForgotPasswordStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\LoginStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\LogoutStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\RegisterStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\ResendVerificationEmailStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\ResetPasswordStudentParentController;
+use Modules\Auth\Http\Controllers\Api\V1\StudentParent\VerifyEmailStudentParentController;
 
 Route::prefix('v1/auth/student-parents')->as('v1.auth.student-parents.')->group(function () {
     // Public routes

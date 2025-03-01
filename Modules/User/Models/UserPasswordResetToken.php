@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\User\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class UserPasswordResetToken extends Model
@@ -17,7 +17,7 @@ class UserPasswordResetToken extends Model
      */
     protected $fillable = [
         'email',
-        'token'
+        'token',
     ];
 
     /**

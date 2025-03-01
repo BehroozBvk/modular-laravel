@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Auth\DataTransferObjects\Admin;
 
-use Modules\Shared\ValueObjects\Email;
 use Modules\Admin\Enums\AdminTypeEnum;
+use Modules\Shared\ValueObjects\Email;
 
 final class RegisterAdminDto
 {

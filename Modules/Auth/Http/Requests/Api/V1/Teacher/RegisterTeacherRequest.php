@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Teacher;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="RegisterTeacherRequest",
  *     required={"name", "email", "password", "password_confirmation"},
+ *
  *     @OA\Property(
  *         property="name",
  *         type="string",
@@ -47,20 +48,20 @@ final class RegisterTeacherRequest extends BaseApiV1FormRequest
                 'required',
                 'string',
                 'min:3',
-                'max:255'
+                'max:255',
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                'unique:users,email'
+                'unique:users,email',
             ],
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'confirmed'
+                'confirmed',
             ],
         ];
     }

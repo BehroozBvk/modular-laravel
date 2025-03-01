@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Shared\ValueObjects\Email;
 use Illuminate\Contracts\Validation\Rule;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 use Modules\Auth\DataTransferObjects\Admin\LoginAdminDto;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="LoginAdminRequest",
  *     required={"email", "password"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",
@@ -41,11 +42,11 @@ final class LoginAdminRequest extends BaseApiV1FormRequest
             'email' => [
                 'required',
                 'string',
-                'email'
+                'email',
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
         ];
     }

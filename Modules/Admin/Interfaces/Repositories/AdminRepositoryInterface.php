@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Modules\Admin\Interfaces\Repositories;
 
 use Modules\Admin\Models\Admin;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
+use Modules\Shared\ValueObjects\Email;
 
 interface AdminRepositoryInterface
 {

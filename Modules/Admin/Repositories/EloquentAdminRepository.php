@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Repositories;
 
-use Modules\Admin\Models\Admin;
-use Modules\Admin\Interfaces\Repositories\AdminRepositoryInterface;
-use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
 use Illuminate\Support\Facades\Hash;
+use Modules\Admin\Interfaces\Repositories\AdminRepositoryInterface;
+use Modules\Admin\Models\Admin;
+use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
 use Modules\Shared\ValueObjects\Email;
 
 final class EloquentAdminRepository implements AdminRepositoryInterface
@@ -38,7 +38,7 @@ final class EloquentAdminRepository implements AdminRepositoryInterface
     public function updatePassword(int $id, string $password): void
     {
         $this->adminModel->where('id', $id)->update([
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
         ]);
     }
 }

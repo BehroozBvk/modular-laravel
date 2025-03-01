@@ -14,7 +14,6 @@ final class Email
     private string $email;
 
     /**
-     * @param string $email
      * @throws InvalidArgumentException If the email is invalid
      */
     public function __construct(string $email)
@@ -25,7 +24,7 @@ final class Email
 
     private function validate(string $email): void
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email address');
         }
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Listeners\Admin;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Auth\Mail\Admin\AdminPasswordResetMail;
+use Illuminate\Support\Facades\Mail;
 use Modules\Auth\Events\Admin\AdminPasswordResetRequested;
+use Modules\Auth\Mail\Admin\AdminPasswordResetMail;
 
 class SendAdminPasswordResetEmail implements ShouldQueue
 {

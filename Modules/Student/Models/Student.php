@@ -2,11 +2,11 @@
 
 namespace Modules\Student\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\StudentParent\Models\StudentParent;
 use Modules\Student\Database\Factories\StudentFactory;
+use Modules\StudentParent\Models\StudentParent;
 
 class Student extends Model
 {

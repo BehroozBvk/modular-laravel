@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\StudentParent\PasswordResetStudentParentDto;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\StudentParent\PasswordResetStudentParentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="ForgotPasswordStudentParentRequest",
  *     required={"email"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",
@@ -30,7 +31,7 @@ final class ForgotPasswordStudentParentRequest extends BaseApiV1FormRequest
                 'required',
                 'string',
                 'email',
-                'exists:users,email'
+                'exists:users,email',
             ],
         ];
     }

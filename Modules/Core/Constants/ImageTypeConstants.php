@@ -11,9 +11,13 @@ final class ImageTypeConstants
 {
     // Mime types
     public const MIME_JPEG = 'image/jpeg';
+
     public const MIME_PNG = 'image/png';
+
     public const MIME_GIF = 'image/gif';
+
     public const MIME_SVG = 'image/svg+xml';
+
     public const MIME_WEBP = 'image/webp';
 
     public const MIME_TYPES_ALL = [
@@ -36,10 +40,15 @@ final class ImageTypeConstants
 
     // File extensions
     public const EXT_JPG = 'jpg';
+
     public const EXT_JPEG = 'jpeg';
+
     public const EXT_PNG = 'png';
+
     public const EXT_GIF = 'gif';
+
     public const EXT_SVG = 'svg';
+
     public const EXT_WEBP = 'webp';
 
     public const EXTENSIONS_ALL = [
@@ -65,7 +74,7 @@ final class ImageTypeConstants
     /**
      * Get mime types as comma-separated string
      */
-    public static function getMimeTypesString(array $mimeTypes = null): string
+    public static function getMimeTypesString(?array $mimeTypes = null): string
     {
         return implode(',', $mimeTypes ?? self::MIME_TYPES_ALL);
     }
@@ -73,7 +82,7 @@ final class ImageTypeConstants
     /**
      * Get extensions as comma-separated string
      */
-    public static function getExtensionsString(array $extensions = null): string
+    public static function getExtensionsString(?array $extensions = null): string
     {
         return implode(',', $extensions ?? self::EXTENSIONS_ALL);
     }

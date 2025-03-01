@@ -2,10 +2,10 @@
 
 namespace Modules\StudentParent\Models;
 
-use Modules\Student\Models\Student;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Student\Models\Student;
 use Modules\StudentParent\Database\Factories\StudentParentFactory;
 
 class StudentParent extends Model

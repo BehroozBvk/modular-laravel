@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Listeners\Student;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Auth\Mail\Student\StudentPasswordResetMail;
+use Illuminate\Support\Facades\Mail;
 use Modules\Auth\Events\Student\StudentPasswordResetRequested;
+use Modules\Auth\Mail\Student\StudentPasswordResetMail;
 
 class SendStudentPasswordResetEmail implements ShouldQueue
 {

@@ -5,41 +5,49 @@ declare(strict_types=1);
 namespace Modules\Auth\Http\Controllers\Api\V1\Admin;
 
 use Exception;
-use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\Http\Requests\Api\V1\Admin\ResendVerificationEmailAdminRequest;
+use Modules\Auth\Services\Admin\AdminAuthService;
 use Modules\Core\Constants\HttpStatusConstants;
-use Modules\Auth\{
-    Http\Requests\Api\V1\Admin\ResendVerificationEmailAdminRequest,
-    Services\Admin\AdminAuthService,
-    Constants\Messages\AuthMessageConstants
-};
+use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 
 /**
  * @OA\Post(
  *     path="/auth/admin/resend-verification-email",
  *     tags={"Admin Auth"},
  *     summary="Resend verification email to admin",
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\JsonContent(ref="#/components/schemas/ResendVerificationEmailAdminRequest")
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Verification email sent successfully",
+ *
  *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Email already verified",
+ *
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Admin not found",
+ *
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error",
+ *
  *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
  *     )
  * )

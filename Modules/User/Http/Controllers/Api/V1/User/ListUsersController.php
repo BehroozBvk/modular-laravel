@@ -2,8 +2,8 @@
 
 namespace Modules\User\Http\Controllers\Api\V1\User;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class ListUsersController extends Controller
 {

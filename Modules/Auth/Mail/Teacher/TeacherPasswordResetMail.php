@@ -7,8 +7,8 @@ namespace Modules\Auth\Mail\Teacher;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Modules\User\Models\User;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\User\Models\User;
 
 class TeacherPasswordResetMail extends Mailable
 {
@@ -27,7 +27,7 @@ class TeacherPasswordResetMail extends Mailable
      */
     public function build(): self
     {
-        $resetUrl = config('app.url') . '/reset-password?accessToken=' . $this->accessToken;
+        $resetUrl = config('app.url').'/reset-password?accessToken='.$this->accessToken;
 
         return $this->markdown('auth.emails.password-reset')
             ->subject(AuthMessageConstants::get(AuthMessageConstants::TEACHER_PASSWORD_RESET_EMAIL_SUBJECT))

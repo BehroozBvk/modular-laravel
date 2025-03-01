@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Admin\ResetPasswordAdminDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="ResetPasswordAdminRequest",
  *     required={"email", "token", "password", "password_confirmation"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",

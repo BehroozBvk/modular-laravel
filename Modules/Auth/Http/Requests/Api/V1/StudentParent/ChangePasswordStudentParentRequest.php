@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\StudentParent\ChangePasswordStudentParentDto;
-
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 final class ChangePasswordStudentParentRequest extends BaseApiV1FormRequest
 {
@@ -16,18 +15,18 @@ final class ChangePasswordStudentParentRequest extends BaseApiV1FormRequest
             'current_password' => [
                 'required',
                 'string',
-                'min:8'
+                'min:8',
             ],
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'confirmed'
+                'confirmed',
             ],
             'password_confirmation' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 

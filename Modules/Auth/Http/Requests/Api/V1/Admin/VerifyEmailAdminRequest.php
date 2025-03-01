@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Admin\VerifyEmailAdminDto;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Admin\VerifyEmailAdminDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 /**
  * @OA\Schema(
  *     schema="VerifyEmailAdminRequest",
  *     required={"id", "hash", "signature", "expires"},
+ *
  *     @OA\Property(
  *         property="id",
  *         type="integer",
@@ -42,19 +43,19 @@ final class VerifyEmailAdminRequest extends BaseApiV1FormRequest
             'id' => [
                 'required',
                 'integer',
-                'exists:admins,id'
+                'exists:admins,id',
             ],
             'hash' => [
                 'required',
-                'string'
+                'string',
             ],
             'signature' => [
                 'required',
-                'string'
+                'string',
             ],
             'expires' => [
                 'required',
-                'integer'
+                'integer',
             ],
         ];
     }

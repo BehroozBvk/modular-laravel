@@ -10,6 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * Base form request class that all module form requests should extend.
  *
  * @template TValidated of array
+ *
  * @extends FormRequest<TValidated>
  */
 abstract class BaseFormRequest extends FormRequest

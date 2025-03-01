@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Teacher\Repositories;
 
-use Modules\Teacher\Models\Teacher;
-use Modules\Teacher\Interfaces\Repositories\TeacherRepositoryInterface;
-use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
 use Illuminate\Support\Facades\Hash;
+use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
 use Modules\Shared\ValueObjects\Email;
+use Modules\Teacher\Interfaces\Repositories\TeacherRepositoryInterface;
+use Modules\Teacher\Models\Teacher;
 
 final class EloquentTeacherRepository implements TeacherRepositoryInterface
 {
@@ -43,7 +43,7 @@ final class EloquentTeacherRepository implements TeacherRepositoryInterface
     public function updatePassword(int $id, string $password): void
     {
         $this->teacherModel->where('id', $id)->update([
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
         ]);
     }
 }

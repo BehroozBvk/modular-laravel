@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
-use Illuminate\Contracts\Validation\Rule;
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Student\LoginStudentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="LoginStudentRequest",
  *     required={"email", "password"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",

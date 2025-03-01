@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\StudentParent\Database\Factories;
 
-use Modules\StudentParent\Models\StudentParent;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\StudentParent\Models\StudentParent;
 
 class StudentParentFactory extends Factory
 {

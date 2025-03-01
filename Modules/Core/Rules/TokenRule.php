@@ -70,12 +70,12 @@ class TokenRule
         $rules = [
             'required',
             'string',
-            'min:' . $minLength,
-            'max:' . $maxLength,
+            'min:'.$minLength,
+            'max:'.$maxLength,
         ];
 
         if ($pattern) {
-            $rules[] = 'regex:' . $pattern;
+            $rules[] = 'regex:'.$pattern;
         }
 
         return $rules;
@@ -103,7 +103,7 @@ class TokenRule
         return [
             'required',
             'string',
-            'size:' . ($lengths[$algorithm] ?? 64),
+            'size:'.($lengths[$algorithm] ?? 64),
             'regex:/^[A-Fa-f0-9]+$/', // Hexadecimal only
         ];
     }

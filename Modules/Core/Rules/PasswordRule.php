@@ -15,7 +15,7 @@ class PasswordRule
     /**
      * Get the default password rules.
      *
-     * @param bool $confirmed Whether the password should be confirmed.
+     * @param  bool  $confirmed  Whether the password should be confirmed.
      * @return array<int, string|Password> The array of validation rules.
      */
     public static function default(bool $confirmed = false): array

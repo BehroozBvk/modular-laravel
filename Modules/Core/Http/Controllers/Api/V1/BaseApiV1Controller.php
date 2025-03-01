@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Core\Http\Controllers\Api\V1;
 
-use OpenApi\Annotations as OA;
 use Modules\Core\Http\Controllers\Api\BaseApiController;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Tag(

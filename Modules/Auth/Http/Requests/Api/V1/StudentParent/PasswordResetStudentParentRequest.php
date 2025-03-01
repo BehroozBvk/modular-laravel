@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\StudentParent\PasswordResetStudentParentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Shared\ValueObjects\Email;
 
 final class PasswordResetStudentParentRequest extends BaseApiV1FormRequest
@@ -13,7 +13,7 @@ final class PasswordResetStudentParentRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:users,email']
+            'email' => ['required', 'email', 'exists:users,email'],
         ];
     }
 

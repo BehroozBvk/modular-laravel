@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
-use OpenApi\Annotations as OA;
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Core\Rules\{StringRule, EmailRule, PasswordRule, RelationRule};
-use Modules\Shared\Rules\ImageRule;
-use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Core\Rules\EmailRule;
+use Modules\Core\Rules\PasswordRule;
+use Modules\Core\Rules\RelationRule;
+use Modules\Core\Rules\StringRule;
+use Modules\Shared\Rules\ImageRule;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
  *     schema="RegisterStudentRequest",
  *     required={"name", "email", "password", "password_confirmation"},
+ *
  *     @OA\Property(property="name", type="string", example="John Doe"),
  *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
  *     @OA\Property(property="password", type="string", format="password", example="StrongPass123!"),

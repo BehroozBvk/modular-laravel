@@ -4,37 +4,30 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Services\StudentParent;
 
-use Modules\User\Enums\UserTypeEnum;
-use Modules\User\Models\UserPasswordResetToken;
-use Illuminate\Support\Facades\{Hash};
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
+use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\StudentParent\ChangePasswordStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\LoginStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\PasswordResetStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\RegisterStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\ResendVerificationEmailStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\ResetPasswordStudentParentDto;
+use Modules\Auth\DataTransferObjects\StudentParent\VerifyEmailStudentParentDto;
+use Modules\Auth\Events\StudentParent\StudentParentEmailVerificationRequested;
+use Modules\Auth\Events\StudentParent\StudentParentEmailVerified;
+use Modules\Auth\Events\StudentParent\StudentParentPasswordResetRequested;
 use Modules\Core\Exceptions\AuthenticationException;
-use Modules\Auth\DataTransferObjects\StudentParent\{
-    LoginStudentParentDto,
-    ChangePasswordStudentParentDto,
-    PasswordResetStudentParentDto,
-    RegisterStudentParentDto,
-    ResetPasswordStudentParentDto,
-    VerifyEmailStudentParentDto,
-    ResendVerificationEmailStudentParentDto
-};
+use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 use Modules\User\Models\User;
-use Modules\Auth\Events\StudentParent\{
-    StudentParentPasswordResetRequested,
-    StudentParentEmailVerificationRequested,
-    StudentParentEmailVerified
-};
-use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\User\Models\UserPasswordResetToken;
 
 /**
  * Service for handling student parent authentication
  */
 final class StudentParentAuthService
 {
-    /**
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         private readonly UserRepositoryInterface $userRepository
     ) {}
@@ -42,21 +35,22 @@ final class StudentParentAuthService
     /**
      * Authenticate a student parent and generate access token
      *
-     * @param LoginStudentParentDto $dto Login credentials
-     * @throws AuthenticationException If credentials are invalid
+     * @param  LoginStudentParentDto  $dto  Login credentials
      * @return PersonalAccessTokenResult Generated access token
+     *
+     * @throws AuthenticationException If credentials are invalid
      */
     public function login(LoginStudentParentDto $dto): PersonalAccessTokenResult
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_CREDENTIALS)
             );
         }
 
-        if (!Hash::check($dto->password, $user->password)) {
+        if (! Hash::check($dto->password, $user->password)) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_CREDENTIALS)
             );
@@ -68,21 +62,19 @@ final class StudentParentAuthService
     /**
      * Change student parent's password
      *
-     * @param ChangePasswordStudentParentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function changePassword(ChangePasswordStudentParentDto $dto): void
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_CREDENTIALS)
             );
         }
 
-        if (!Hash::check($dto->currentPassword, $user->password)) {
+        if (! Hash::check($dto->currentPassword, $user->password)) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_PASSWORD)
             );
@@ -94,15 +86,13 @@ final class StudentParentAuthService
     /**
      * Send password reset link to student parent's email
      *
-     * @param PasswordResetStudentParentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function sendPasswordResetLink(PasswordResetStudentParentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -116,15 +106,13 @@ final class StudentParentAuthService
     /**
      * Reset student parent's password
      *
-     * @param ResetPasswordStudentParentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function resetPassword(ResetPasswordStudentParentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -132,7 +120,7 @@ final class StudentParentAuthService
 
         $passwordReset = UserPasswordResetToken::findValidToken((string) $dto->email, $dto->token);
 
-        if (!$passwordReset) {
+        if (! $passwordReset) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_PASSWORD_RESET_TOKEN)
             );
@@ -145,9 +133,7 @@ final class StudentParentAuthService
     /**
      * Register a new student parent
      *
-     * @param RegisterStudentParentDto $dto
      * @throws AuthenticationException If registration fails
-     * @return User
      */
     public function register(RegisterStudentParentDto $dto): User
     {
@@ -168,15 +154,13 @@ final class StudentParentAuthService
     /**
      * Verify student parent's email
      *
-     * @param VerifyEmailStudentParentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function verifyEmail(VerifyEmailStudentParentDto $dto): void
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -188,7 +172,7 @@ final class StudentParentAuthService
             );
         }
 
-        if (!hash_equals($dto->hash, sha1($user->getEmailForVerification()))) {
+        if (! hash_equals($dto->hash, sha1($user->getEmailForVerification()))) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_EMAIL_VERIFICATION_LINK)
             );
@@ -201,15 +185,13 @@ final class StudentParentAuthService
     /**
      * Resend verification email to student parent
      *
-     * @param ResendVerificationEmailStudentParentDto $dto
      * @throws AuthenticationException
-     * @return void
      */
     public function resendVerificationEmail(ResendVerificationEmailStudentParentDto $dto): void
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Teacher\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class TeacherPasswordResetToken extends Model
 {
@@ -20,7 +20,7 @@ class TeacherPasswordResetToken extends Model
 
     public static function createToken(string $email): self
     {
-        $token = new self();
+        $token = new self;
         $token->email = $email;
         $token->plainToken = Str::random(60);
         $token->token = hash('sha256', $token->plainToken);

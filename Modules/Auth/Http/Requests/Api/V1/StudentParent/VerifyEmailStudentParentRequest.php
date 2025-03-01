@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\StudentParent;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\StudentParent\VerifyEmailStudentParentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 
 /**
  * @OA\Schema(
  *     schema="VerifyEmailStudentRequest",
  *     required={"id", "hash"},
+ *
  *     @OA\Property(
  *         property="id",
  *         type="integer",

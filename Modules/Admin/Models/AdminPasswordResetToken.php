@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class AdminPasswordResetToken extends Model
 {
-
     protected $table = 'admin_password_reset_tokens';
 
     protected $fillable = ['email', 'token'];

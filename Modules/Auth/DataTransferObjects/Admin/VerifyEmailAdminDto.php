@@ -19,7 +19,7 @@ final readonly class VerifyEmailAdminDto
             'adminId' => $this->adminId,
             'hash' => $this->hash,
             'signature' => $this->signature,
-            'expires' => $this->expires
+            'expires' => $this->expires,
         ];
     }
 

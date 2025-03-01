@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Student\ResendVerificationEmailStudentDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="ResendVerificationEmailStudentRequest",
  *     required={"email"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\User\Repositories;
 
-use Modules\User\Models\User;
 use Modules\Shared\ValueObjects\Email;
 use Modules\User\DataTransferObjects\CreateUserDto;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
+use Modules\User\Models\User;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
@@ -36,7 +36,7 @@ class EloquentUserRepository implements UserRepositoryInterface
     public function updatePassword(int $userId, string $password): void
     {
         $this->userModel->where('id', $userId)->update([
-            'password' => $password
+            'password' => $password,
         ]);
     }
 }

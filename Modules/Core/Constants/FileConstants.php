@@ -11,21 +11,31 @@ final class FileConstants
 {
     // Base units in bytes
     private const KB = 1024;
+
     private const MB = self::KB * 1024;
+
     private const GB = self::MB * 1024;
 
     // Maximum file sizes
     public const MAX_SIZE_1MB = self::MB;
+
     public const MAX_SIZE_2MB = self::MB * 2;
+
     public const MAX_SIZE_5MB = self::MB * 5;
+
     public const MAX_SIZE_10MB = self::MB * 10;
+
     public const MAX_SIZE_20MB = self::MB * 20;
+
     public const MAX_SIZE_50MB = self::MB * 50;
+
     public const MAX_SIZE_100MB = self::MB * 100;
 
     // Document file sizes
     public const MAX_SIZE_DOC_DEFAULT = self::MB * 10;
+
     public const MAX_SIZE_PDF = self::MB * 20;
+
     public const MAX_SIZE_PRESENTATION = self::MB * 50;
 
     /**
@@ -61,7 +71,8 @@ final class FileConstants
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
-        return round($bytes / (1024 ** $pow), $precision) . ' ' . $units[$pow];
+
+        return round($bytes / (1024 ** $pow), $precision).' '.$units[$pow];
     }
 
     /**

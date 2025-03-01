@@ -27,7 +27,7 @@ class AdminPasswordResetMail extends Mailable
      */
     public function build(): self
     {
-        $resetUrl = config('app.url') . '/reset-password?accessToken=' . $this->accessToken;
+        $resetUrl = config('app.url').'/reset-password?accessToken='.$this->accessToken;
 
         return $this->markdown('auth.emails.password-reset')
             ->subject(AuthMessageConstants::get(AuthMessageConstants::ADMIN_PASSWORD_RESET_EMAIL_SUBJECT))

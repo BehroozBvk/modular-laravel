@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Auth\DataTransferObjects\Admin\ResendVerificationEmailAdminDto;
-use Modules\Shared\ValueObjects\Email;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Admin\ResendVerificationEmailAdminDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
  *     schema="ResendVerificationEmailAdminRequest",
  *     required={"email"},
+ *
  *     @OA\Property(
  *         property="email",
  *         type="string",
@@ -30,7 +31,7 @@ final class ResendVerificationEmailAdminRequest extends BaseApiV1FormRequest
                 'required',
                 'string',
                 'email',
-                'exists:admins,email'
+                'exists:admins,email',
             ],
         ];
     }

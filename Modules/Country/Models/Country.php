@@ -2,8 +2,9 @@
 
 namespace Modules\Country\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 // use Modules\Country\Database\Factories\CountryFactory;
 
 class Country extends Model

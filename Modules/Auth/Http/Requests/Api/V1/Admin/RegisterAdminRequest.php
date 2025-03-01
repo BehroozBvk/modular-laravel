@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Admin;
 
-use OpenApi\Annotations as OA;
-use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Core\Rules\{StringRule, EmailRule, PasswordRule, RelationRule};
-use Modules\Shared\Rules\ImageRule;
-use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
+use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
+use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
+use Modules\Core\Rules\RelationRule;
+use Modules\Core\Rules\StringRule;
+use Modules\Shared\Rules\ImageRule;
 use Modules\Shared\ValueObjects\Email;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
  *     schema="RegisterAdminRequest",
  *     required={"name", "email", "password", "password_confirmation"},
+ *
  *     @OA\Property(
  *         property="name",
  *         type="string",
@@ -56,20 +58,20 @@ final class RegisterAdminRequest extends BaseApiV1FormRequest
                 'string',
                 'regex:/^[a-zA-Z\s]+$/',
                 'min:3',
-                'max:255'
+                'max:255',
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                'unique:admins,email'
+                'unique:admins,email',
             ],
             'password' => [
                 'required',
                 'string',
                 'min:8',
                 'max:255',
-                'confirmed'
+                'confirmed',
             ],
             'phone_number' => StringRule::phone(),
             'avatar' => ImageRule::avatar(),
