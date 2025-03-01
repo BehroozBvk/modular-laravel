@@ -16,4 +16,4 @@ class SendTeacherPasswordResetEmail implements ShouldQueue
         Mail::to($event->user->email)
             ->send(new TeacherPasswordResetMail($event->user, $event->token));
     }
-}   
+}

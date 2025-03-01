@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Modules\Auth\Http\Controllers\Api\V1\Student;
+namespace Modules\Auth\Http\Controllers\Api\V1\Admin;
 
 use Exception;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
-    Http\Requests\Api\V1\Student\RegisterStudentRequest,
-    Http\Resources\Api\V1\Student\RegisterStudentResource,
-    Services\Student\StudentAuthService,
+    Http\Requests\Api\V1\Admin\RegisterAdminRequest,
+    Http\Resources\Api\V1\Admin\RegisterAdminResource,
+    Services\Admin\AdminAuthService,
     Constants\Messages\AuthMessageConstants
 };
 
 /**
  * @OA\Post(
- *     path="/auth/student/register",
- *     tags={"Student Auth"},
- *     summary="Register a new student",
+ *     path="/auth/admin/register",
+ *     tags={"Admin Auth"},
+ *     summary="Register a new admin",
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/RegisterStudentRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/RegisterAdminRequest")
  *     ),
  *     @OA\Response(
  *         response=201,
- *         description="Student registered successfully",
+ *         description="Admin registered successfully",
  *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
  *     ),
  *     @OA\Response(
@@ -40,25 +40,25 @@ use Modules\Auth\{
  *     )
  * )
  */
-final class RegisterStudentController extends BaseApiV1Controller
+final class RegisterAdminController extends BaseApiV1Controller
 {
     public function __construct(
-        private readonly StudentAuthService $studentAuthService
+        private readonly AdminAuthService $adminAuthService
     ) {}
 
-    public function __invoke(RegisterStudentRequest $request)
+    public function __invoke(RegisterAdminRequest $request)
     {
         try {
-            $student = $this->studentAuthService->register($request->toDto());
+            $admin = $this->adminAuthService->register($request->toDto());
 
             return $this->successResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_REGISTERED),
+                message: AuthMessageConstants::get(AuthMessageConstants::ADMIN_REGISTERED),
                 statusCode: HttpStatusConstants::HTTP_201_CREATED,
-                data: new RegisterStudentResource($student)
+                data: new RegisterAdminResource($admin)
             );
         } catch (Exception $e) {
             return $this->errorResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_REGISTRATION_FAILED),
+                message: AuthMessageConstants::get(AuthMessageConstants::ADMIN_REGISTRATION_FAILED),
                 statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
             );
         }

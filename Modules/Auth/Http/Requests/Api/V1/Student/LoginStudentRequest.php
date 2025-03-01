@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Requests\Api\V1\Student;
 
+use Illuminate\Contracts\Validation\Rule;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
 use Modules\Auth\DataTransferObjects\Student\LoginStudentDto;
 use Modules\Shared\ValueObjects\Email;
@@ -31,7 +32,7 @@ final class LoginStudentRequest extends BaseApiV1FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
     public function rules(): array
     {

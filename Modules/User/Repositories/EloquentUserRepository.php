@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Modules\User\Repositories;
 
 use Modules\User\Models\User;
-use Modules\User\Enums\UserTypeEnum;
 use Modules\Shared\ValueObjects\Email;
-use Modules\Auth\DataTransferObjects\Student\RegisterStudentDto;
+use Modules\User\DataTransferObjects\CreateUserDto;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 
 class EloquentUserRepository implements UserRepositoryInterface
@@ -29,14 +28,9 @@ class EloquentUserRepository implements UserRepositoryInterface
         return $this->userModel->where('email', (string) $email)->first();
     }
 
-    public function create(RegisterStudentDto $dto): User
+    public function create(CreateUserDto $dto): User
     {
-        return $this->userModel->create([
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'password' => $dto->password,
-            'type' => UserTypeEnum::STUDENT->value,
-        ]);
+        return $this->userModel->create($dto->toArray());
     }
 
     public function updatePassword(int $userId, string $password): void

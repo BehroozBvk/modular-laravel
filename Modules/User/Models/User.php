@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\User\Database\Factories\UserFactory;
 use Modules\Shared\ValueObjects\Email;
+use Modules\User\Enums\UserTypeEnum;
 
 class User extends Authenticatable
 {
@@ -51,6 +52,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'type' => UserTypeEnum::class,
         ];
     }
 
@@ -75,7 +78,29 @@ class User extends Authenticatable
         );
     }
 
-    // password Attribute to hash it before insert 
+    /**
+     * Check if the user is a teacher.
+     */
+    public function isTeacher(): bool
+    {
+        return $this->type === UserTypeEnum::TEACHER;
+    }
+
+    /**
+     * Check if the user is a student.
+     */
+    public function isStudent(): bool
+    {
+        return $this->type === UserTypeEnum::STUDENT;
+    }
+
+    /**
+     * Check if the user is a parent.
+     */
+    public function isParent(): bool
+    {
+        return $this->type === UserTypeEnum::STUDENT_PARENT;
+    }
 
     public static function newFactory(): UserFactory
     {

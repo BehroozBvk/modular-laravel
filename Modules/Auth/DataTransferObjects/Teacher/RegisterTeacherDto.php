@@ -7,12 +7,12 @@ namespace Modules\Auth\DataTransferObjects\Teacher;
 use Modules\Shared\ValueObjects\Email;
 use Modules\User\Enums\UserTypeEnum;
 
-final class RegisterTeacherDto
+final readonly class RegisterTeacherDto
 {
     public function __construct(
-        public readonly string $name,
-        public readonly Email $email,
-        public readonly string $password,
+        public string $name,
+        public Email $email,
+        public string $password,
         public readonly ?string $phoneNumber = null,
         public readonly ?string $firstName = null,
         public readonly ?string $lastName = null,
@@ -24,7 +24,7 @@ final class RegisterTeacherDto
     {
         return [
             'name' => $this->name,
-            'email' => $this->email->__toString(),
+            'email' => (string) $this->email,
             'password' => $this->password,
             'phone_number' => $this->phoneNumber,
             'first_name' => $this->firstName,

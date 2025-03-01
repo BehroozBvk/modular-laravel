@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Auth\Http\Controllers\Api\V1\Teacher;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Auth\{
@@ -45,7 +46,7 @@ final class ForgotPasswordTeacherController extends BaseApiV1Controller
         private readonly TeacherAuthService $teacherAuthService
     ) {}
 
-    public function __invoke(ForgotPasswordTeacherRequest $request)
+    public function __invoke(ForgotPasswordTeacherRequest $request): JsonResponse
     {
         try {
             $this->teacherAuthService->sendPasswordResetLink($request->toDto());

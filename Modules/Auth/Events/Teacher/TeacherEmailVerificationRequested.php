@@ -6,10 +6,9 @@ namespace Modules\Auth\Events\Teacher;
 
 use Modules\User\Models\User;
 
-final readonly class TeacherPasswordResetRequested
+final readonly class TeacherEmailVerificationRequested
 {
     public function __construct(
-        public User $user,
-        public string $token
+        public User $teacher
     ) {}
 }
