@@ -4,35 +4,37 @@ declare(strict_types=1);
 
 namespace Modules\Auth\DataTransferObjects\StudentParent;
 
+use Modules\User\DataTransferObjects\CreateUserDto;
 use Modules\Shared\ValueObjects\Email;
 use Modules\User\Enums\UserTypeEnum;
 
-final class RegisterStudentParentDto
+final class RegisterStudentParentDto extends CreateUserDto
 {
     public function __construct(
-        public readonly string $name,
-        public readonly Email $email,
-        public readonly string $password,
+        string $name,
+        Email $email,
+        string $password,
         public readonly ?string $phoneNumber = null,
         public readonly ?string $firstName = null,
         public readonly ?string $lastName = null,
         public readonly ?string $avatar = null,
-        public readonly ?int $countryId = null,
-    ) {}
+        public readonly ?int $countryId = null
+    ) {
+        parent::__construct($name, $email, $password, UserTypeEnum::STUDENT_PARENT);
+    }
 
     public function toArray(): array
     {
-        return [
-            'name' => $this->name,
-            'email' => $this->email->__toString(),
-            'password' => $this->password,
-            'phone_number' => $this->phoneNumber,
-            'first_name' => $this->firstName,
-            'last_name' => $this->lastName,
-            'avatar' => $this->avatar,
-            'country_id' => $this->countryId,
-            'type' => UserTypeEnum::STUDENT->value,
-        ];
+        return array_merge(
+            parent::toArray(),
+            array_filter([
+                'phone_number' => $this->phoneNumber,
+                'first_name' => $this->firstName,
+                'last_name' => $this->lastName,
+                'avatar' => $this->avatar,
+                'country_id' => $this->countryId,
+            ])
+        );
     }
 
     public static function fromArray(array $data): self
