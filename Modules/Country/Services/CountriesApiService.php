@@ -56,6 +56,7 @@ final class CountriesApiService
      */
     public function getChunkSize(): int
     {
-        return $this->  ->chunkSize;
+        
+        return $this->config->chunkSize;
     }
 }

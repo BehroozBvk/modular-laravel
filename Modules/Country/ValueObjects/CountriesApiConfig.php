@@ -27,7 +27,7 @@ final readonly class CountriesApiConfig
      */
     public static function fromConfig(): self
     {
-        $config = Config::get('country.name');
+        $config = Config::get('country.api');
 
         if (! is_array($config)) {
             throw new InvalidArgumentException('Countries API configuration is missing');

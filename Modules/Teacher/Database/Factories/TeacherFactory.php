@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace Modules\Teacher\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use Modules\Country\Models\Country;
 use Modules\Teacher\Models\Teacher;
+use Modules\User\Enums\UserTypeEnum;
+use Modules\User\Models\User;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Teacher\Models\Teacher>
+ * @extends Factory<Teacher>
  */
 class TeacherFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
     protected $model = Teacher::class;
 
     /**
@@ -28,7 +25,17 @@ class TeacherFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->streetAddress(),
+            'city' => fake()->city(),
+            'state' => fake()->state(),
+            'zip' => fake()->postcode(),
+            'country_id' => Country::factory(),
+            'user_id' => User::factory()->state([
+                'type' => UserTypeEnum::TEACHER,
+            ]),
         ];
     }
 }

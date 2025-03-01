@@ -28,6 +28,8 @@ class CountryFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'code' => fake()->countryCode(),
+            'flag' => fake()->countryCode(),
         ];
     }
 }

@@ -69,7 +69,7 @@ abstract class BaseApiController extends Controller
             message: $message,
             statusCode: $statusCode,
             data: [
-                'data' => $paginator->items(),
+                'items' => $paginator->items(),
                 'meta' => [
                     'current_page' => $paginator->currentPage(),
                     'from' => $paginator->firstItem(),
