@@ -18,13 +18,19 @@ use Modules\Auth\Events\Teacher\TeacherEmailVerified;
 use Modules\Auth\Events\Teacher\TeacherPasswordResetRequested;
 use Modules\Core\Exceptions\AuthenticationException;
 use Modules\User\Enums\UserTypeEnum;
+use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 use Modules\User\Models\User;
+use Modules\User\Models\UserPasswordResetToken;
 
 /**
  * Service for handling teacher authentication
  */
 final class TeacherAuthService
 {
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository
+    ) {}
+
     /**
      * Register a new teacher
      *
@@ -33,16 +39,18 @@ final class TeacherAuthService
      */
     public function register(RegisterTeacherDto $dto): User
     {
-        $teacher = User::create([
-            'name' => $dto->name,
-            'email' => $dto->email,
-            'password' => $dto->password,
-            'type' => UserTypeEnum::TEACHER,
-        ]);
+        $existingUser = $this->userRepository->findByEmail($dto->email);
 
-        event(new TeacherEmailVerificationRequested($teacher));
+        if ($existingUser) {
+            throw new AuthenticationException(
+                AuthMessageConstants::get(AuthMessageConstants::TEACHER_ALREADY_REGISTERED)
+            );
+        }
 
-        return $teacher;
+        $user = $this->userRepository->create($dto);
+        event(new TeacherEmailVerificationRequested($user));
+
+        return $user;
     }
 
     /**
@@ -55,23 +63,21 @@ final class TeacherAuthService
      */
     public function login(LoginTeacherDto $dto): PersonalAccessTokenResult
     {
-        $teacher = User::where('email', (string) $dto->email)
-            ->where('type', UserTypeEnum::TEACHER->value)
-            ->first();
+        $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $teacher) {
+        if (! $user || $user->type !== UserTypeEnum::TEACHER) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_INVALID_CREDENTIALS)
             );
         }
 
-        if (! Hash::check($dto->password, $teacher->password)) {
+        if (! Hash::check($dto->password, $user->password)) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_INVALID_CREDENTIALS)
             );
         }
 
-        return $teacher->createToken('teacher-access-token');
+        return $user->createToken('teacher-access-token');
     }
 
     /**
@@ -81,19 +87,17 @@ final class TeacherAuthService
      */
     public function sendPasswordResetLink(PasswordResetTeacherDto $dto): void
     {
-        $teacher = User::where('email', (string) $dto->email)
-            ->where('type', UserTypeEnum::TEACHER->value)
-            ->first();
+        $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $teacher) {
+        if (! $user || $user->type !== UserTypeEnum::TEACHER) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_NOT_FOUND)
             );
         }
 
-        $token = app('auth.password.broker')->createToken($teacher);
+        $passwordReset = UserPasswordResetToken::createToken((string) $dto->email);
 
-        event(new TeacherPasswordResetRequested($teacher, $token));
+        event(new TeacherPasswordResetRequested($user, $passwordReset->plainToken));
     }
 
     /**
@@ -105,33 +109,24 @@ final class TeacherAuthService
      */
     public function resetPassword(ResetPasswordTeacherDto $dto): void
     {
-        $teacher = User::where('email', (string) $dto->email)
-            ->where('type', UserTypeEnum::TEACHER->value)
-            ->first();
+        $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $teacher) {
+        if (! $user || $user->type !== UserTypeEnum::TEACHER) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_NOT_FOUND)
             );
         }
 
-        $status = app('auth.password.broker')->reset(
-            [
-                'email' => (string) $dto->email,
-                'password' => $dto->password,
-                'token' => $dto->token,
-            ],
-            function (User $user, string $password) {
-                $user->password = $password;
-                $user->save();
-            }
-        );
+        $passwordReset = UserPasswordResetToken::findValidToken((string) $dto->email, $dto->token);
 
-        if ($status !== 'passwords.reset') {
+        if (! $passwordReset) {
             throw new AuthenticationException(
-                AuthMessageConstants::get(AuthMessageConstants::TEACHER_INVALID_TOKEN)
+                AuthMessageConstants::get(AuthMessageConstants::TEACHER_INVALID_PASSWORD_RESET_TOKEN)
             );
         }
+
+        $this->userRepository->updatePassword($user->id, $dto->password);
+        $passwordReset->delete();
     }
 
     /**
@@ -141,23 +136,21 @@ final class TeacherAuthService
      */
     public function resendVerificationEmail(ResendVerificationEmailTeacherDto $dto): void
     {
-        $teacher = User::where('email', (string) $dto->email)
-            ->where('type', UserTypeEnum::TEACHER->value)
-            ->first();
+        $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $teacher) {
+        if (! $user || $user->type !== UserTypeEnum::TEACHER) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_NOT_FOUND)
             );
         }
 
-        if ($teacher->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_EMAIL_ALREADY_VERIFIED)
             );
         }
 
-        event(new TeacherEmailVerificationRequested($teacher));
+        event(new TeacherEmailVerificationRequested($user));
     }
 
     /**
@@ -169,30 +162,27 @@ final class TeacherAuthService
      */
     public function verifyEmail(VerifyEmailTeacherDto $dto): void
     {
-        $teacher = User::where('id', $dto->id)
-            ->where('type', UserTypeEnum::TEACHER->value)
-            ->first();
+        $user = $this->userRepository->findById($dto->id);
 
-        if (! $teacher) {
+        if (! $user || $user->type !== UserTypeEnum::TEACHER) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_NOT_FOUND)
             );
         }
 
-        if ($teacher->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_EMAIL_ALREADY_VERIFIED)
             );
         }
 
-        if (! hash_equals($dto->hash, sha1($teacher->getEmailForVerification()))) {
+        if (! hash_equals($dto->hash, sha1($user->getEmailForVerification()))) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::TEACHER_INVALID_EMAIL_VERIFICATION_LINK)
             );
         }
 
-        $teacher->markEmailAsVerified();
-
-        event(new TeacherEmailVerified($teacher));
+        $user->markEmailAsVerified();
+        event(new TeacherEmailVerified($user));
     }
 }

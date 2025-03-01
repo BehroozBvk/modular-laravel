@@ -33,10 +33,28 @@ final class StudentAuthService
     ) {}
 
     /**
-     * Authenticate a student and generate access token
+     * Register a new student
      *
-     * @param  LoginStudentDto  $dto  Login credentials
-     * @return PersonalAccessTokenResult Generated access token
+     * @throws AuthenticationException If registration fails
+     */
+    public function register(RegisterStudentDto $dto): User
+    {
+        $existingUser = $this->userRepository->findByEmail($dto->email);
+
+        if ($existingUser) {
+            throw new AuthenticationException(
+                AuthMessageConstants::get(AuthMessageConstants::STUDENT_ALREADY_REGISTERED)
+            );
+        }
+
+        $user = $this->userRepository->create($dto);
+        event(new StudentEmailVerificationRequested($user));
+
+        return $user;
+    }
+
+    /**
+     * Authenticate a student and generate access token
      *
      * @throws AuthenticationException If credentials are invalid
      */
@@ -44,7 +62,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_CREDENTIALS)
             );
@@ -68,7 +86,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_INVALID_CREDENTIALS)
             );
@@ -80,7 +98,7 @@ final class StudentAuthService
             );
         }
 
-        $this->userRepository->updatePassword($dto->userId, $dto->newPassword);
+        $this->userRepository->updatePassword($user->id, $dto->newPassword);
     }
 
     /**
@@ -92,7 +110,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -112,7 +130,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -131,27 +149,6 @@ final class StudentAuthService
     }
 
     /**
-     * Register a new student
-     *
-     * @throws AuthenticationException If registration fails
-     */
-    public function register(RegisterStudentDto $dto): User
-    {
-        $existingUser = $this->userRepository->findByEmail($dto->email);
-
-        if ($existingUser) {
-            throw new AuthenticationException(
-                AuthMessageConstants::get(AuthMessageConstants::STUDENT_ALREADY_REGISTERED)
-            );
-        }
-
-        $user = $this->userRepository->create($dto);
-        event(new StudentEmailVerificationRequested($user));
-
-        return $user;
-    }
-
-    /**
      * Verify student's email
      *
      * @throws AuthenticationException
@@ -160,7 +157,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );
@@ -191,7 +188,7 @@ final class StudentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_NOT_FOUND)
             );

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('student_parents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('phone');
@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('city');
             $table->string('state');
             $table->string('zip');
-            $table->foreignId('student_parent_id')->constrained('student_parents');
+            $table->foreignId('country_id')->constrained('countries');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('student_parents');
     }
 };

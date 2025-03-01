@@ -85,6 +85,8 @@ final class AuthMessageConstants
 
     public const ADMIN_INVALID_PASSWORD_RESET_TOKEN = 'auth::messages.admin.invalid_password_reset_token';
 
+    public const TEACHER_INVALID_PASSWORD_RESET_TOKEN = 'auth::messages.teacher.invalid_password_reset_token';
+
     // Student Parent Error Messages
     public const STUDENT_PARENT_INVALID_CREDENTIALS = 'auth::messages.student_parent.invalid_credentials';
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Modules\Core\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Core\Constants\Messages\CoreMessageConstants;
 use Modules\Core\Helpers\ApiResponse;
@@ -34,6 +36,52 @@ use OpenApi\Annotations as OA;
  */
 abstract class BaseApiController extends Controller
 {
+    public function __construct(private readonly Request $request) {}
+
+    /**
+     * Returns a paginated response
+     *
+     * @template T
+     *
+     * @param  LengthAwarePaginator<T>  $paginator
+     * @return JsonResponse<array{
+     *     success: true,
+     *     message: string,
+     *     data: array<int, T>,
+     *     meta: array{
+     *         current_page: int,
+     *         from: int|null,
+     *         last_page: int,
+     *         per_page: int,
+     *         to: int|null,
+     *         total: int,
+     *     },
+     *     status_code: int,
+     *     timestamp: string
+     * }>
+     */
+    protected function paginatedResponse(
+        LengthAwarePaginator $paginator,
+        ?string $message = null,
+        int $statusCode = HttpStatusConstants::HTTP_200_OK,
+    ): JsonResponse {
+        return $this->successResponse(
+            message: $message,
+            statusCode: $statusCode,
+            data: [
+                'data' => $paginator->items(),
+                'meta' => [
+                    'current_page' => $paginator->currentPage(),
+                    'from' => $paginator->firstItem(),
+                    'last_page' => $paginator->lastPage(),
+                    'per_page' => $paginator->perPage(),
+                    'to' => $paginator->lastItem(),
+                    'total' => $paginator->total(),
+                ],
+            ],
+        );
+    }
+
     /**
      * Returns a success response with optional data
      *

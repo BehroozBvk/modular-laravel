@@ -33,10 +33,28 @@ final class StudentParentAuthService
     ) {}
 
     /**
-     * Authenticate a student parent and generate access token
+     * Register a new student parent
      *
-     * @param  LoginStudentParentDto  $dto  Login credentials
-     * @return PersonalAccessTokenResult Generated access token
+     * @throws AuthenticationException If registration fails
+     */
+    public function register(RegisterStudentParentDto $dto): User
+    {
+        $existingUser = $this->userRepository->findByEmail($dto->email);
+
+        if ($existingUser) {
+            throw new AuthenticationException(
+                AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_ALREADY_REGISTERED)
+            );
+        }
+
+        $user = $this->userRepository->create($dto);
+        event(new StudentParentEmailVerificationRequested($user));
+
+        return $user;
+    }
+
+    /**
+     * Authenticate a student parent and generate access token
      *
      * @throws AuthenticationException If credentials are invalid
      */
@@ -44,7 +62,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_CREDENTIALS)
             );
@@ -68,7 +86,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_INVALID_CREDENTIALS)
             );
@@ -80,7 +98,7 @@ final class StudentParentAuthService
             );
         }
 
-        $this->userRepository->updatePassword($dto->userId, $dto->newPassword);
+        $this->userRepository->updatePassword($user->id, $dto->newPassword);
     }
 
     /**
@@ -92,7 +110,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -112,7 +130,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -131,27 +149,6 @@ final class StudentParentAuthService
     }
 
     /**
-     * Register a new student parent
-     *
-     * @throws AuthenticationException If registration fails
-     */
-    public function register(RegisterStudentParentDto $dto): User
-    {
-        $existingUser = $this->userRepository->findByEmail($dto->email);
-
-        if ($existingUser) {
-            throw new AuthenticationException(
-                AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_ALREADY_REGISTERED)
-            );
-        }
-
-        $user = $this->userRepository->create($dto);
-        event(new StudentParentEmailVerificationRequested($user));
-
-        return $user;
-    }
-
-    /**
      * Verify student parent's email
      *
      * @throws AuthenticationException
@@ -160,7 +157,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findById($dto->userId);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );
@@ -191,7 +188,7 @@ final class StudentParentAuthService
     {
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT->value) {
+        if (! $user || $user->type !== UserTypeEnum::STUDENT_PARENT) {
             throw new AuthenticationException(
                 AuthMessageConstants::get(AuthMessageConstants::STUDENT_PARENT_NOT_FOUND)
             );

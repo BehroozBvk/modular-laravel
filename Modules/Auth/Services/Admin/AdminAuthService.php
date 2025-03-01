@@ -32,10 +32,28 @@ final class AdminAuthService
     ) {}
 
     /**
-     * Authenticate an admin and generate access token
+     * Register a new admin
      *
-     * @param  LoginAdminDto  $dto  Login credentials
-     * @return PersonalAccessTokenResult Generated access token
+     * @throws AuthenticationException If registration fails
+     */
+    public function register(RegisterAdminDto $dto): Admin
+    {
+        $existingAdmin = $this->adminRepository->findByEmail($dto->email);
+
+        if ($existingAdmin) {
+            throw new AuthenticationException(
+                AuthMessageConstants::get(AuthMessageConstants::ADMIN_ALREADY_REGISTERED)
+            );
+        }
+
+        $admin = $this->adminRepository->create($dto);
+        event(new AdminEmailVerificationRequested($admin));
+
+        return $admin;
+    }
+
+    /**
+     * Authenticate an admin and generate access token
      *
      * @throws AuthenticationException If credentials are invalid
      */
@@ -79,7 +97,7 @@ final class AdminAuthService
             );
         }
 
-        $this->adminRepository->updatePassword($dto->adminId, $dto->newPassword);
+        $this->adminRepository->updatePassword($admin->id, $dto->newPassword);
     }
 
     /**
@@ -127,27 +145,6 @@ final class AdminAuthService
 
         $this->adminRepository->updatePassword($admin->id, $dto->password);
         $passwordReset->delete();
-    }
-
-    /**
-     * Register a new admin
-     *
-     * @throws AuthenticationException If registration fails
-     */
-    public function register(RegisterAdminDto $dto): Admin
-    {
-        $existingAdmin = $this->adminRepository->findByEmail($dto->email);
-
-        if ($existingAdmin) {
-            throw new AuthenticationException(
-                AuthMessageConstants::get(AuthMessageConstants::ADMIN_ALREADY_REGISTERED)
-            );
-        }
-
-        $admin = $this->adminRepository->create($dto);
-        event(new AdminEmailVerificationRequested($admin));
-
-        return $admin;
     }
 
     /**
