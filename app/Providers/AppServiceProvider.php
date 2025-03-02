@@ -17,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (! $this->app->environment('production')) {
+        if ($this->app->environment('local', 'testing')) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
             $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
         }
     }
@@ -27,15 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
-
-        Passport::hashClientSecrets();
-
-        Passport::tokensExpireIn(now()->addDays(15));
-
-        Passport::refreshTokensExpireIn(now()->addDays(30));
-
-        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+        $this->configurePassport();
 
         JsonResource::withoutWrapping();
 
@@ -43,6 +37,26 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureModels();
         $this->configureCommands();
+    }
+
+    /**
+     * Configure Laravel Passport
+     */
+    private function configurePassport(): void
+    {
+        // Use storage path for testing environment
+        if ($this->app->environment('testing')) {
+            Passport::loadKeysFrom(storage_path('test/oauth'));
+        } else {
+            Passport::loadKeysFrom(storage_path('app/oauth'));
+        }
+
+        Passport::hashClientSecrets();
+        // Passport::routes();
+
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 
     protected function registerPolicies() {}

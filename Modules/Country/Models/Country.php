@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\StudentParent\Models\StudentParent;
 use Modules\Teacher\Models\Teacher;
 use Modules\Country\Database\Factories\CountryFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Country extends Model
 {
@@ -37,5 +38,18 @@ class Country extends Model
     public function studentParents(): HasMany
     {
         return $this->hasMany(StudentParent::class);
+    }
+
+    /**
+     * Accessor for the flag attribute.
+     *
+     * @return Attribute<string, string>
+     */
+    public function flag(): Attribute
+    {
+        return Attribute::make(
+            get: static fn(?string $value): ?string => $value ? url('storage/' . $value) : null,
+            set: static fn(?string $value): ?string => $value,
+        );
     }
 }

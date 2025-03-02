@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Events\Teacher;
 
-use Modules\User\Models\User;
+use Modules\Teacher\Models\Teacher;
 
 final readonly class TeacherEmailVerificationRequested
 {
     public function __construct(
-        public User $teacher
+        public Teacher $teacher
     ) {}
 }

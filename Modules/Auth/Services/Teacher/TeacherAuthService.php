@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Services\Teacher;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
@@ -17,9 +18,9 @@ use Modules\Auth\Events\Teacher\TeacherEmailVerificationRequested;
 use Modules\Auth\Events\Teacher\TeacherEmailVerified;
 use Modules\Auth\Events\Teacher\TeacherPasswordResetRequested;
 use Modules\Core\Exceptions\AuthenticationException;
+use Modules\Teacher\Models\Teacher;
 use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
-use Modules\User\Models\User;
 use Modules\User\Models\UserPasswordResetToken;
 
 /**
@@ -34,10 +35,11 @@ final class TeacherAuthService
     /**
      * Register a new teacher
      *
-     * @param  RegisterTeacherDto  $dto  Registration data
-     * @return User The created teacher
+     * @param RegisterTeacherDto $dto Registration data
+     * @return Teacher The created teacher
+     * @throws AuthenticationException
      */
-    public function register(RegisterTeacherDto $dto): User
+    public function register(RegisterTeacherDto $dto): Teacher
     {
         $existingUser = $this->userRepository->findByEmail($dto->email);
 
@@ -47,10 +49,22 @@ final class TeacherAuthService
             );
         }
 
-        $user = $this->userRepository->create($dto);
-        event(new TeacherEmailVerificationRequested($user));
+        return DB::transaction(function () use ($dto) {
+            // Create user with CreateUserDto
+            $user = $this->userRepository->create($dto->toCreateUserDto());
 
-        return $user;
+            // Create teacher with teacher-specific data
+            $teacher = Teacher::create(array_merge(
+                $dto->toTeacherArray(),
+                ['user_id' => $user->id]
+            ));
+
+            $teacher->load(['user', 'country']);
+
+            event(new TeacherEmailVerificationRequested($teacher));
+
+            return $teacher;
+        });
     }
 
     /**
@@ -150,7 +164,9 @@ final class TeacherAuthService
             );
         }
 
-        event(new TeacherEmailVerificationRequested($user));
+        $teacher = Teacher::where('user_id', $user->id)->firstOrFail();
+        $teacher->load('user');
+        event(new TeacherEmailVerificationRequested($teacher));
     }
 
     /**

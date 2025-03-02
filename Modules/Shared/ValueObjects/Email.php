@@ -11,7 +11,7 @@ use InvalidArgumentException;
  */
 final class Email
 {
-    private string $email;
+    public readonly string $email;
 
     /**
      * @throws InvalidArgumentException If the email is invalid
