@@ -5,7 +5,8 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\About\\Providers\\AboutServiceProvider"
+        "Modules\\About\\Providers\\AboutServiceProvider",
+        "Modules\\About\\Providers\\RepositoryBindingServiceProvider"
     ],
     "files": []
 }

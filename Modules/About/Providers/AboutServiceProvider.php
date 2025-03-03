@@ -4,6 +4,16 @@ namespace Modules\About\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\About\Interfaces\Repositories\AboutIntroRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutPartnerRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutSectionRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutTeamMemberRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
+use Modules\About\Services\AboutIntroService;
+use Modules\About\Services\AboutSectionService;
+use Modules\About\Services\AboutTeamService;
+use Modules\About\Services\AboutPartnerService;
+use Modules\About\Services\AboutService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -36,33 +46,38 @@ class AboutServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(RepositoryBindingServiceProvider::class);
+
+        // Register the AboutService in the container
+        $this->app->singleton(AboutService::class, function ($app) {
+            return new AboutService(
+                $app->make(AboutIntroRepositoryInterface::class),
+                $app->make(AboutSectionRepositoryInterface::class),
+                $app->make(AboutTeamSettingRepositoryInterface::class),
+                $app->make(AboutTeamMemberRepositoryInterface::class),
+                $app->make(AboutPartnerRepositoryInterface::class)
+            );
+        });
+
+        $this->registerConfig();
     }
 
     /**
      * Register commands in the format of Command::class
      */
-    protected function registerCommands(): void
-    {
-        // $this->commands([]);
-    }
+    protected function registerCommands(): void {}
 
     /**
      * Register command Schedules.
      */
-    protected function registerCommandSchedules(): void
-    {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
-    }
+    protected function registerCommandSchedules(): void {}
 
     /**
      * Register translations.
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -102,10 +117,10 @@ class AboutServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'Resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
@@ -125,8 +140,8 @@ class AboutServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

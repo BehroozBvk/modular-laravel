@@ -6,8 +6,17 @@ use Illuminate\Database\Seeder;
 
 class AboutDatabaseSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            AboutIntroSeeder::class,
+            AboutSectionSeeder::class,
+            AboutTeamSettingSeeder::class,
+            AboutTeamMemberSeeder::class,
+            AboutPartnerSeeder::class,
+        ]);
     }
 }
