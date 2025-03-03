@@ -4,7 +4,11 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Auth\Events\Teacher\TeacherEmailVerificationRequested;
+use Modules\Auth\Events\Teacher\TeacherEmailVerified;
+use Modules\Auth\Events\Teacher\TeacherPasswordResetRequested;
+use Modules\Auth\Listeners\Teacher\SendTeacherPasswordResetEmail;
 use Modules\Auth\Listeners\Teacher\TeacherEmailVerificationRequestedListener;
+use Modules\Auth\Listeners\Teacher\TeacherEmailVerifiedListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -16,6 +20,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         TeacherEmailVerificationRequested::class => [
             TeacherEmailVerificationRequestedListener::class,
+        ],
+        TeacherEmailVerified::class => [
+            TeacherEmailVerifiedListener::class,
+        ],
+        TeacherPasswordResetRequested::class => [
+            SendTeacherPasswordResetEmail::class,
         ],
     ];
 

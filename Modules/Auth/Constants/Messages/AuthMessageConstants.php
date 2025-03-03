@@ -234,6 +234,7 @@ final class AuthMessageConstants
     public const ATTRIBUTE_COUNTRY_ID = 'auth::messages.attributes.country_id';
     public const ATTRIBUTE_FIRST_NAME = 'auth::messages.attributes.first_name';
     public const ATTRIBUTE_LAST_NAME = 'auth::messages.attributes.last_name';
+    public const ATTRIBUTE_STUDENT_PARENT_ID = 'auth::messages.attributes.student_parent_id';
     public const ATTRIBUTE_ID = 'auth::messages.attributes.id';
     public const ATTRIBUTE_HASH = 'auth::messages.attributes.hash';
     public const ATTRIBUTE_SIGNATURE = 'auth::messages.attributes.signature';

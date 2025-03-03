@@ -10,11 +10,6 @@ use Modules\Admin\Models\Admin;
 
 final class RegisterAdminResource extends JsonResource
 {
-    public function __construct(Admin $resource)
-    {
-        parent::__construct($resource);
-    }
-
     public function toArray(Request $request): array
     {
         /** @var Admin $this */

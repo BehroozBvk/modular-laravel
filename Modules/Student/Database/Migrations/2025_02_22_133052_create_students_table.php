@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('state');
             $table->string('zip');
             $table->foreignId('student_parent_id')->constrained('student_parents');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->timestamps();
         });
     }

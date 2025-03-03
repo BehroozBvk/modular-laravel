@@ -24,6 +24,8 @@ class Student extends Model
         'zip',
         'student_parent_id',
         'user_id',
+        'first_name',
+        'last_name',
     ];
 
     public function user(): BelongsTo

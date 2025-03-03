@@ -64,7 +64,7 @@ final class RegisterStudentController extends BaseApiV1Controller
             );
         } catch (Exception $e) {
             return $this->errorResponse(
-                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_REGISTRATION_FAILED),
+                message: AuthMessageConstants::get(AuthMessageConstants::STUDENT_REGISTRATION_FAILED) . ' ' . $e->getMessage(),
                 statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
             );
         }

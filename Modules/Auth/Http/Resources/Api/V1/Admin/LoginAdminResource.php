@@ -10,11 +10,6 @@ use Laravel\Passport\PersonalAccessTokenResult;
 
 final class LoginAdminResource extends JsonResource
 {
-    public function __construct(PersonalAccessTokenResult $resource)
-    {
-        parent::__construct($resource);
-    }
-
     public function toArray(Request $request): array
     {
         /** @var PersonalAccessTokenResult $this */

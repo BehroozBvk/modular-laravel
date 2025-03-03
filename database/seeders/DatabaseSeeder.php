@@ -13,9 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Run Passport seeder to ensure OAuth clients are available
         $this->call(PassportSeeder::class);
-
-        // Add other seeders here
     }
 }

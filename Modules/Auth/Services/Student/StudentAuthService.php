@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Auth\Services\Student;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 use Modules\Auth\DataTransferObjects\Student\ChangePasswordStudentDto;
@@ -22,6 +23,7 @@ use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 use Modules\User\Models\User;
 use Modules\User\Models\UserPasswordResetToken;
+use Modules\Student\Models\Student;
 
 /**
  * Service for handling student authentication
@@ -37,7 +39,7 @@ final class StudentAuthService
      *
      * @throws AuthenticationException If registration fails
      */
-    public function register(RegisterStudentDto $dto): User
+    public function register(RegisterStudentDto $dto): Student
     {
         $existingUser = $this->userRepository->findByEmail($dto->email);
 
@@ -47,10 +49,20 @@ final class StudentAuthService
             );
         }
 
-        $user = $this->userRepository->create($dto);
-        event(new StudentEmailVerificationRequested($user));
+        return DB::transaction(function () use ($dto) {
+            $user = $this->userRepository->create($dto->toCreateUserDto());
 
-        return $user;
+            $studentData = array_merge(
+                $dto->toStudentArray(),
+                ['user_id' => $user->id]
+            );
+
+            $student = Student::create($studentData);
+
+            event(new StudentEmailVerificationRequested($user));
+
+            return $student;
+        });
     }
 
     /**

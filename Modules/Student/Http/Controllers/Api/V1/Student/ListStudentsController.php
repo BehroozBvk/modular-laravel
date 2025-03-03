@@ -9,6 +9,10 @@ use Illuminate\Http\JsonResponse;
 
 class ListStudentsController extends Controller
 {
+    public function __construct(
+        private readonly StudentService $studentService
+    ) {}
+
     public function __invoke(): JsonResponse
     {
         return response()->json(['message' => 'Students!']);

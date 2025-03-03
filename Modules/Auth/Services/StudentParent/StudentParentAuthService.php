@@ -39,7 +39,7 @@ final class StudentParentAuthService
      *
      * @throws AuthenticationException If registration fails
      */
-    public function register(RegisterStudentParentDto $dto): User
+    public function register(RegisterStudentParentDto $dto): StudentParent
     {
         $existingUser = $this->userRepository->findByEmail($dto->email);
 
@@ -57,11 +57,11 @@ final class StudentParentAuthService
                 ['user_id' => $user->id]
             );
 
-            StudentParent::create($parentData);
+            $studentParent = StudentParent::create($parentData);
 
             event(new StudentParentEmailVerificationRequested($user));
 
-            return $user;
+            return $studentParent;
         });
     }
 

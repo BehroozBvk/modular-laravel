@@ -40,15 +40,19 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'name' => StringRule::name(),
             'email' => EmailRule::default(unique: true),
             'password' => PasswordRule::default(confirmed: true),
             'password_confirmation' => PasswordRule::confirmation(),
+            'student_parent_id' => ['required', 'integer', 'exists:student_parents,id'],
             'phone_number' => StringRule::phone(),
             'avatar' => ImageRule::avatar(),
             'country_id' => RelationRule::belongsTo('countries', required: false),
             'first_name' => StringRule::default(required: false),
             'last_name' => StringRule::default(required: false),
+            'address' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'state' => ['nullable', 'string', 'max:255'],
+            'zip' => ['nullable', 'string', 'max:20'],
         ];
     }
 
@@ -60,8 +64,6 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REQUIRED),
-            'name.regex' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REGEX),
             'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
             'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
             'email.unique' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_UNIQUE),
@@ -95,6 +97,11 @@ final class RegisterStudentRequest extends BaseApiV1FormRequest
             'country_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_COUNTRY_ID),
             'first_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_FIRST_NAME),
             'last_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_LAST_NAME),
+            'student_parent_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_STUDENT_PARENT_ID),
+            'address' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_ADDRESS),
+            'city' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_CITY),
+            'state' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_STATE),
+            'zip' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_ZIP),
         ];
     }
 
