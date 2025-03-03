@@ -4,8 +4,10 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Auth\Providers\Admin\AdminEventServiceProvider;
 use Modules\Auth\Providers\Student\StudentEventServiceProvider;
 use Modules\Auth\Providers\StudentParent\StudentParentEventServiceProvider;
+use Modules\Auth\Providers\Teacher\TeacherEventServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -40,6 +42,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(StudentEventServiceProvider::class);
         $this->app->register(StudentParentEventServiceProvider::class);
+        $this->app->register(TeacherEventServiceProvider::class);
+        $this->app->register(AdminEventServiceProvider::class);
     }
 
     /**

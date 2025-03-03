@@ -20,8 +20,6 @@ class StudentEventServiceProvider extends EventServiceProvider
         StudentEmailVerificationRequested::class => [
             SendStudentVerificationEmail::class,
         ],
-        StudentEmailVerified::class => [
-            // Future listeners for when email is verified can be added here
-        ],
+        StudentEmailVerified::class => [],
     ];
 }
