@@ -36,12 +36,7 @@ class StudentServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-
-        // Register repositories
-        $this->app->bind(
-            \Modules\Student\Interfaces\Repositories\StudentRepositoryInterface::class,
-            \Modules\Student\Repositories\EloquentStudentRepository::class
-        );
+        $this->app->register(RepositoryBindingServiceProvider::class);
     }
 
     /**
