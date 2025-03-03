@@ -8,5 +8,6 @@
     "Auth": true,
     "AccessControl": true,
     "Student": true,
-    "Teacher": true
+    "Teacher": true,
+    "About": true
 }
