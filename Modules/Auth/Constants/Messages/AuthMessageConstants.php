@@ -188,7 +188,7 @@ final class AuthMessageConstants
     public const TEACHER_PASSWORD_RESET_EMAIL_FOOTER = 'auth::messages.email.teacher.password_reset.footer';
 
     // Validation Messages
-    public const VALIDATION_REQUIRED = 'auth::messages.validation.name.required';
+    public const VALIDATION_REQUIRED = 'auth::messages.validation.required';
     public const VALIDATION_STRING = 'auth::messages.validation.string';
     public const VALIDATION_MAX = 'auth::messages.validation.max';
     public const VALIDATION_INTEGER = 'auth::messages.validation.integer';
@@ -245,44 +245,44 @@ final class AuthMessageConstants
     public const ATTRIBUTE_COUNTRY = 'auth::messages.attributes.country';
 
     // Teacher Success Messages
-    public const TEACHER_REGISTERED = 'auth::messages.success.teacher_registered';
+    public const TEACHER_REGISTERED = 'auth::messages.success.teacher.registered';
 
-    public const TEACHER_LOGGED_IN = 'auth::messages.success.teacher_logged_in';
+    public const TEACHER_LOGGED_IN = 'auth::messages.success.teacher.logged_in';
 
-    public const TEACHER_LOGGED_OUT = 'auth::messages.success.teacher_logged_out';
+    public const TEACHER_LOGGED_OUT = 'auth::messages.success.teacher.logged_out';
 
-    public const TEACHER_PASSWORD_CHANGED = 'auth::messages.success.teacher_password_changed';
+    public const TEACHER_PASSWORD_CHANGED = 'auth::messages.success.teacher.password_changed';
 
-    public const TEACHER_PASSWORD_RESET_LINK_SENT = 'auth::messages.success.teacher_password_reset_link_sent';
+    public const TEACHER_PASSWORD_RESET_LINK_SENT = 'auth::messages.success.teacher.password_reset_link_sent';
 
-    public const TEACHER_PASSWORD_RESET = 'auth::messages.success.teacher_password_reset';
+    public const TEACHER_PASSWORD_RESET = 'auth::messages.success.teacher.password_reset';
 
-    public const TEACHER_EMAIL_VERIFIED = 'auth::messages.success.teacher_email_verified';
+    public const TEACHER_EMAIL_VERIFIED = 'auth::messages.success.teacher.email_verified';
 
-    public const TEACHER_EMAIL_VERIFICATION_LINK_SENT = 'auth::messages.success.teacher_email_verification_link_sent';
+    public const TEACHER_EMAIL_VERIFICATION_LINK_SENT = 'auth::messages.success.teacher.email_verification_link_sent';
 
-    public const TEACHER_VERIFICATION_EMAIL_SENT = 'auth::messages.success.teacher_verification_email_sent';
+    public const TEACHER_VERIFICATION_EMAIL_SENT = 'auth::messages.success.teacher.verification_email_sent';
 
     // Teacher Error Messages
-    public const TEACHER_INVALID_CREDENTIALS = 'auth::messages.error.teacher_invalid_credentials';
+    public const TEACHER_INVALID_CREDENTIALS = 'auth::messages.error.teacher.invalid_credentials';
 
-    public const TEACHER_ACCOUNT_NOT_VERIFIED = 'auth::messages.error.teacher_account_not_verified';
+    public const TEACHER_ACCOUNT_NOT_VERIFIED = 'auth::messages.error.teacher.account_not_verified';
 
-    public const TEACHER_INVALID_TOKEN = 'auth::messages.error.teacher_invalid_token';
+    public const TEACHER_INVALID_TOKEN = 'auth::messages.error.teacher.invalid_token';
 
-    public const TEACHER_INVALID_SIGNATURE = 'auth::messages.error.teacher_invalid_signature';
+    public const TEACHER_INVALID_SIGNATURE = 'auth::messages.error.teacher.invalid_signature';
 
-    public const TEACHER_EXPIRED_URL = 'auth::messages.error.teacher_expired_url';
+    public const TEACHER_EXPIRED_URL = 'auth::messages.error.teacher.expired_url';
 
-    public const TEACHER_NOT_FOUND = 'auth::messages.error.teacher_not_found';
+    public const TEACHER_NOT_FOUND = 'auth::messages.error.teacher.not_found';
 
-    public const TEACHER_INVALID_EMAIL_VERIFICATION_LINK = 'auth::messages.error.teacher_invalid_email_verification_link';
+    public const TEACHER_INVALID_EMAIL_VERIFICATION_LINK = 'auth::messages.error.teacher.invalid_email_verification_link';
 
-    public const TEACHER_ALREADY_REGISTERED = 'auth::messages.error.teacher_already_registered';
+    public const TEACHER_ALREADY_REGISTERED = 'auth::messages.error.teacher.already_registered';
 
-    public const TEACHER_INVALID_PASSWORD = 'auth::messages.error.teacher_invalid_password';
+    public const TEACHER_INVALID_PASSWORD = 'auth::messages.error.teacher.invalid_password';
 
-    public const TEACHER_REGISTRATION_FAILED = 'auth::messages.error.teacher_registration_failed';
+    public const TEACHER_REGISTRATION_FAILED = 'auth::messages.error.teacher.registration_failed';
 
     // Add these constants to the class:
     public const TEACHER_PASSWORD_RESET_SUCCESS = 'teacher.password_reset_success';
@@ -290,51 +290,6 @@ final class AuthMessageConstants
     public const TEACHER_INVALID_RESET_TOKEN = 'teacher.invalid_reset_token';
 
     public const TEACHER_EMAIL_ALREADY_VERIFIED = 'teacher.email_already_verified';
-
-    private static array $messages = [
-        // ... existing code ...
-
-        // Validation Messages
-        self::VALIDATION_CURRENT_PASSWORD_REQUIRED => 'The current password is required.',
-        self::VALIDATION_CURRENT_PASSWORD_MATCH => 'The current password is incorrect.',
-        self::VALIDATION_NEW_PASSWORD_DIFFERENT => 'The new password must be different from your current password.',
-        self::VALIDATION_ID_REQUIRED => 'The ID field is required.',
-        self::VALIDATION_ID_EXISTS => 'The selected ID is invalid.',
-        self::VALIDATION_HASH_REQUIRED => 'The hash field is required.',
-        self::VALIDATION_SIGNATURE_REQUIRED => 'The signature field is required.',
-        self::VALIDATION_EXPIRES_REQUIRED => 'The expiration timestamp is required.',
-
-        // Attributes
-        self::ATTRIBUTE_CURRENT_PASSWORD => 'current password',
-        self::ATTRIBUTE_NEW_PASSWORD => 'new password',
-        self::ATTRIBUTE_ID => 'ID',
-        self::ATTRIBUTE_HASH => 'hash',
-        self::ATTRIBUTE_SIGNATURE => 'signature',
-        self::ATTRIBUTE_EXPIRES => 'expiration timestamp',
-
-        // Teacher Success Messages
-        self::TEACHER_REGISTERED => 'Teacher registered successfully.',
-        self::TEACHER_LOGGED_IN => 'Teacher logged in successfully.',
-        self::TEACHER_LOGGED_OUT => 'Teacher logged out successfully.',
-        self::TEACHER_PASSWORD_CHANGED => 'Teacher password changed successfully.',
-        self::TEACHER_PASSWORD_RESET_LINK_SENT => 'Password reset link sent to your email.',
-        self::TEACHER_PASSWORD_RESET => 'Teacher password reset successfully.',
-        self::TEACHER_EMAIL_VERIFIED => 'Teacher email verified successfully.',
-        self::TEACHER_EMAIL_VERIFICATION_LINK_SENT => 'Email verification link sent.',
-
-        // Teacher Error Messages
-        self::TEACHER_INVALID_CREDENTIALS => 'Invalid credentials.',
-        self::TEACHER_ACCOUNT_NOT_VERIFIED => 'Your account is not verified.',
-        self::TEACHER_INVALID_TOKEN => 'Invalid token.',
-        self::TEACHER_INVALID_SIGNATURE => 'Invalid signature.',
-        self::TEACHER_EXPIRED_URL => 'URL has expired.',
-        self::TEACHER_EMAIL_ALREADY_VERIFIED => 'Email is already verified.',
-        self::TEACHER_NOT_FOUND => 'Teacher not found.',
-        self::TEACHER_INVALID_EMAIL_VERIFICATION_LINK => 'Invalid email verification link.',
-        self::TEACHER_ALREADY_REGISTERED => 'Teacher is already registered.',
-        self::TEACHER_INVALID_PASSWORD => 'Invalid password.',
-        self::TEACHER_REGISTRATION_FAILED => 'Teacher registration failed.',
-    ];
 
     /**
      * Get a localized message

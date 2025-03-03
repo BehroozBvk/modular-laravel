@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Auth\Http\Resources\Api\V1\Student;
 
-use Carbon\CarbonInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\User\Models\User;
+use Modules\Student\Models\Student;
+use Modules\User\Http\Resources\Api\V1\UserResource;
+use Modules\Auth\Http\Resources\Api\V1\StudentParent\RegisterStudentParentResource;
 use OpenApi\Annotations as OA;
 
 /**
- * @property-read User $resource
+ * @extends JsonResource<Student>
  *
  * @OA\Schema(
  *     schema="RegisterStudentResource",
@@ -33,32 +35,24 @@ final class RegisterStudentResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array{
-     *     id: int,
-     *     name: string,
-     *     email: string,
-     *     phone_number: string|null,
-     *     first_name: string|null,
-     *     last_name: string|null,
-     *     avatar: string|null,
-     *     country_id: int|null,
-     *     type: string,
-     *     created_at: CarbonInterface
-     * }
+     * @return array<string, mixed>
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
+        /** @var Student $this */
         return [
-            'id' => $this->resource->id,
-            'name' => $this->resource->name,
-            'email' => $this->resource->email,
-            'phone_number' => $this->resource->phone_number,
-            'first_name' => $this->resource->first_name,
-            'last_name' => $this->resource->last_name,
-            'avatar' => $this->resource->avatar,
-            'country_id' => $this->resource->country_id,
-            'type' => $this->resource->type->value,
-            'created_at' => $this->resource->created_at,
+            'id' => $this->id,
+            'phone_number' => $this->phone_number,
+            'address' => $this->address,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip' => $this->zip,
+            'student_parent_id' => $this->student_parent_id,
+            'user_id' => $this->user_id,
+            'created_at' => $this->created_at?->toISOString(),
+            'updated_at' => $this->updated_at?->toISOString(),
+            'user' => new UserResource($this->whenLoaded('user')),
+            'parent' => new RegisterStudentParentResource($this->whenLoaded('parent')),
         ];
     }
 }

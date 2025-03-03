@@ -17,7 +17,7 @@ class Student extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'phone',
+        'phone_number',
         'address',
         'city',
         'state',

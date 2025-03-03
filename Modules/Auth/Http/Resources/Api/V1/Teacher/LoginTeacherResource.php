@@ -10,17 +10,13 @@ use Laravel\Passport\PersonalAccessTokenResult;
 
 final class LoginTeacherResource extends JsonResource
 {
-    public function __construct(PersonalAccessTokenResult $resource)
-    {
-        parent::__construct($resource);
-    }
-
     public function toArray(Request $request): array
     {
         /** @var PersonalAccessTokenResult $this */
         return [
             'token_type' => 'Bearer',
-            'expires_in' => $this->token->expires_at->diffInSeconds(now()),
+            'expires_in' => abs($this->token->expires_at->diffInSeconds(now())),
+            'expires_at' => $this->token->expires_at->format('Y-m-d H:i:s'),
             'access_token' => $this->accessToken,
         ];
     }

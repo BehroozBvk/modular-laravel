@@ -15,7 +15,7 @@ Route::prefix('v1/auth/teachers')->as('v1.auth.teachers.')->group(function () {
     // Public routes
     Route::post('register', RegisterTeacherController::class)->name('register');
     Route::post('login', LoginTeacherController::class)->name('login');
-    Route::post('forgot-password', ForgotPasswordTeacherController::class)->name('forgot-password');
+    Route::post('forgot-password', action: ForgotPasswordTeacherController::class)->name('forgot-password');
     Route::post('reset-password', ResetPasswordTeacherController::class)->name('reset-password');
     Route::post('verify-email/{id}/{hash}', VerifyEmailTeacherController::class)->name('verify-email');
     Route::post('resend-verification-email', ResendVerificationEmailTeacherController::class)->name('resend-verification-email');

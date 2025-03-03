@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('local', 'testing')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
             $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
         }
     }
@@ -37,6 +37,18 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureModels();
         $this->configureCommands();
+
+        // Force HTTPS in production
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+            DB::connection()->unsetEventDispatcher();
+            DB::connection()->disableQueryLog();
+        }
+
+        if (app()->isProduction()) {
+            URL::forceScheme('https');
+            request()->server->set('HTTPS', request()->header('X-Forwarded-Proto', 'https') == 'https' ? 'on' : 'off');
+        }
     }
 
     /**
@@ -44,16 +56,8 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configurePassport(): void
     {
-        // Use storage path for testing environment
-        if ($this->app->environment('testing')) {
-            Passport::loadKeysFrom(storage_path('test/oauth'));
-        } else {
-            Passport::loadKeysFrom(storage_path('app/oauth'));
-        }
-
+        Passport::enablePasswordGrant();
         Passport::hashClientSecrets();
-        // Passport::routes();
-
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));

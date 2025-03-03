@@ -46,7 +46,7 @@ final class RegisterTeacherDto
         return [
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
-            'phone' => $this->phone,
+            'phone_number' => $this->phone,
             'address' => $this->address,
             'city' => $this->city,
             'state' => $this->state,
@@ -67,7 +67,7 @@ final class RegisterTeacherDto
             password: $data['password'],
             firstName: $data['first_name'],
             lastName: $data['last_name'],
-            phone: $data['phone'],
+            phone: $data['phone_number'],
             address: $data['address'],
             city: $data['city'],
             state: $data['state'],

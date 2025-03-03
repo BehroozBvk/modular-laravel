@@ -19,14 +19,15 @@ class StudentParent extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'phone',
+        'phone_number',
         'address',
         'city',
         'state',
         'zip',
         'country_id',
-        'status',
         'user_id',
+        'first_name',
+        'last_name',
     ];
 
     public function user(): BelongsTo
@@ -42,6 +43,11 @@ class StudentParent extends Model
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
     }
 
     protected static function newFactory(): StudentParentFactory

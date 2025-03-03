@@ -69,7 +69,7 @@ final class EloquentTeacherRepository implements TeacherRepositoryInterface
             return $this->teacherModel->create([
                 'first_name' => $dto->firstName,
                 'last_name' => $dto->lastName,
-                'phone' => $dto->phone,
+                'phone_number' => $dto->phone,
                 'address' => $dto->address,
                 'city' => $dto->city,
                 'state' => $dto->state,

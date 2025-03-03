@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Admin\Models\Admin;
+
 arch()->preset()->Laravel();
 
 arch()->preset()->php();

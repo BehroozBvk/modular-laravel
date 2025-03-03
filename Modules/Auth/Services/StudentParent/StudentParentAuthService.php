@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Auth\Services\StudentParent;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 use Modules\Auth\DataTransferObjects\StudentParent\ChangePasswordStudentParentDto;
@@ -22,6 +23,7 @@ use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
 use Modules\User\Models\User;
 use Modules\User\Models\UserPasswordResetToken;
+use Modules\StudentParent\Models\StudentParent;
 
 /**
  * Service for handling student parent authentication
@@ -47,10 +49,20 @@ final class StudentParentAuthService
             );
         }
 
-        $user = $this->userRepository->create($dto);
-        event(new StudentParentEmailVerificationRequested($user));
+        return DB::transaction(function () use ($dto) {
+            $user = $this->userRepository->create($dto->toCreateUserDto());
 
-        return $user;
+            $parentData = array_merge(
+                $dto->toParentArray(),
+                ['user_id' => $user->id]
+            );
+
+            StudentParent::create($parentData);
+
+            event(new StudentParentEmailVerificationRequested($user));
+
+            return $user;
+        });
     }
 
     /**

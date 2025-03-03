@@ -7,7 +7,6 @@ namespace Modules\Auth\Http\Requests\Api\V1\Teacher;
 use Modules\Auth\Constants\Messages\AuthMessageConstants;
 use Modules\Auth\DataTransferObjects\Teacher\RegisterTeacherDto;
 use Modules\Core\Http\Requests\Api\V1\BaseApiV1FormRequest;
-use Modules\Shared\ValueObjects\Email;
 
 /**
  * @OA\Schema(
@@ -55,7 +54,7 @@ final class RegisterTeacherRequest extends BaseApiV1FormRequest
                 'string',
                 'max:255',
             ],
-            'phone' => [
+            'phone_number' => [
                 'required',
                 'string',
                 'max:255',
@@ -116,7 +115,7 @@ final class RegisterTeacherRequest extends BaseApiV1FormRequest
             'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
             'first_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_FIRST_NAME),
             'last_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_LAST_NAME),
-            'phone' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
+            'phone_number' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
             'address' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_ADDRESS),
             'city' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_CITY),
             'state' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_STATE),

@@ -11,6 +11,15 @@ return [
             'password_reset_success' => 'Password has been reset successfully.',
             'email_verified' => 'Email verified successfully.',
         ],
+        'teacher' => [
+            'registered' => 'Teacher registered successfully.',
+            'logged_in' => 'Teacher logged in successfully.',
+            'logged_out' => 'Teacher logged out successfully.',
+            'password_changed' => 'Password changed successfully!',
+            'password_reset_link_sent' => 'Password reset link has been sent to your email.',
+            'password_reset_success' => 'Password has been reset successfully.',
+            'email_verified' => 'Email verified successfully.',
+        ],
     ],
     'error' => [
         'student' => [
@@ -23,6 +32,20 @@ return [
             'email_already_verified' => 'Email is already verified.',
             'invalid_email_verification_link' => 'Invalid email verification link.',
         ],
+        'teacher' => [
+            'invalid_credentials' => 'Invalid email or password.',
+            'already_registered' => 'Teacher with this email already exists.',
+            'not_found' => 'Teacher not found.',
+            'invalid_password' => 'Current password is incorrect.',
+            'registration_failed' => 'Failed to register teacher.',
+            'invalid_password_reset_token' => 'Invalid or expired password reset token.',
+            'email_already_verified' => 'Email is already verified.',
+            'invalid_email_verification_link' => 'Invalid email verification link.',
+            'account_not_verified' => 'Your account is not verified.',
+            'invalid_token' => 'Invalid token.',
+            'invalid_signature' => 'Invalid signature.',
+            'expired_url' => 'URL has expired.',
+        ],
     ],
     'email' => [
         'student' => [
@@ -34,6 +57,16 @@ return [
                 'line2' => 'This password reset link will expire in :count minutes.',
                 'line3' => 'If you did not request a password reset, no further action is required.',
                 'footer' => "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:",
+            ],
+        ],
+        'teacher' => [
+            'password_reset' => [
+                'subject' => 'Reset Password Notification',
+                'greeting' => 'Hello :name,',
+            ],
+            'verification' => [
+                'subject' => 'Email Verification',
+                'greeting' => 'Hello :name,',
             ],
         ],
     ],

@@ -14,13 +14,6 @@ final class RegisterStudentParentRequest extends BaseApiV1FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'regex:/^[a-zA-Z\s]+$/',
-                'min:3',
-                'max:255',
-            ],
             'email' => [
                 'required',
                 'string',
@@ -55,17 +48,36 @@ final class RegisterStudentParentRequest extends BaseApiV1FormRequest
                 'min:3',
                 'max:255',
             ],
-            'avatar' => [
+            'address' => [
                 'nullable',
-                'image',
-                'mimes:jpeg,png,jpg',
-                'max:2048',
-                'dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
+                'string',
+                'max:255',
+            ],
+            'city' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'state' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'zip' => [
+                'nullable',
+                'string',
+                'max:20',
             ],
             'country_id' => [
                 'nullable',
                 'integer',
                 'exists:countries,id',
+            ],
+            'avatar' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048',
             ],
         ];
     }
@@ -73,8 +85,6 @@ final class RegisterStudentParentRequest extends BaseApiV1FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REQUIRED),
-            'name.regex' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_NAME_REGEX),
             'email.required' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_REQUIRED),
             'email.email' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_EMAIL),
             'email.unique' => AuthMessageConstants::get(AuthMessageConstants::VALIDATION_EMAIL_UNIQUE),
@@ -94,28 +104,34 @@ final class RegisterStudentParentRequest extends BaseApiV1FormRequest
     public function attributes(): array
     {
         return [
-            'name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_NAME),
             'email' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_EMAIL),
             'password' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PASSWORD),
-            'phone_number' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
-            'avatar' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_AVATAR),
-            'country_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_COUNTRY_ID),
             'first_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_FIRST_NAME),
             'last_name' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_LAST_NAME),
+            'phone_number' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_PHONE_NUMBER),
+            'address' => 'address',
+            'city' => 'city',
+            'state' => 'state',
+            'zip' => 'zip code',
+            'country_id' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_COUNTRY_ID),
+            'avatar' => AuthMessageConstants::get(AuthMessageConstants::ATTRIBUTE_AVATAR),
         ];
     }
 
     public function toDto(): RegisterStudentParentDto
     {
         return new RegisterStudentParentDto(
-            name: $this->input('name'),
             email: new Email($this->input('email')),
             password: $this->input('password'),
-            phoneNumber: $this->input('phone_number'),
             firstName: $this->input('first_name'),
             lastName: $this->input('last_name'),
-            avatar: $this->file('avatar')?->store('avatars', 'public'),
-            countryId: $this->input('country_id'),
+            phoneNumber: $this->input('phone_number'),
+            address: $this->input('address'),
+            city: $this->input('city'),
+            state: $this->input('state'),
+            zip: $this->input('zip'),
+            countryId: $this->input('country_id') ? (int) $this->input('country_id') : null,
+            avatar: $this->file('avatar')?->store('avatars', 'public')
         );
     }
 }

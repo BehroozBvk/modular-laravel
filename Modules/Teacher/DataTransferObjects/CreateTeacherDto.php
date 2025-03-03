@@ -30,7 +30,7 @@ final readonly class CreateTeacherDto
         return new self(
             firstName: $data['first_name'],
             lastName: $data['last_name'],
-            phone: $data['phone'],
+            phone: $data['phone_number'],
             address: $data['address'],
             city: $data['city'],
             state: $data['state'],
@@ -50,7 +50,7 @@ final readonly class CreateTeacherDto
         return [
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
-            'phone' => $this->phone,
+            'phone_number' => $this->phone,
             'address' => $this->address,
             'city' => $this->city,
             'state' => $this->state,
