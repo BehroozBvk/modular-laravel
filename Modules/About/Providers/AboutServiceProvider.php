@@ -9,10 +9,6 @@ use Modules\About\Interfaces\Repositories\AboutPartnerRepositoryInterface;
 use Modules\About\Interfaces\Repositories\AboutSectionRepositoryInterface;
 use Modules\About\Interfaces\Repositories\AboutTeamMemberRepositoryInterface;
 use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
-use Modules\About\Services\AboutIntroService;
-use Modules\About\Services\AboutSectionService;
-use Modules\About\Services\AboutTeamService;
-use Modules\About\Services\AboutPartnerService;
 use Modules\About\Services\AboutService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -48,7 +44,7 @@ class AboutServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(RepositoryBindingServiceProvider::class);
 
-        // Register the AboutService in the container
+        // Register the AboutService
         $this->app->singleton(AboutService::class, function ($app) {
             return new AboutService(
                 $app->make(AboutIntroRepositoryInterface::class),

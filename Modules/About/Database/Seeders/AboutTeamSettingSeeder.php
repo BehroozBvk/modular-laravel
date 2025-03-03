@@ -18,3 +18,4 @@ class AboutTeamSettingSeeder extends Seeder
         ]);
     }
 }
+

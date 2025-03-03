@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\About\Models;
 
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\About\Database\Factories\AboutTeamMemberFactory;
 
-class AboutTeamMember extends Model
+class AboutTeamMember extends Model implements TranslatableContract
 {
-    use HasFactory;
+    use HasFactory, Translatable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,10 +23,18 @@ class AboutTeamMember extends Model
     ];
 
     /**
-     * Get the translations for the team member
+     * The attributes that are translatable.
      */
-    public function translations(): HasMany
+    public $translatedAttributes = [
+        'name',
+        'position',
+    ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
     {
-        return $this->hasMany(AboutTeamMemberTranslation::class);
+        return AboutTeamMemberFactory::new();
     }
 }

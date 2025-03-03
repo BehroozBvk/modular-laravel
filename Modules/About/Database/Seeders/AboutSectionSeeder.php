@@ -76,3 +76,4 @@ class AboutSectionSeeder extends Seeder
         }
     }
 }
+

@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\About\Services;
 
+use Modules\About\Interfaces\Repositories\AboutIntroRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutPartnerRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutSectionRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutTeamMemberRepositoryInterface;
+use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
+
 final class AboutService
 {
     public function __construct(
@@ -16,11 +22,20 @@ final class AboutService
 
     public function getAboutPageData(): array
     {
+        $intro = $this->introRepository->getActive();
+        $sections = $this->sectionRepository->getAll();
+        $teamSettings = $this->teamSettingRepository->getSettings();
+        $teamMembers = $this->teamMemberRepository->getAll();
+        $partners = $this->partnerRepository->getAll();
+
         return [
-            'intro' => $this->introRepository->getAboutIntro(),
-            'sections' => $this->sectionRepository->getAboutSections(),
-            'team' => $this->teamRepository->getAboutTeam(),
-            'partners' => $this->partnerRepository->getAboutPartners(),
+            'intro' => $intro,
+            'sections' => $sections,
+            'team' => [
+                'visible' => $teamSettings ? $teamSettings->visible : true,
+                'members' => $teamSettings && $teamSettings->visible ? $teamMembers : [],
+            ],
+            'partners' => $partners,
         ];
     }
 }

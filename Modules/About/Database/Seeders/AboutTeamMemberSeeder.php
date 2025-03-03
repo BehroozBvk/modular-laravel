@@ -76,3 +76,4 @@ class AboutTeamMemberSeeder extends Seeder
         }
     }
 }
+
