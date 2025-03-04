@@ -9,5 +9,6 @@
     "AccessControl": true,
     "Student": true,
     "Teacher": true,
-    "About": true
+    "About": true,
+    "Lesson": true
 }
