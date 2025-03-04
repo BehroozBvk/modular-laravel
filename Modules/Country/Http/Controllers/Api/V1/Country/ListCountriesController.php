@@ -12,98 +12,54 @@ use Modules\Country\Http\Requests\Api\V1\ListCountriesRequest;
 use Modules\Country\Services\CountryService;
 
 /**
- * @OA\Get(
- *     path="/countries",
- *     tags={"Countries"},
- *     summary="List all countries",
- *
- *     @OA\Parameter(
- *         name="page",
- *         in="query",
- *         description="Page number",
- *         required=false,
- *
- *         @OA\Schema(type="integer")
- *     ),
- *
- *     @OA\Parameter(
- *         name="per_page",
- *         in="query",
- *         description="Items per page (1-100)",
- *         required=false,
- *
- *         @OA\Schema(type="integer", minimum=1, maximum=100)
- *     ),
- *
- *     @OA\Parameter(
- *         name="sort_by",
- *         in="query",
- *         description="Sort by field (created_at, name)",
- *         required=false,
- *
- *         @OA\Schema(type="string", enum={"created_at", "name"})
- *     ),
- *
- *     @OA\Parameter(
- *         name="sort_direction",
- *         in="query",
- *         description="Sort direction",
- *         required=false,
- *
- *         @OA\Schema(type="string", enum={"asc", "desc"})
- *     ),
- *
- *     @OA\Response(
- *         response=200,
- *         description="List of countries",
- *
- *         @OA\JsonContent(
- *             type="object",
- *             
- *             @OA\Property(property="success", type="boolean", example=true),
- *             @OA\Property(property="message", type="string", example="Operation successful"),
- *             @OA\Property(property="data", type="object",
- *                 @OA\Property(property="items", type="array",
- *                     @OA\Items(
- *                         type="object",
- *                         
- *                         @OA\Property(property="id", type="integer"),
- *                         @OA\Property(property="name", type="string"),
- *                         @OA\Property(property="code", type="string"),
- *                         @OA\Property(property="flag", type="string"),
- *                         @OA\Property(property="created_at", type="string", format="date-time"),
- *                         @OA\Property(property="updated_at", type="string", format="date-time")
- *                     )
- *                 ),
- *                 
- *                 @OA\Property(property="meta", type="object",
- *                     @OA\Property(property="current_page", type="integer"),
- *                     @OA\Property(property="from", type="integer"),
- *                     @OA\Property(property="last_page", type="integer"),
- *                     @OA\Property(property="per_page", type="integer"),
- *                     @OA\Property(property="to", type="integer"),
- *                     @OA\Property(property="total", type="integer")
- *                 )
- *             ),
- *             @OA\Property(property="status_code", type="integer", example=200),
- *             @OA\Property(property="timestamp", type="string", format="date-time")
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=422,
- *         description="Validation error",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     ),
- *
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * List countries endpoint
+ * 
+ * @group Countries
+ * 
+ * @subgroup Country Management
+ * 
+ * @queryParam page int Page number. Example: 1
+ * @queryParam per_page int Items per page (1-100). Example: 15
+ * @queryParam sort_by string Sort by field (created_at, name). Example: name
+ * @queryParam sort_direction string Sort direction (asc, desc). Example: asc
+ * 
+ * @apiResource Modules\Country\Http\Resources\CountryResource
+ * @apiResourceCollection Modules\Country\Http\Resources\CountryCollection
+ * 
+ * @response 200 scenario="Success" {
+ *   "success": true,
+ *   "message": "Operation successful",
+ *   "data": {
+ *     "items": [
+ *       {
+ *         "id": 1,
+ *         "name": "United States",
+ *         "code": "US",
+ *         "flag": "us.png",
+ *         "created_at": "2023-01-01T00:00:00.000000Z",
+ *         "updated_at": "2023-01-01T00:00:00.000000Z"
+ *       }
+ *     ],
+ *     "meta": {
+ *       "current_page": 1,
+ *       "from": 1,
+ *       "last_page": 10,
+ *       "per_page": 15,
+ *       "to": 15,
+ *       "total": 150
+ *     }
+ *   },
+ *   "status_code": 200,
+ *   "timestamp": "2023-01-01T00:00:00.000000Z"
+ * }
+ * 
+ * @response 500 scenario="Server Error" {
+ *   "success": false,
+ *   "message": "An error occurred while fetching countries",
+ *   "errors": null,
+ *   "status_code": 500,
+ *   "timestamp": "2023-01-01T00:00:00.000000Z"
+ * }
  */
 final class ListCountriesController extends BaseApiV1Controller
 {

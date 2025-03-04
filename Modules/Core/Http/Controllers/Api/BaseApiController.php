@@ -11,28 +11,18 @@ use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Core\Constants\Messages\CoreMessageConstants;
 use Modules\Core\Helpers\ApiResponse;
 use Modules\Core\Http\Controllers\Controller;
-use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(
- *     schema="SuccessResponse",
+ * Base API controller class that all API controllers extend from
  *
- *     @OA\Property(property="success", type="boolean", example=true),
- *     @OA\Property(property="message", type="string", example="Operation successful"),
- *     @OA\Property(property="data", type="object", nullable=true),
- *     @OA\Property(property="status_code", type="integer", example=200),
- *     @OA\Property(property="timestamp", type="string", format="date-time")
- * )
- *
- * @OA\Schema(
- *     schema="ErrorResponse",
- *
- *     @OA\Property(property="success", type="boolean", example=false),
- *     @OA\Property(property="message", type="string", example="Operation failed"),
- *     @OA\Property(property="errors", type="object", nullable=true),
- *     @OA\Property(property="status_code", type="integer", example=400),
- *     @OA\Property(property="timestamp", type="string", format="date-time")
- * )
+ * @apiResponseField success boolean The status of the request (true/false)
+ * @apiResponseField message string A message describing the result
+ * @apiResponseField data object|null The response data
+ * @apiResponseField status_code integer HTTP status code
+ * @apiResponseField timestamp string ISO 8601 timestamp
+ * 
+ * @responseFile 500 responses/error_response.json
+ * @responseFile 400 responses/validation_error.json
  */
 abstract class BaseApiController extends Controller
 {
