@@ -104,8 +104,8 @@ final class ListLessonsController extends BaseApiV1Controller
 
             return $this->paginatedResponse(
                 $lessons,
-                LessonResource::class,
-                'Lessons retrieved successfully'
+                'Lessons retrieved successfully',
+                HttpStatusConstants::HTTP_200_OK
             );
         } catch (Exception $e) {
             return $this->errorResponse(

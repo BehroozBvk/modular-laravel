@@ -84,30 +84,10 @@ final class UpdateLessonController extends BaseApiV1Controller
     public function __invoke(UpdateLessonRequest $request, int $id): JsonResponse
     {
         try {
-            $lesson = $this->lessonService->findLesson($id);
-
-            if (!$lesson) {
-                return $this->errorResponse(
-                    message: 'Lesson not found',
-                    statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
-                );
-            }
-
-            $updated = $this->lessonService->updateLesson($id, $request->toDto());
-
-            if (!$updated) {
-                return $this->errorResponse(
-                    message: 'Failed to update lesson',
-                    statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
-                );
-            }
-
-            // Refresh the lesson instance to get updated data
-            $lesson = $this->lessonService->findLesson($id);
-            $lesson->load('progress');
+            $updatedLesson = $this->lessonService->updateLesson($id, $request->toDto());
 
             return $this->successResponse(
-                data: new LessonResource($lesson),
+                data: new LessonResource($updatedLesson),
                 message: 'Lesson updated successfully'
             );
         } catch (Exception $e) {

@@ -97,8 +97,8 @@ final class ListProgressController extends BaseApiV1Controller
 
             return $this->paginatedResponse(
                 $progressRecords,
-                LessonProgressResource::class,
-                'Progress records retrieved successfully'
+                'Progress records retrieved successfully',
+                HttpStatusConstants::HTTP_200_OK
             );
         } catch (Exception $e) {
             return $this->errorResponse(

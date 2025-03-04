@@ -56,11 +56,28 @@ final class LessonService
      *
      * @throws Exception
      */
-    public function updateLesson(int $id, UpdateLessonDto $dto): bool
+    public function updateLesson(int $id, UpdateLessonDto $dto): Lesson
     {
         try {
             return DB::transaction(function () use ($id, $dto) {
-                return $this->lessonRepository->update($id, $dto);
+                // First check if the lesson exists
+                $lesson = $this->lessonRepository->findById($id);
+
+                if (!$lesson) {
+                    throw new Exception('Lesson not found');
+                }
+
+                // Update the lesson
+                $updated = $this->lessonRepository->update($id, $dto);
+
+                if (!$updated) {
+                    throw new Exception('Failed to update lesson');
+                }
+
+                // Return the refreshed lesson with its progress
+                $lesson = $this->lessonRepository->findById($id);
+                $lesson->load('progress');
+                return $lesson;
             });
         } catch (Exception $e) {
             throw new Exception('Failed to update lesson: ' . $e->getMessage());

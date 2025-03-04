@@ -56,11 +56,26 @@ final class LessonProgressService
      *
      * @throws Exception
      */
-    public function updateProgressRecord(int $id, UpdateLessonProgressDto $dto): bool
+    public function updateProgressRecord(int $id, UpdateLessonProgressDto $dto): LessonProgress
     {
         try {
             return DB::transaction(function () use ($id, $dto) {
-                return $this->progressRepository->update($id, $dto);
+                // First check if the record exists
+                $progressRecord = $this->progressRepository->findById($id);
+
+                if (!$progressRecord) {
+                    throw new Exception('Progress record not found');
+                }
+
+                // Update the record
+                $updated = $this->progressRepository->update($id, $dto);
+
+                if (!$updated) {
+                    throw new Exception('Failed to update progress record');
+                }
+
+                // Return the refreshed record
+                return $this->progressRepository->findById($id);
             });
         } catch (Exception $e) {
             throw new Exception('Failed to update progress record: ' . $e->getMessage());
