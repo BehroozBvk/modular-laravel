@@ -9,77 +9,15 @@ use Illuminate\Http\JsonResponse;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Teacher\Http\Requests\Api\V1\CreateTeacherRequest;
+use Modules\Teacher\Http\Resources\Api\V1\TeacherResource;
 use Modules\Teacher\Services\TeacherService;
 
 /**
- * @OA\Post(
- *     path="/teachers",
- *     tags={"Teachers"},
- *     summary="Create a new teacher",
- *
- *     @OA\RequestBody(
- *         required=true,
- *         description="Teacher creation data",
- *
- *         @OA\JsonContent(
- *             required={"first_name", "last_name", "phone", "address", "city", "state", "zip", "country_id"},
- *             
- *             @OA\Property(property="first_name", type="string"),
- *             @OA\Property(property="last_name", type="string"),
- *             @OA\Property(property="phone", type="string"),
- *             @OA\Property(property="address", type="string"),
- *             @OA\Property(property="city", type="string"),
- *             @OA\Property(property="state", type="string"),
- *             @OA\Property(property="zip", type="string"),
- *             @OA\Property(property="country_id", type="integer"),
- *             @OA\Property(property="user_id", type="integer", nullable=true),
- *             @OA\Property(property="email", type="string", nullable=true),
- *             @OA\Property(property="password", type="string", nullable=true)
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=201,
- *         description="Teacher created successfully",
- *
- *         @OA\JsonContent(
- *             type="object",
- *             
- *             @OA\Property(property="success", type="boolean", example=true),
- *             @OA\Property(property="message", type="string", example="Teacher created successfully"),
- *             @OA\Property(property="data", type="object",
- *                 @OA\Property(property="id", type="integer"),
- *                 @OA\Property(property="first_name", type="string"),
- *                 @OA\Property(property="last_name", type="string"),
- *                 @OA\Property(property="phone", type="string"),
- *                 @OA\Property(property="address", type="string"),
- *                 @OA\Property(property="city", type="string"),
- *                 @OA\Property(property="state", type="string"),
- *                 @OA\Property(property="zip", type="string"),
- *                 @OA\Property(property="country_id", type="integer"),
- *                 @OA\Property(property="user_id", type="integer"),
- *                 @OA\Property(property="created_at", type="string", format="date-time"),
- *                 @OA\Property(property="updated_at", type="string", format="date-time")
- *             ),
- *             @OA\Property(property="status_code", type="integer", example=201),
- *             @OA\Property(property="timestamp", type="string", format="date-time")
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=422,
- *         description="Validation error",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     ),
- *
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * Controller for creating a new teacher.
+ * 
+ * @group Teachers
+ * 
+ * @subgroup Teacher Management
  */
 final class CreateTeacherController extends BaseApiV1Controller
 {
@@ -87,15 +25,79 @@ final class CreateTeacherController extends BaseApiV1Controller
         private readonly TeacherService $teacherService
     ) {}
 
+    /**
+     * Create a teacher
+     * 
+     * Create a new teacher with the provided data.
+     *
+     * @bodyParam first_name string required The first name of the teacher. Example: John
+     * @bodyParam last_name string required The last name of the teacher. Example: Doe
+     * @bodyParam phone string required The phone number of the teacher. Example: +1234567890
+     * @bodyParam address string required The address of the teacher. Example: 123 Main St
+     * @bodyParam city string required The city of the teacher. Example: New York
+     * @bodyParam state string required The state of the teacher. Example: NY
+     * @bodyParam zip string required The ZIP code of the teacher. Example: 10001
+     * @bodyParam country_id integer required The ID of the teacher's country. Example: 1
+     * @bodyParam user_id integer optional The ID of an existing user to associate with the teacher. Example: 1
+     * @bodyParam email string optional The email address for creating a new user account. Required if user_id is not provided. Example: john.doe@example.com
+     * @bodyParam password string optional The password for creating a new user account. Required if user_id is not provided. Example: password123
+     * 
+     * @response 201 {
+     *     "success": true,
+     *     "message": "Teacher created successfully",
+     *     "data": {
+     *         "id": 1,
+     *         "first_name": "John",
+     *         "last_name": "Doe",
+     *         "full_name": "John Doe",
+     *         "phone_number": "+1234567890",
+     *         "address": "123 Main St",
+     *         "city": "New York",
+     *         "state": "NY",
+     *         "zip": "10001",
+     *         "country_id": 1,
+     *         "user_id": 1,
+     *         "created_at": "2024-02-20T12:00:00Z",
+     *         "updated_at": "2024-02-20T12:00:00Z",
+     *         "deleted_at": null,
+     *         "user": {
+     *             "id": 1,
+     *             "email": "john.doe@example.com",
+     *             "type": "teacher",
+     *             "email_verified_at": "2024-02-20T12:00:00Z"
+     *         },
+     *         "country": {
+     *             "id": 1,
+     *             "name": "United States",
+     *             "code": "US",
+     *             "flag": "us.png"
+     *         }
+     *     },
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @response 422 {
+     *     "success": false,
+     *     "message": "The given data was invalid",
+     *     "errors": {
+     *         "first_name": ["The first name field is required."],
+     *         "last_name": ["The last name field is required."],
+     *         "email": ["The email field is required when user_id is not present."],
+     *         "password": ["The password field is required when user_id is not present."]
+     *     },
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     */
     public function __invoke(CreateTeacherRequest $request): JsonResponse
     {
         try {
             $teacher = $this->teacherService->createTeacher($request->toDto());
+            $teacher->load(['user', 'country']);
 
             return $this->successResponse(
+                data: new TeacherResource($teacher),
                 message: 'Teacher created successfully',
-                statusCode: HttpStatusConstants::HTTP_201_CREATED,
-                data: $teacher
+                statusCode: HttpStatusConstants::HTTP_201_CREATED
             );
         } catch (Exception $e) {
             return $this->errorResponse(

@@ -8,41 +8,32 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
-use Modules\Teacher\Http\Requests\Api\V1\UpdateTeacherRequest;
 use Modules\Teacher\Http\Resources\Api\V1\TeacherResource;
 use Modules\Teacher\Services\TeacherService;
 
 /**
- * Controller for updating a teacher.
+ * Controller for retrieving a specific teacher.
  * 
  * @group Teachers
  * 
  * @subgroup Teacher Management
  */
-final class UpdateTeacherController extends BaseApiV1Controller
+final class GetTeacherController extends BaseApiV1Controller
 {
     public function __construct(
         private readonly TeacherService $teacherService
     ) {}
 
     /**
-     * Update a teacher
+     * Get a teacher
      * 
-     * Update an existing teacher with the provided data.
+     * Retrieve a specific teacher by their ID including their user and country information.
      *
-     * @urlParam id integer required The ID of the teacher to update. Example: 1
-     * @bodyParam first_name string required The first name of the teacher. Example: John
-     * @bodyParam last_name string required The last name of the teacher. Example: Doe
-     * @bodyParam phone string required The phone number of the teacher. Example: +1234567890
-     * @bodyParam address string required The address of the teacher. Example: 123 Main St
-     * @bodyParam city string required The city of the teacher. Example: New York
-     * @bodyParam state string required The state of the teacher. Example: NY
-     * @bodyParam zip string required The ZIP code of the teacher. Example: 10001
-     * @bodyParam country_id integer required The ID of the teacher's country. Example: 1
+     * @urlParam id integer required The ID of the teacher to retrieve. Example: 1
      * 
      * @response 200 {
      *     "success": true,
-     *     "message": "Teacher updated successfully",
+     *     "message": "Teacher retrieved successfully",
      *     "data": {
      *         "id": 1,
      *         "first_name": "John",
@@ -79,26 +70,16 @@ final class UpdateTeacherController extends BaseApiV1Controller
      *     "message": "Teacher not found",
      *     "timestamp": "2024-02-20T12:00:00Z"
      * }
-     * 
-     * @response 422 {
-     *     "success": false,
-     *     "message": "The given data was invalid",
-     *     "errors": {
-     *         "first_name": ["The first name field is required."],
-     *         "last_name": ["The last name field is required."]
-     *     },
-     *     "timestamp": "2024-02-20T12:00:00Z"
-     * }
      */
-    public function __invoke(UpdateTeacherRequest $request, int $id): JsonResponse
+    public function __invoke(int $id): JsonResponse
     {
         try {
-            $teacher = $this->teacherService->updateTeacher($id, $request->toDto());
+            $teacher = $this->teacherService->findTeacherOrFail($id);
             $teacher->load(['user', 'country']);
 
             return $this->successResponse(
                 data: new TeacherResource($teacher),
-                message: 'Teacher updated successfully'
+                message: 'Teacher retrieved successfully'
             );
         } catch (Exception $e) {
             return $this->errorResponse(

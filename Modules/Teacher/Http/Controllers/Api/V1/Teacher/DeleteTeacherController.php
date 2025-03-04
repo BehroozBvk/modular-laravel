@@ -11,49 +11,11 @@ use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Teacher\Services\TeacherService;
 
 /**
- * @OA\Delete(
- *     path="/teachers/{id}",
- *     tags={"Teachers"},
- *     summary="Delete a teacher",
- *
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         description="Teacher ID",
- *
- *         @OA\Schema(type="integer")
- *     ),
- *
- *     @OA\Response(
- *         response=200,
- *         description="Teacher deleted successfully",
- *
- *         @OA\JsonContent(
- *             type="object",
- *             
- *             @OA\Property(property="success", type="boolean", example=true),
- *             @OA\Property(property="message", type="string", example="Teacher deleted successfully"),
- *             @OA\Property(property="data", type="null"),
- *             @OA\Property(property="status_code", type="integer", example=200),
- *             @OA\Property(property="timestamp", type="string", format="date-time")
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=404,
- *         description="Teacher not found",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     ),
- *
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * Controller for deleting a teacher.
+ * 
+ * @group Teachers
+ * 
+ * @subgroup Teacher Management
  */
 final class DeleteTeacherController extends BaseApiV1Controller
 {
@@ -61,17 +23,29 @@ final class DeleteTeacherController extends BaseApiV1Controller
         private readonly TeacherService $teacherService
     ) {}
 
+    /**
+     * Delete a teacher
+     * 
+     * Delete a specific teacher by their ID.
+     *
+     * @urlParam id integer required The ID of the teacher to delete. Example: 1
+     * 
+     * @response 200 {
+     *     "success": true,
+     *     "message": "Teacher deleted successfully",
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @response 404 {
+     *     "success": false,
+     *     "message": "Teacher not found",
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     */
     public function __invoke(int $id): JsonResponse
     {
         try {
-            $success = $this->teacherService->deleteTeacher($id);
-
-            if (! $success) {
-                return $this->errorResponse(
-                    message: 'Teacher not found',
-                    statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
-                );
-            }
+            $this->teacherService->deleteTeacher($id);
 
             return $this->successResponse(
                 message: 'Teacher deleted successfully'
@@ -79,7 +53,7 @@ final class DeleteTeacherController extends BaseApiV1Controller
         } catch (Exception $e) {
             return $this->errorResponse(
                 message: $e->getMessage(),
-                statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
+                statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
             );
         }
     }
