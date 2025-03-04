@@ -6,53 +6,17 @@ namespace Modules\Lesson\Http\Controllers\Api\V1\Lesson;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Modules\Core\Constants\HttpStatusConstants;
 use Modules\Core\Http\Controllers\Api\V1\BaseApiV1Controller;
 use Modules\Lesson\Http\Resources\Api\V1\LessonResource;
 use Modules\Lesson\Services\LessonService;
 
 /**
- * @OA\Get(
- *     path="/api/v1/lessons/{id}",
- *     summary="Get a specific lesson by ID",
- *     description="Get details for a specific lesson including its progress",
- *     operationId="getLesson",
- *     tags={"Lessons"},
- *     security={{"passport": {}}},
- *
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="Lesson ID",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(property="data", ref="#/components/schemas/Lesson"),
- *             @OA\Property(property="success", type="boolean", example=true),
- *             @OA\Property(property="message", type="string", example="Lesson retrieved successfully"),
- *             @OA\Property(property="timestamp", type="string", format="date-time")
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=404,
- *         description="Lesson not found",
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     ),
- *
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * Controller for retrieving a specific lesson.
+ * 
+ * @group Lessons
+ * 
+ * @subgroup Lesson Management
  */
 final class GetLessonController extends BaseApiV1Controller
 {
@@ -60,18 +24,45 @@ final class GetLessonController extends BaseApiV1Controller
         private readonly LessonService $lessonService
     ) {}
 
-    public function __invoke(Request $request, int $id): JsonResponse
+    /**
+     * Get a lesson
+     * 
+     * Retrieve a specific lesson by its ID including its progress records.
+     *
+     * @urlParam id integer required The ID of the lesson to retrieve. Example: 1
+     * 
+     * @response 200 {
+     *     "success": true,
+     *     "message": "Lesson retrieved successfully",
+     *     "data": {
+     *         "id": 1,
+     *         "teacher_id": 1,
+     *         "student_id": 2,
+     *         "surah": "Al-Fatihah",
+     *         "ayah_from": 1,
+     *         "ayah_to": 7,
+     *         "date": "2024-02-20",
+     *         "homework": "Memorize verses 1-7",
+     *         "feedback": "Good progress",
+     *         "created_at": "2024-02-20T12:00:00Z",
+     *         "updated_at": "2024-02-20T12:00:00Z",
+     *         "progress": []
+     *     },
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @response 404 {
+     *     "success": false,
+     *     "message": "Lesson not found",
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @throws Exception When lesson is not found
+     */
+    public function __invoke(int $id): JsonResponse
     {
         try {
-            $lesson = $this->lessonService->findLesson($id);
-
-            if (!$lesson) {
-                return $this->errorResponse(
-                    message: 'Lesson not found',
-                    statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
-                );
-            }
-
+            $lesson = $this->lessonService->findLessonOrFail($id);
             $lesson->load('progress');
 
             return $this->successResponse(
@@ -81,7 +72,7 @@ final class GetLessonController extends BaseApiV1Controller
         } catch (Exception $e) {
             return $this->errorResponse(
                 message: $e->getMessage(),
-                statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
+                statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
             );
         }
     }

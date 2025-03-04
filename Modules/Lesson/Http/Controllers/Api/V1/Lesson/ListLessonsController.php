@@ -13,6 +13,8 @@ use Modules\Lesson\Http\Resources\Api\V1\LessonResource;
 use Modules\Lesson\Services\LessonService;
 
 /**
+ * Controller for listing lessons with pagination and filtering.
+ *
  * @OA\Get(
  *     path="/api/v1/lessons",
  *     summary="List all lessons with pagination",
@@ -97,15 +99,21 @@ final class ListLessonsController extends BaseApiV1Controller
         private readonly LessonService $lessonService
     ) {}
 
+    /**
+     * Handle the incoming request to list lessons.
+     *
+     * @param ListLessonsRequest $request The validated request containing filter and pagination parameters.
+     * @return JsonResponse The JSON response containing the paginated lessons data.
+     */
     public function __invoke(ListLessonsRequest $request): JsonResponse
     {
         try {
             $lessons = $this->lessonService->getLessons($request->toDto());
 
             return $this->paginatedResponse(
-                $lessons,
-                'Lessons retrieved successfully',
-                HttpStatusConstants::HTTP_200_OK
+                paginator: $lessons,
+                message: 'Lessons retrieved successfully',
+                statusCode: HttpStatusConstants::HTTP_200_OK
             );
         } catch (Exception $e) {
             return $this->errorResponse(

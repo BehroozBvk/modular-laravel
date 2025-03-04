@@ -13,54 +13,11 @@ use Modules\Lesson\Http\Resources\Api\V1\LessonResource;
 use Modules\Lesson\Services\LessonService;
 
 /**
- * @OA\Post(
- *     path="/api/v1/lessons",
- *     summary="Create a new lesson",
- *     description="Create a new lesson with the provided data",
- *     operationId="createLesson",
- *     tags={"Lessons"},
- *     security={{"passport": {}}},
- *
- *     @OA\RequestBody(
- *         required=true,
- *         description="Lesson data",
- *         @OA\JsonContent(
- *             required={"teacher_id", "student_id", "surah", "ayah_from", "ayah_to", "date"},
- *             @OA\Property(property="teacher_id", type="integer", example=1),
- *             @OA\Property(property="student_id", type="integer", example=2),
- *             @OA\Property(property="surah", type="string", example="Al-Fatihah"),
- *             @OA\Property(property="ayah_from", type="integer", example=1),
- *             @OA\Property(property="ayah_to", type="integer", example=7),
- *             @OA\Property(property="date", type="string", format="date", example="2023-06-01"),
- *             @OA\Property(property="homework", type="string", example="Memorize verses 1-7", nullable=true),
- *             @OA\Property(property="feedback", type="string", example="Good progress", nullable=true)
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=201,
- *         description="Lesson created successfully",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(property="data", ref="#/components/schemas/Lesson"),
- *             @OA\Property(property="success", type="boolean", example=true),
- *             @OA\Property(property="message", type="string", example="Lesson created successfully"),
- *             @OA\Property(property="timestamp", type="string", format="date-time")
- *         )
- *     ),
- *
- *     @OA\Response(
- *         response=422,
- *         description="Validation error",
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     ),
- *
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * Controller for creating a new lesson.
+ * 
+ * @group Lessons
+ * 
+ * @subgroup Lesson Management
  */
 final class CreateLessonController extends BaseApiV1Controller
 {
@@ -68,6 +25,56 @@ final class CreateLessonController extends BaseApiV1Controller
         private readonly LessonService $lessonService
     ) {}
 
+    /**
+     * Create a lesson
+     * 
+     * Create a new lesson with the provided data.
+     *
+     * @bodyParam teacher_id integer required The ID of the teacher. Example: 1
+     * @bodyParam student_id integer required The ID of the student. Example: 2
+     * @bodyParam surah string required The name of the surah. Example: Al-Fatihah
+     * @bodyParam ayah_from integer required The starting ayah number. Example: 1
+     * @bodyParam ayah_to integer required The ending ayah number. Example: 7
+     * @bodyParam date date required The date of the lesson (Y-m-d). Example: 2024-02-20
+     * @bodyParam homework string optional The homework assignment. Example: Memorize verses 1-7
+     * @bodyParam feedback string optional The teacher's feedback. Example: Good progress
+     * 
+     * @response 201 {
+     *     "success": true,
+     *     "message": "Lesson created successfully",
+     *     "data": {
+     *         "id": 1,
+     *         "teacher_id": 1,
+     *         "student_id": 2,
+     *         "surah": "Al-Fatihah",
+     *         "ayah_from": 1,
+     *         "ayah_to": 7,
+     *         "date": "2024-02-20",
+     *         "homework": "Memorize verses 1-7",
+     *         "feedback": "Good progress",
+     *         "created_at": "2024-02-20T12:00:00Z",
+     *         "updated_at": "2024-02-20T12:00:00Z",
+     *         "progress": []
+     *     },
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @response 422 {
+     *     "success": false,
+     *     "message": "The given data was invalid",
+     *     "errors": {
+     *         "teacher_id": ["The teacher id field is required."],
+     *         "student_id": ["The student id field is required."],
+     *         "surah": ["The surah field is required."],
+     *         "ayah_from": ["The ayah from field is required."],
+     *         "ayah_to": ["The ayah to field is required."],
+     *         "date": ["The date field is required."]
+     *     },
+     *     "timestamp": "2024-02-20T12:00:00Z"
+     * }
+     * 
+     * @throws Exception When lesson creation fails
+     */
     public function __invoke(CreateLessonRequest $request): JsonResponse
     {
         try {

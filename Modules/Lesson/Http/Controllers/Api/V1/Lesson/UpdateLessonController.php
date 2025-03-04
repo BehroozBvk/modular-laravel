@@ -13,6 +13,8 @@ use Modules\Lesson\Http\Resources\Api\V1\LessonResource;
 use Modules\Lesson\Services\LessonService;
 
 /**
+ * Controller for updating a lesson.
+ *
  * @OA\Put(
  *     path="/api/v1/lessons/{id}",
  *     summary="Update an existing lesson",
@@ -81,6 +83,13 @@ final class UpdateLessonController extends BaseApiV1Controller
         private readonly LessonService $lessonService
     ) {}
 
+    /**
+     * Handle the incoming request to update a lesson.
+     *
+     * @param UpdateLessonRequest $request The validated request containing lesson update data.
+     * @param int $id The ID of the lesson to update.
+     * @return JsonResponse The JSON response containing the updated lesson data.
+     */
     public function __invoke(UpdateLessonRequest $request, int $id): JsonResponse
     {
         try {
@@ -93,7 +102,7 @@ final class UpdateLessonController extends BaseApiV1Controller
         } catch (Exception $e) {
             return $this->errorResponse(
                 message: $e->getMessage(),
-                statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
+                statusCode: HttpStatusConstants::HTTP_404_NOT_FOUND
             );
         }
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Lesson\Services;
 
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\Lesson\DataTransferObjects\CreateLessonProgressDto;
@@ -13,14 +14,25 @@ use Modules\Lesson\DataTransferObjects\UpdateLessonProgressDto;
 use Modules\Lesson\Interfaces\Repositories\LessonProgressRepositoryInterface;
 use Modules\Lesson\Models\LessonProgress;
 
+/**
+ * Service class for managing lesson progress records.
+ */
 final class LessonProgressService
 {
+    /**
+     * Constructor for LessonProgressService.
+     *
+     * @param LessonProgressRepositoryInterface $progressRepository Repository interface for lesson progress.
+     */
     public function __construct(
         private readonly LessonProgressRepositoryInterface $progressRepository
     ) {}
 
     /**
      * Get a paginated list of lesson progress records based on filters.
+     *
+     * @param ListLessonProgressDto $dto Data transfer object containing filter and pagination information.
+     * @return LengthAwarePaginator<LessonProgress> Paginated list of lesson progress records.
      */
     public function getProgressRecords(ListLessonProgressDto $dto): LengthAwarePaginator
     {
@@ -29,6 +41,9 @@ final class LessonProgressService
 
     /**
      * Find a specific progress record by ID.
+     *
+     * @param int $id The ID of the lesson progress record.
+     * @return LessonProgress|null The lesson progress record or null if not found.
      */
     public function findProgressRecord(int $id): ?LessonProgress
     {
@@ -38,7 +53,9 @@ final class LessonProgressService
     /**
      * Create a new progress record.
      *
-     * @throws Exception
+     * @param CreateLessonProgressDto $dto Data transfer object containing the details of the lesson progress to create.
+     * @return LessonProgress The created lesson progress record.
+     * @throws Exception When creation fails.
      */
     public function createProgressRecord(CreateLessonProgressDto $dto): LessonProgress
     {
@@ -54,28 +71,16 @@ final class LessonProgressService
     /**
      * Update an existing progress record.
      *
-     * @throws Exception
+     * @param int $id The ID of the lesson progress record to update.
+     * @param UpdateLessonProgressDto $dto Data transfer object containing the updated details of the lesson progress.
+     * @return LessonProgress The updated lesson progress record.
+     * @throws Exception When update fails.
      */
     public function updateProgressRecord(int $id, UpdateLessonProgressDto $dto): LessonProgress
     {
         try {
             return DB::transaction(function () use ($id, $dto) {
-                // First check if the record exists
-                $progressRecord = $this->progressRepository->findById($id);
-
-                if (!$progressRecord) {
-                    throw new Exception('Progress record not found');
-                }
-
-                // Update the record
-                $updated = $this->progressRepository->update($id, $dto);
-
-                if (!$updated) {
-                    throw new Exception('Failed to update progress record');
-                }
-
-                // Return the refreshed record
-                return $this->progressRepository->findById($id);
+                return $this->progressRepository->update($id, $dto);
             });
         } catch (Exception $e) {
             throw new Exception('Failed to update progress record: ' . $e->getMessage());
@@ -85,7 +90,9 @@ final class LessonProgressService
     /**
      * Delete a progress record.
      *
-     * @throws Exception
+     * @param int $id The ID of the lesson progress record to delete.
+     * @return bool True if the deletion was successful, false otherwise.
+     * @throws Exception When deletion fails.
      */
     public function deleteProgressRecord(int $id): bool
     {
@@ -100,9 +107,12 @@ final class LessonProgressService
 
     /**
      * Get all progress records for a specific lesson.
+     *
+     * @param int $lessonId The ID of the lesson.
+     * @return Collection<int, LessonProgress> Collection of lesson progress records for the specified lesson.
      */
-    public function getProgressByLessonId(int $lessonId): array
+    public function getProgressByLessonId(int $lessonId): Collection
     {
-        return $this->progressRepository->getByLessonId($lessonId);
+        return $this->progressRepository->getProgressByLessonId($lessonId);
     }
 }
