@@ -21,7 +21,6 @@ use Modules\Auth\Events\Student\StudentPasswordResetRequested;
 use Modules\Core\Exceptions\AuthenticationException;
 use Modules\User\Enums\UserTypeEnum;
 use Modules\User\Interfaces\Repositories\UserRepositoryInterface;
-use Modules\User\Models\User;
 use Modules\User\Models\UserPasswordResetToken;
 use Modules\Student\Models\Student;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Repositories;
 
-use Illuminate\Support\Facades\Hash;
 use Modules\Admin\Interfaces\Repositories\AdminRepositoryInterface;
 use Modules\Admin\Models\Admin;
 use Modules\Auth\DataTransferObjects\Admin\RegisterAdminDto;
@@ -31,14 +30,14 @@ final class EloquentAdminRepository implements AdminRepositoryInterface
         return $this->adminModel->create([
             'name' => $dto->name,
             'email' => (string) $dto->email,
-            'password' => Hash::make($dto->password),
+            'password' => $dto->password,
         ]);
     }
 
     public function updatePassword(int $id, string $password): void
     {
         $this->adminModel->where('id', $id)->update([
-            'password' => Hash::make($password),
+            'password' => $password
         ]);
     }
 }

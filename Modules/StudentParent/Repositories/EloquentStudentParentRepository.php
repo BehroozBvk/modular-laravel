@@ -7,7 +7,6 @@ namespace Modules\StudentParent\Repositories;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Modules\Shared\ValueObjects\Email;
 use Modules\StudentParent\DataTransferObjects\CreateStudentParentDto;
 use Modules\StudentParent\DataTransferObjects\ListStudentParentDto;
@@ -190,7 +189,7 @@ final class EloquentStudentParentRepository implements StudentParentRepositoryIn
                 }
 
                 $studentParent->user->update([
-                    'password' => Hash::make($password),
+                    'password' => $password,
                 ]);
             });
         } catch (Exception $e) {

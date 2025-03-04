@@ -7,7 +7,6 @@ namespace Modules\Teacher\Repositories;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Modules\Shared\ValueObjects\Email;
 use Modules\Teacher\DataTransferObjects\CreateTeacherDto;
 use Modules\Teacher\DataTransferObjects\ListTeacherDto;
@@ -105,7 +104,7 @@ final class EloquentTeacherRepository implements TeacherRepositoryInterface
 
                     $user = $this->userModel->create([
                         'email' => $dto->email,
-                        'password' => Hash::make($dto->password),
+                        'password' => $dto->password,
                         'type' => UserTypeEnum::TEACHER,
                     ]);
 
@@ -190,7 +189,7 @@ final class EloquentTeacherRepository implements TeacherRepositoryInterface
                 }
 
                 $teacher->user->update([
-                    'password' => Hash::make($password),
+                    'password' => $password,
                 ]);
             });
         } catch (Exception $e) {

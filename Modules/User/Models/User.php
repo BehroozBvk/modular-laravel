@@ -19,19 +19,27 @@ use Modules\Teacher\Models\Teacher;
 use Modules\User\Database\Factories\UserFactory;
 use Modules\User\Enums\UserTypeEnum;
 
+/**
+ * Class User
+ *
+ * @package Modules\User\Models
+ *
+ * @property string $name
+ * @property Email $email
+ * @property UserTypeEnum $type
+ * @property string $password
+ * @property \DateTimeInterface|null $email_verified_at
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens;
-
-    /** @use HasFactory<\Modules\User\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
+    protected array $fillable = [
         'name',
         'email',
         'type',
@@ -44,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var list<string>
      */
-    protected $hidden = [
+    protected array $hidden = [
         'password',
         'remember_token',
     ];
@@ -65,35 +73,54 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get and set the user's email.
+     *
+     * @return Attribute<Email, string>
      */
     protected function email(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => new Email($value),
-            set: fn(Email|string $value) => $value instanceof Email ? (string) $value : $value,
+            get: fn(string $value): Email => new Email($value),
+            set: fn(Email|string $value): string => $value instanceof Email ? (string) $value : $value,
         );
     }
 
     /**
      * Hash the user's password.
+     *
+     * @return Attribute<string, string>
      */
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => Hash::make($value),
+            set: fn(string $value): string => Hash::make($value),
         );
     }
 
+    /**
+     * Get the related teacher.
+     *
+     * @return HasOne<Teacher>
+     */
     public function teacher(): HasOne
     {
         return $this->hasOne(Teacher::class);
     }
 
+    /**
+     * Get the related student.
+     *
+     * @return HasOne<Student>
+     */
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);
     }
 
+    /**
+     * Get the related student parent.
+     *
+     * @return HasOne<StudentParent>
+     */
     public function studentParent(): HasOne
     {
         return $this->hasOne(StudentParent::class);
@@ -101,6 +128,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user is a teacher.
+     *
+     * @return bool
      */
     public function isTeacher(): bool
     {
@@ -109,6 +138,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user is a student.
+     *
+     * @return bool
      */
     public function isStudent(): bool
     {
@@ -117,17 +148,29 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user is a parent.
+     *
+     * @return bool
      */
     public function isParent(): bool
     {
         return $this->type === UserTypeEnum::STUDENT_PARENT;
     }
 
+    /**
+     * Get the email for verification.
+     *
+     * @return string
+     */
     public function getEmailForVerification(): string
     {
         return (string) $this->email;
     }
 
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return UserFactory
+     */
     public static function newFactory(): UserFactory
     {
         return UserFactory::new();
