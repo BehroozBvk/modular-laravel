@@ -34,13 +34,16 @@ final class Lesson extends Model
     /**
      * The attributes that should be cast.
      */
-    protected $casts = [
-        'date' => 'date',
-        'ayah_from' => 'integer',
-        'ayah_to' => 'integer',
-        'teacher_id' => 'integer',
-        'student_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return  [
+            'date' => 'date',
+            'ayah_from' => 'integer',
+            'ayah_to' => 'integer',
+            'teacher_id' => 'integer',
+            'student_id' => 'integer',
+        ];
+    }
 
     /**
      * Get the teacher that owns the lesson.

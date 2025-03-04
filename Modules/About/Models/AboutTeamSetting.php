@@ -21,7 +21,10 @@ class AboutTeamSetting extends Model
     /**
      * The attributes that should be cast.
      */
-    protected $casts = [
-        'visible' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'visible' => 'boolean',
+        ];
+    }
 }
