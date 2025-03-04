@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/competition",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Competition\\": "App/",
+            "Modules\\Competition\\Database\\Factories\\": "database/factories/",
+            "Modules\\Competition\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Competition\\Tests\\": "tests/"
+        }
+    }
+}

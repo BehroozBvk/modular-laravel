@@ -10,5 +10,11 @@
     "Student": true,
     "Teacher": true,
     "About": true,
-    "Lesson": true
+    "Lesson": true,
+    "Competition": true,
+    "Activity": true,
+    "Article": true,
+    "AppSetting": true,
+    "HomePage": true,
+    "FrequentlyAskedQuestion": true
 }

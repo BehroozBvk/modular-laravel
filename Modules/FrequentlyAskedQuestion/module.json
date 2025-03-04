@@ -1,0 +1,11 @@
+{
+    "name": "FrequentlyAskedQuestion",
+    "alias": "frequentlyaskedquestion",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FrequentlyAskedQuestion\\Providers\\FrequentlyAskedQuestionServiceProvider"
+    ],
+    "files": []
+}
