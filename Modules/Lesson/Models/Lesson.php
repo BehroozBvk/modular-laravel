@@ -6,9 +6,12 @@ namespace Modules\Lesson\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Lesson\Database\Factories\LessonFactory;
+use Modules\Student\Models\Student;
+use Modules\Teacher\Models\Teacher;
 
 final class Lesson extends Model
 {
@@ -38,6 +41,22 @@ final class Lesson extends Model
         'teacher_id' => 'integer',
         'student_id' => 'integer',
     ];
+
+    /**
+     * Get the teacher that owns the lesson.
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    /**
+     * Get the student that owns the lesson.
+     */
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(Student::class);
+    }
 
     /**
      * Get the progress records for the lesson.

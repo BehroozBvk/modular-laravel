@@ -7,8 +7,10 @@ namespace Modules\Teacher\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Country\Models\Country;
+use Modules\Lesson\Models\Lesson;
 use Modules\Teacher\Database\Factories\TeacherFactory;
 use Modules\User\Models\User;
 
@@ -51,11 +53,19 @@ class Teacher extends Model
     }
 
     /**
+     * Get the lessons taught by the teacher.
+     */
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
+    /**
      * Get the teacher's full name.
      */
     public function getFullNameAttribute(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        return trim("{$this->first_name} {$this->last_name}");
     }
 
     /**
