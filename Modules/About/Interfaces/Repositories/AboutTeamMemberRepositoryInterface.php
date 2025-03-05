@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Modules\About\Models\AboutTeamMember;
 
 /**
- * Interface for AboutTeamMember repository operations
+ * Interface for About Team Members repository operations
  */
 interface AboutTeamMemberRepositoryInterface
 {
     /**
-     * Get all team members ordered by order
+     * Get all team members
      */
     public function getAll(): Collection;
 
@@ -41,4 +41,9 @@ interface AboutTeamMemberRepositoryInterface
      * Reorder team members
      */
     public function reorder(array $orderedIds): bool;
+
+    /**
+     * Find a team member by ID or fail
+     */
+    public function findAboutTeamMemberOrFail(int $id): AboutTeamMember;
 }

@@ -7,7 +7,7 @@ namespace Modules\About\Interfaces\Repositories;
 use Modules\About\Models\AboutTeamSetting;
 
 /**
- * Interface for AboutTeamSetting repository operations
+ * Interface for About Team Settings repository operations
  */
 interface AboutTeamSettingRepositoryInterface
 {
@@ -20,4 +20,9 @@ interface AboutTeamSettingRepositoryInterface
      * Update team settings
      */
     public function updateSettings(array $data): ?AboutTeamSetting;
+
+    /**
+     * Find a team setting by ID or fail
+     */
+    public function findAboutTeamSettingOrFail(int $id): AboutTeamSetting;
 }

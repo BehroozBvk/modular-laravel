@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
+use Modules\Core\Http\Middleware\LocalizationMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             CreateFreshApiToken::class,
         ]);
+        $middleware->append(LocalizationMiddleware::class);
 
         $middleware->alias([
             'auth:api-user' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class,

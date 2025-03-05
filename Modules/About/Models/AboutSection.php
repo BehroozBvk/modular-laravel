@@ -11,15 +11,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\About\Database\Factories\AboutSectionFactory;
 
+/**
+ * About Section Model
+ *
+ * @property int $id
+ * @property string $image_path
+ * @property int $order
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
 class AboutSection extends Model implements TranslatableContract
 {
     use HasFactory, Translatable;
 
     /**
      * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
-        'icon_path',
+        'image_path',
         'order',
     ];
 

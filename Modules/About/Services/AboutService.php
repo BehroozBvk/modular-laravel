@@ -10,8 +10,14 @@ use Modules\About\Interfaces\Repositories\AboutSectionRepositoryInterface;
 use Modules\About\Interfaces\Repositories\AboutTeamMemberRepositoryInterface;
 use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
 
+/**
+ * Service for About page operations
+ */
 final class AboutService
 {
+    /**
+     * AboutService constructor
+     */
     public function __construct(
         private readonly AboutIntroRepositoryInterface $introRepository,
         private readonly AboutSectionRepositoryInterface $sectionRepository,
@@ -20,6 +26,9 @@ final class AboutService
         private readonly AboutPartnerRepositoryInterface $partnerRepository
     ) {}
 
+    /**
+     * Get all about page data
+     */
     public function getAboutPageData(): array
     {
         $intro = $this->introRepository->getActive();
@@ -33,7 +42,7 @@ final class AboutService
             'sections' => $sections,
             'team' => [
                 'visible' => $teamSettings ? $teamSettings->visible : true,
-                'members' => $teamSettings && $teamSettings->visible ? $teamMembers : [],
+                'members' => $teamMembers,
             ],
             'partners' => $partners,
         ];

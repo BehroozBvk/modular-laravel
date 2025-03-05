@@ -11,12 +11,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\About\Database\Factories\AboutIntroFactory;
 
+/**
+ * About Intro Model
+ *
+ * @property int $id
+ * @property string $image_path
+ * @property string $background_path
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
 class AboutIntro extends Model implements TranslatableContract
 {
     use HasFactory, Translatable;
 
     /**
      * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
         'image_path',

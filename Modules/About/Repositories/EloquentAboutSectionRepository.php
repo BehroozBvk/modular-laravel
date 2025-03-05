@@ -15,13 +15,11 @@ use Modules\About\Models\AboutSection;
 final class EloquentAboutSectionRepository implements AboutSectionRepositoryInterface
 {
     /**
-     * Get all about sections ordered by order
+     * Get all about sections
      */
     public function getAll(): Collection
     {
-        return AboutSection::with('translations')
-            ->orderBy('order')
-            ->get();
+        return AboutSection::orderBy('order')->get();
     }
 
     /**
@@ -30,6 +28,14 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
     public function findById(int $id): ?AboutSection
     {
         return AboutSection::with('translations')->find($id);
+    }
+
+    /**
+     * Find an about section by ID or fail
+     */
+    public function findAboutSectionOrFail(int $id): AboutSection
+    {
+        return AboutSection::findOrFail($id);
     }
 
     /**
@@ -64,11 +70,7 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
      */
     public function update(int $id, array $data): ?AboutSection
     {
-        $section = AboutSection::find($id);
-
-        if (!$section) {
-            return null;
-        }
+        $section = $this->findAboutSectionOrFail($id);
 
         $section->update([
             'icon_path' => $data['icon_path'] ?? $section->icon_path,
@@ -96,13 +98,8 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
      */
     public function delete(int $id): bool
     {
-        $section = AboutSection::find($id);
+        $section = $this->findAboutSectionOrFail($id);
 
-        if (!$section) {
-            return false;
-        }
-
-        // Translations will be deleted by the cascade constraint
         return (bool) $section->delete();
     }
 

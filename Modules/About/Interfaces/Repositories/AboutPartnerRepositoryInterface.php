@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Modules\About\Models\AboutPartner;
 
 /**
- * Interface for AboutPartner repository operations
+ * Interface for About Partners repository operations
  */
 interface AboutPartnerRepositoryInterface
 {
     /**
-     * Get all partners ordered by order
+     * Get all partners
      */
     public function getAll(): Collection;
 

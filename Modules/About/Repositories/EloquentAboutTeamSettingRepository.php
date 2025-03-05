@@ -8,7 +8,7 @@ use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
 use Modules\About\Models\AboutTeamSetting;
 
 /**
- * Eloquent implementation of the AboutTeamSetting repository
+ * Eloquent implementation of AboutTeamSettingRepositoryInterface
  */
 final class EloquentAboutTeamSettingRepository implements AboutTeamSettingRepositoryInterface
 {
@@ -17,7 +17,15 @@ final class EloquentAboutTeamSettingRepository implements AboutTeamSettingReposi
      */
     public function getSettings(): ?AboutTeamSetting
     {
-        return AboutTeamSetting::first() ?? AboutTeamSetting::create(['visible' => true]);
+        return AboutTeamSetting::first();
+    }
+
+    /**
+     * Find a team setting by ID or fail
+     */
+    public function findAboutTeamSettingOrFail(int $id): AboutTeamSetting
+    {
+        return AboutTeamSetting::findOrFail($id);
     }
 
     /**

@@ -17,7 +17,7 @@ final class EloquentAboutIntroRepository implements AboutIntroRepositoryInterfac
      */
     public function getActive(): ?AboutIntro
     {
-        return AboutIntro::with('translations')->first();
+        return AboutIntro::first();
     }
 
     /**
@@ -26,6 +26,14 @@ final class EloquentAboutIntroRepository implements AboutIntroRepositoryInterfac
     public function findById(int $id): ?AboutIntro
     {
         return AboutIntro::with('translations')->find($id);
+    }
+
+    /**
+     * Find an about intro by ID or fail
+     */
+    public function findAboutIntroOrFail(int $id): AboutIntro
+    {
+        return AboutIntro::findOrFail($id);
     }
 
     /**
@@ -57,11 +65,7 @@ final class EloquentAboutIntroRepository implements AboutIntroRepositoryInterfac
      */
     public function update(int $id, array $data): ?AboutIntro
     {
-        $intro = AboutIntro::find($id);
-
-        if (!$intro) {
-            return null;
-        }
+        $intro = $this->findAboutIntroOrFail($id);
 
         $intro->update([
             'image_path' => $data['image_path'] ?? $intro->image_path,
@@ -89,13 +93,8 @@ final class EloquentAboutIntroRepository implements AboutIntroRepositoryInterfac
      */
     public function delete(int $id): bool
     {
-        $intro = AboutIntro::find($id);
+        $intro = $this->findAboutIntroOrFail($id);
 
-        if (!$intro) {
-            return false;
-        }
-
-        // Translations will be deleted by the cascade constraint
         return (bool) $intro->delete();
     }
 }

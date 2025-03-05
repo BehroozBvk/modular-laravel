@@ -15,13 +15,11 @@ use Modules\About\Models\AboutPartner;
 final class EloquentAboutPartnerRepository implements AboutPartnerRepositoryInterface
 {
     /**
-     * Get all partners ordered by order
+     * Get all partners
      */
     public function getAll(): Collection
     {
-        return AboutPartner::with('translations')
-            ->orderBy('order')
-            ->get();
+        return AboutPartner::orderBy('order')->get();
     }
 
     /**
@@ -30,6 +28,14 @@ final class EloquentAboutPartnerRepository implements AboutPartnerRepositoryInte
     public function findById(int $id): ?AboutPartner
     {
         return AboutPartner::with('translations')->find($id);
+    }
+
+    /**
+     * Find a partner by ID or fail
+     */
+    public function findAboutPartnerOrFail(int $id): AboutPartner
+    {
+        return AboutPartner::findOrFail($id);
     }
 
     /**
@@ -64,11 +70,7 @@ final class EloquentAboutPartnerRepository implements AboutPartnerRepositoryInte
      */
     public function update(int $id, array $data): ?AboutPartner
     {
-        $partner = AboutPartner::find($id);
-
-        if (!$partner) {
-            return null;
-        }
+        $partner = $this->findAboutPartnerOrFail($id);
 
         $partner->update([
             'icon_path' => $data['icon_path'] ?? $partner->icon_path,
@@ -96,11 +98,7 @@ final class EloquentAboutPartnerRepository implements AboutPartnerRepositoryInte
      */
     public function delete(int $id): bool
     {
-        $partner = AboutPartner::find($id);
-
-        if (!$partner) {
-            return false;
-        }
+        $partner = $this->findAboutPartnerOrFail($id);
 
         // Translations will be deleted by the cascade constraint
         return (bool) $partner->delete();

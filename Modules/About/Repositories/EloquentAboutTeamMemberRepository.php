@@ -15,13 +15,11 @@ use Modules\About\Models\AboutTeamMember;
 final class EloquentAboutTeamMemberRepository implements AboutTeamMemberRepositoryInterface
 {
     /**
-     * Get all team members ordered by order
+     * Get all team members
      */
     public function getAll(): Collection
     {
-        return AboutTeamMember::with('translations')
-            ->orderBy('order')
-            ->get();
+        return AboutTeamMember::orderBy('order')->get();
     }
 
     /**
@@ -30,6 +28,14 @@ final class EloquentAboutTeamMemberRepository implements AboutTeamMemberReposito
     public function findById(int $id): ?AboutTeamMember
     {
         return AboutTeamMember::with('translations')->find($id);
+    }
+
+    /**
+     * Find a team member by ID or fail
+     */
+    public function findAboutTeamMemberOrFail(int $id): AboutTeamMember
+    {
+        return AboutTeamMember::findOrFail($id);
     }
 
     /**
@@ -64,11 +70,7 @@ final class EloquentAboutTeamMemberRepository implements AboutTeamMemberReposito
      */
     public function update(int $id, array $data): ?AboutTeamMember
     {
-        $member = AboutTeamMember::find($id);
-
-        if (!$member) {
-            return null;
-        }
+        $member = $this->findAboutTeamMemberOrFail($id);
 
         $member->update([
             'image_path' => $data['image_path'] ?? $member->image_path,
@@ -96,11 +98,7 @@ final class EloquentAboutTeamMemberRepository implements AboutTeamMemberReposito
      */
     public function delete(int $id): bool
     {
-        $member = AboutTeamMember::find($id);
-
-        if (!$member) {
-            return false;
-        }
+        $member = $this->findAboutTeamMemberOrFail($id);
 
         // Translations will be deleted by the cascade constraint
         return (bool) $member->delete();

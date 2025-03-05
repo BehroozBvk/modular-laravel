@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace Modules\About\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\About\Interfaces\Repositories\AboutIntroRepositoryInterface;
-use Modules\About\Interfaces\Repositories\AboutPartnerRepositoryInterface;
-use Modules\About\Interfaces\Repositories\AboutSectionRepositoryInterface;
-use Modules\About\Interfaces\Repositories\AboutTeamMemberRepositoryInterface;
-use Modules\About\Interfaces\Repositories\AboutTeamSettingRepositoryInterface;
-use Modules\About\Repositories\EloquentAboutIntroRepository;
-use Modules\About\Repositories\EloquentAboutPartnerRepository;
-use Modules\About\Repositories\EloquentAboutSectionRepository;
-use Modules\About\Repositories\EloquentAboutTeamMemberRepository;
-use Modules\About\Repositories\EloquentAboutTeamSettingRepository;
+use Modules\About\Interfaces\Repositories\{
+    AboutIntroRepositoryInterface,
+    AboutSectionRepositoryInterface,
+    AboutTeamSettingRepositoryInterface,
+    AboutTeamMemberRepositoryInterface,
+    AboutPartnerRepositoryInterface
+};
+use Modules\About\Repositories\{
+    EloquentAboutIntroRepository,
+    EloquentAboutSectionRepository,
+    EloquentAboutTeamSettingRepository,
+    EloquentAboutTeamMemberRepository,
+    EloquentAboutPartnerRepository
+};
 
 /**
  * Service provider for registering repository bindings

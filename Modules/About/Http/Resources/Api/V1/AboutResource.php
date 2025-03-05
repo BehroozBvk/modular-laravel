@@ -11,20 +11,26 @@ use Modules\About\Http\Resources\Api\V1\AboutPartner\AboutPartnerResource;
 use Modules\About\Http\Resources\Api\V1\AboutSection\AboutSectionResource;
 use Modules\About\Http\Resources\Api\V1\AboutTeam\AboutTeamResource;
 
-class AboutResource extends JsonResource
+/**
+ * Resource for About page data
+ *
+ * @property array $resource
+ */
+final class AboutResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @param Request $request The incoming HTTP request
+     * @return array<string, mixed> The transformed resource
      */
     public function toArray(Request $request): array
     {
         return [
-            'intro' => $this['intro'] ? new AboutIntroResource($this['intro']) : null,
-            'sections' => AboutSectionResource::collection($this['sections']),
-            'team' => new AboutTeamResource($this['team']),
-            'partners' => AboutPartnerResource::collection($this['partners']),
+            'intro' => $this->resource['intro'],
+            'sections' => $this->resource['sections'],
+            'team' => $this->resource['team'],
+            'partners' => $this->resource['partners'],
         ];
     }
 }

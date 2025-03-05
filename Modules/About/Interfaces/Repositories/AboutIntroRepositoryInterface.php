@@ -7,7 +7,7 @@ namespace Modules\About\Interfaces\Repositories;
 use Modules\About\Models\AboutIntro;
 
 /**
- * Interface for AboutIntro repository operations
+ * Interface for About Intro repository operations
  */
 interface AboutIntroRepositoryInterface
 {
@@ -20,6 +20,11 @@ interface AboutIntroRepositoryInterface
      * Find an about intro by ID
      */
     public function findById(int $id): ?AboutIntro;
+
+    /**
+     * Find an about intro by ID or fail
+     */
+    public function findAboutIntroOrFail(int $id): AboutIntro;
 
     /**
      * Create a new about intro

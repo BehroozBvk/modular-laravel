@@ -14,6 +14,9 @@ use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
+/**
+ * Service provider for the About module
+ */
 class AboutServiceProvider extends ServiceProvider
 {
     use PathNamespace;
@@ -23,7 +26,7 @@ class AboutServiceProvider extends ServiceProvider
     protected string $nameLower = 'about';
 
     /**
-     * Boot the application events.
+     * Boot the application services.
      */
     public function boot(): void
     {
@@ -36,7 +39,7 @@ class AboutServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the service provider.
+     * Register the application services.
      */
     public function register(): void
     {

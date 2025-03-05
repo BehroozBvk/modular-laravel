@@ -12,40 +12,10 @@ use Modules\About\Services\AboutService;
 use Modules\About\Http\Resources\Api\V1\AboutResource;
 
 /**
- * @OA\Get(
- *     path="/api/v1/about",
- *     summary="Get about page data",
- *     description="Returns all data needed for the about page including intro, sections, team members and partners",
- *     operationId="getAboutData",
- *     tags={"About"},
- *     security={{"passport": {}}},
- *     @OA\Response(
- *         response=200,
- *         description="About page data retrieved successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="status", type="string", example="success"),
- *             @OA\Property(property="message", type="string", example="About page data retrieved successfully"),
- *             @OA\Property(
- *                 property="data",
- *                 type="object",
- *                 @OA\Property(property="intro", type="object"),
- *                 @OA\Property(property="sections", type="array", @OA\Items(type="object")),
- *                 @OA\Property(
- *                     property="team",
- *                     type="object",
- *                     @OA\Property(property="visible", type="boolean"),
- *                     @OA\Property(property="members", type="array", @OA\Items(type="object"))
- *                 ),
- *                 @OA\Property(property="partners", type="array", @OA\Items(type="object"))
- *             )
- *         )
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
- *     )
- * )
+ * Controller for retrieving about page data
+ *
+ * @group About
+ * @subgroup About Page
  */
 class GetAboutDataController extends BaseApiV1Controller
 {
@@ -53,6 +23,64 @@ class GetAboutDataController extends BaseApiV1Controller
         private readonly AboutService $aboutService
     ) {}
 
+    /**
+     * Get about page data
+     *
+     * Returns all data needed for the about page including intro, sections, team members, and partners.
+     *
+     * @response status=200 scenario="Success" {
+     *     "status": "success",
+     *     "message": "About page data retrieved successfully",
+     *     "data": {
+     *         "intro": {
+     *             "id": 1,
+     *             "image_path": "images/about/intro.jpg",
+     *             "background_path": "images/about/background.jpg",
+     *             "title": "About Us",
+     *             "description": "We are a company dedicated to excellence"
+     *         },
+     *         "sections": [
+     *             {
+     *                 "id": 1,
+     *                 "image_path": "images/about/section1.jpg",
+     *                 "order": 1,
+     *                 "title": "Our Mission",
+     *                 "content": "To provide the best service possible"
+     *             }
+     *         ],
+     *         "team": {
+     *             "visible": true,
+     *             "members": [
+     *                 {
+     *                     "id": 1,
+     *                     "image_path": "images/team/member1.jpg",
+     *                     "order": 1,
+     *                     "name": "John Doe",
+     *                     "position": "CEO",
+     *                     "bio": "Experienced leader with 10+ years in the industry"
+     *                 }
+     *             ]
+     *         },
+     *         "partners": [
+     *             {
+     *                 "id": 1,
+     *                 "image_path": "images/partners/partner1.jpg",
+     *                 "order": 1,
+     *                 "name": "Partner Company",
+     *                 "website": "https://partner.com"
+     *             }
+     *         ]
+     *     }
+     * }
+     *
+     * @response status=500 scenario="Server Error" {
+     *     "status": "error",
+     *     "message": "An error occurred while retrieving about page data",
+     *     "data": null
+     * }
+     *
+     * @return JsonResponse
+     */
     public function __invoke(): JsonResponse
     {
         try {
@@ -64,7 +92,7 @@ class GetAboutDataController extends BaseApiV1Controller
             );
         } catch (Exception $e) {
             return $this->errorResponse(
-                message: $e->getMessage(),
+                message: 'An error occurred while retrieving about page data',
                 statusCode: HttpStatusConstants::HTTP_500_INTERNAL_SERVER_ERROR
             );
         }
