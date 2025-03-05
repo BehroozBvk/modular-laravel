@@ -1,67 +1,268 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Baraeim - Educational Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern educational platform built with Laravel 11, featuring a modular architecture and comprehensive API documentation.
 
-## About Laravel
+## 📋 Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Development](#development)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌟 Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Baraeim is an educational platform designed to connect students, teachers, and parents in a seamless learning environment. The application follows Domain-Driven Design (DDD) principles with a modular architecture, ensuring clean code and separation of concerns.
 
-## Learning Laravel
+## ✨ Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **User Management**: Authentication, authorization, and user profiles
+- **Student Management**: Student registration, profiles, and progress tracking
+- **Teacher Management**: Teacher profiles and lesson management
+- **Parent Management**: Parent accounts linked to students
+- **Lesson Management**: Create, update, and manage educational content
+- **About Page**: Dynamic content management for the about page
+- **Competitions**: Educational competitions and challenges
+- **Activities**: Interactive learning activities
+- **Articles**: Educational articles and resources
+- **Frequently Asked Questions**: Dynamic FAQ management
+- **Home Page**: Customizable home page content
+- **Multi-language Support**: Fully translatable content
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🛠️ Technology Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend**: PHP 8.2+, Laravel 11
+- **Database**: MySQL/SQLite
+- **API**: RESTful API with Laravel Passport
+- **Documentation**: Scribe API Documentation
+- **Modules**: Laravel Modules (nwidart/laravel-modules)
+- **Translations**: Astrotomic Laravel Translatable
+- **Development Tools**: Laravel Pint, PHPStan, Rector, PHP CS Fixer
+- **Testing**: Pest PHP, PHPUnit
+- **Monitoring**: Laravel Telescope
 
-## Laravel Sponsors
+## 📁 Project Structure
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+The application follows a modular architecture with Domain-Driven Design principles:
 
-### Premium Partners
+```
+Modules/
+├── Core/                 # Core functionality and base classes
+├── User/                 # User management
+├── Student/              # Student management
+├── Teacher/              # Teacher management
+├── StudentParent/        # Parent management
+├── Lesson/               # Lesson management
+├── About/                # About page content
+├── Competition/          # Educational competitions
+├── Activity/             # Learning activities
+├── Article/              # Educational articles
+├── FrequentlyAskedQuestion/ # FAQ management
+├── HomePage/             # Home page content
+└── ...
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Each module follows a clean architecture pattern:
 
-## Contributing
+```
+Module/
+├── Domain/               # Domain models, DTOs, and events
+│   ├── Models/
+│   ├── DTOs/
+│   └── Events/
+├── Application/          # Application services and repositories
+│   ├── Services/
+│   └── Repositories/
+└── Infrastructure/       # Controllers, requests, and resources
+    ├── Http/
+    │   ├── Controllers/
+    │   ├── Requests/
+    │   └── Resources/
+    └── Database/
+        ├── Migrations/
+        └── Seeders/
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📋 Requirements
 
-## Code of Conduct
+- PHP 8.2 or higher
+- Composer
+- Node.js and NPM
+- MySQL or SQLite
+- Git
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Installation
 
-## Security Vulnerabilities
+Follow these steps to set up the project locally:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Clone the repository**
 
-## License
+```bash
+git clone https://github.com/your-username/baraeim.git
+cd baraeim
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# modular-laravel
+2. **Install PHP dependencies**
+
+```bash
+composer install
+```
+
+3. **Set up environment variables**
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. **Configure your database**
+
+Edit the `.env` file and set your database connection:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=baraeim
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+For SQLite (development):
+
+```
+DB_CONNECTION=sqlite
+# Comment out other DB_ variables
+```
+
+5. **Run migrations and seeders**
+
+```bash
+php artisan migrate --seed
+```
+
+6. **Install Passport**
+
+```bash
+php artisan passport:install
+```
+
+7. **Install frontend dependencies**
+
+```bash
+npm install
+npm run dev
+```
+
+8. **Generate API documentation**
+
+```bash
+php artisan scribe:generate
+```
+
+## 💻 Development
+
+### Starting the development server
+
+```bash
+php artisan serve
+```
+
+### Running the queue worker
+
+```bash
+php artisan queue:work
+```
+
+### Watching for frontend changes
+
+```bash
+npm run dev
+```
+
+### Running all services concurrently
+
+```bash
+composer dev
+```
+
+### Clearing caches
+
+```bash
+composer clear-all
+```
+
+### Refreshing the database
+
+```bash
+composer db-all
+```
+
+### Setting up the project (all-in-one)
+
+```bash
+composer setup
+```
+
+## 📚 API Documentation
+
+API documentation is generated using Scribe and can be accessed at:
+
+```
+http://localhost:8000/docs
+```
+
+To regenerate the documentation after making changes:
+
+```bash
+php artisan scribe:generate
+```
+
+## 🧪 Testing
+
+Run tests using Pest:
+
+```bash
+./vendor/bin/pest
+```
+
+## 🚢 Deployment
+
+### Production setup
+
+1. Set up your production environment
+2. Clone the repository
+3. Install dependencies with `composer install --no-dev --optimize-autoloader`
+4. Configure environment variables
+5. Run migrations with `php artisan migrate --force`
+6. Install Passport with `php artisan passport:install`
+7. Build frontend assets with `npm ci && npm run build`
+8. Generate API documentation with `php artisan scribe:generate`
+9. Optimize the application with `php artisan optimize`
+
+### Deployment script
+
+You can use the following command to optimize the application for production:
+
+```bash
+composer setup
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
