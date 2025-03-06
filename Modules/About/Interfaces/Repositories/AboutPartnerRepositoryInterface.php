@@ -14,13 +14,24 @@ interface AboutPartnerRepositoryInterface
 {
     /**
      * Get all partners
+     * 
+     * @return Collection<int, AboutPartner>
      */
     public function getAll(): Collection;
 
     /**
      * Find a partner by ID
+     * 
+     * @return AboutPartner|null
      */
     public function findById(int $id): ?AboutPartner;
+
+    /**
+     * Find a partner by ID or fail
+     *
+     * @return AboutPartner
+     */
+    public function findAboutPartnerOrFail(int $id): AboutPartner;
 
     /**
      * Create a new partner

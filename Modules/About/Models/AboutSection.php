@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\About\Database\Factories\AboutSectionFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**
  * About Section Model
  *
  * @property int $id
- * @property string $image_path
+ * @property string $icon_path
  * @property int $order
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -30,7 +32,7 @@ class AboutSection extends Model implements TranslatableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'image_path',
+        'icon_path',
         'order',
     ];
 
@@ -45,7 +47,7 @@ class AboutSection extends Model implements TranslatableContract
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory()
+    protected static function newFactory(): AboutSectionFactory
     {
         return AboutSectionFactory::new();
     }
@@ -56,5 +58,16 @@ class AboutSection extends Model implements TranslatableContract
     public function translations(): HasMany
     {
         return $this->hasMany(AboutSectionTranslation::class);
+    }
+
+    /**
+     * Get the image path attribute.
+     */
+    public function iconPath(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value): string|UrlGenerator|null => $value ? url("storage/{$value}") : null,
+            set: fn(?string $value): ?string => $value,
+        );
     }
 }

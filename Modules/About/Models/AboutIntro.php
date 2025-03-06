@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\About\Database\Factories\AboutIntroFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**
  * About Intro Model
@@ -56,5 +58,27 @@ class AboutIntro extends Model implements TranslatableContract
     public function translations(): HasMany
     {
         return $this->hasMany(AboutIntroTranslation::class);
+    }
+
+    /**
+     * Get the image path attribute.
+     */
+    public function imagePath(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value): string|UrlGenerator|null => $value ? url("storage/{$value}") : null,
+            set: fn($value) => $value,
+        );
+    }
+
+    /**
+     * Get the background path attribute.
+     */
+    public function backgroundPath(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value): string|UrlGenerator|null => $value ? url("storage/{$value}") : null,
+            set: fn($value) => $value,
+        );
     }
 }
