@@ -16,10 +16,13 @@
         "laravel/framework": "^11.31",
         "laravel/passport": "^12.0",
         "laravel/tinker": "^2.9",
-        "nwidart/laravel-modules": "^11.1"
+        "nwidart/laravel-modules": "^11.1",
+        "opcodesio/log-viewer": "^3.15",
+        "sentry/sentry": "^4.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
+        "enlightn/security-checker": "^2.0",
         "fakerphp/faker": "^1.23",
         "friendsofphp/php-cs-fixer": "^3.69",
         "knuckleswtf/scribe": "^5.1",
@@ -31,6 +34,7 @@
         "nunomaduro/collision": "^8.1",
         "nunomaduro/larastan": "^3.1",
         "pestphp/pest": "^3.7",
+        "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^2.1",
         "rector/rector": "^2.0",
         "roave/security-advisories": "dev-latest"
@@ -90,12 +94,13 @@
         ],
         "security:sast": "phpstan analyse",
         "security:phpcs": "phpcs --standard=PSR12,Security --extensions=php Modules",
-        "security:deps": "security-checker security:check",
+        "security:deps": "vendor/bin/security-checker security:check composer.lock",
         "security:check": [
             "@security:sast",
             "@security:phpcs",
             "@security:deps"
-        ]
+        ],
+        "phpmd": "php phpmd.phar app,routes,tests xml phpmd.xml --reportfile=phpmd-report.xml"
     },
     "extra": {
         "laravel": {
