@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset name="Project Standard">
+  <description>PHP_CodeSniffer rules for enforcing PSR-12 and project-specific standards.</description>
+
+  <!-- Directories/files to include -->
+  <file>app</file>
+  <file>tests</file>
+
+  <!-- Exclude third-party code -->
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <!-- Use PSR-12 as the base standard -->
+  <rule ref="PSR12"/>
+
+  <!-- Example: Enforce a maximum line length -->
+  <rule ref="Generic.Files.LineLength">
+    <properties>
+      <property name="lineLimit" value="120"/>
+      <property name="absoluteLineLimit" value="140"/>
+    </properties>
+  </rule>
+
+  <!-- Additional custom rules can be added below -->
+</ruleset>

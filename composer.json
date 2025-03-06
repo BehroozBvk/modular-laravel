@@ -37,7 +37,8 @@
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^2.1",
         "rector/rector": "^2.0",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "tightenco/duster": "*"
     },
     "autoload": {
         "psr-4": {
@@ -100,7 +101,8 @@
             "@security:phpcs",
             "@security:deps"
         ],
-        "phpmd": "php phpmd.phar app,routes,tests xml phpmd.xml --reportfile=phpmd-report.xml"
+        "phpmd": "php phpmd.phar app,routes,tests xml phpmd.xml --reportfile=phpmd-report.xml",
+        "duster": "./vendor/bin/duster lint"
     },
     "extra": {
         "laravel": {

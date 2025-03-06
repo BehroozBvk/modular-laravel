@@ -1,0 +1,91 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx test
+npm run format
+npm run lint
+npm run test
+npm run lint-staged
+./vendor/bin/duster lint --dirty
+./vendor/bin/duster fix --dirty
+php artisan test
+
+echo "Running code quality checks before commit..."
+
+# Get list of staged PHP files
+STAGED_PHP_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(php)$')
+
+# Get list of staged JS/TS files
+STAGED_JS_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|ts|jsx|tsx)$')
+
+if [ -n "$STAGED_PHP_FILES" ]; then
+    echo "Running PHPStan on staged files..."
+    # Run PHPStan on staged files only
+    echo "$STAGED_PHP_FILES" | xargs vendor/bin/phpstan analyse --no-progress || {
+        echo "PHPStan found issues. Please fix them before committing."
+        exit 1
+    }
+    
+    echo "Running PHP_CodeSniffer on staged files..."
+    # Run PHP_CodeSniffer on staged files only
+    echo "$STAGED_PHP_FILES" | xargs vendor/bin/phpcs --standard=PSR12,Security || {
+        echo "PHP_CodeSniffer found issues. Please fix them before committing."
+        exit 1
+    }
+    
+    echo "Running Laravel Pint on staged files..."
+    # Run Laravel Pint on staged files only
+    echo "$STAGED_PHP_FILES" | xargs vendor/bin/pint || {
+        echo "Laravel Pint found issues. Please fix them before committing."
+        exit 1
+    }
+    
+    echo "Running Rector on staged files..."
+    # Run Rector on staged files only
+    echo "$STAGED_PHP_FILES" | xargs vendor/bin/rector process --dry-run || {
+        echo "Rector found issues. Please fix them before committing."
+        exit 1
+    }
+    
+    echo "Running PHPMD on staged files..."
+    # Run PHPMD on staged files only
+    echo "$STAGED_PHP_FILES" | xargs vendor/bin/phpmd text phpmd.xml || {
+        echo "PHPMD found issues. Please fix them before committing."
+        exit 1
+    }
+    
+    echo "Running Duster on staged files..."
+    # Run Duster on staged files if available
+    if command -v duster &> /dev/null; then
+        echo "$STAGED_PHP_FILES" | xargs duster lint || {
+            echo "Duster found issues. Please fix them before committing."
+            exit 1
+        }
+    else
+        echo "Duster not found, skipping..."
+    fi
+fi
+
+if [ -n "$STAGED_JS_FILES" ]; then
+    echo "Running ESLint on staged JS/TS files..."
+    # Run ESLint on staged JS/TS files only if available
+    if command -v npx &> /dev/null; then
+        echo "$STAGED_JS_FILES" | xargs npx eslint || {
+            echo "ESLint found issues. Please fix them before committing."
+            exit 1
+        }
+    else
+        echo "npx not found, skipping ESLint..."
+    fi
+fi
+
+# Always check dependencies for vulnerabilities
+echo "Checking dependencies for vulnerabilities..."
+composer security:deps || {
+    echo "Security vulnerabilities found in dependencies. Review them before committing."
+    # We don't exit with error here to allow commits even with vulnerable dependencies
+    # This is just a warning, but you can change to exit 1 if you want to block commits
+}
+
+echo "All code quality checks passed!"
+exit 0
