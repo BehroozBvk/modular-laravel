@@ -11,10 +11,34 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+         // Activities table
+         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('slug')->unique();
+            $table->string('main_image_path');
+            $table->string('cover_image_path');
+            $table->string('video_path')->nullable();
+            $table->timestamp('activity_time')->nullable();
+            $table->string('alt_image_path');
+            $table->integer('points')->default(0);
             $table->timestamps();
+        });
+
+        // Activities translations table
+        Schema::create('activity_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('activity_id')->constrained()->cascadeOnDelete();
+            $table->string('locale')->index();
+            $table->string('title');
+            $table->text('short_description');
+            $table->string('category');
+            $table->text('description');
+            $table->string('activity_type');
+            $table->string('meta_title');
+            $table->text('meta_description');
+            $table->string('meta_tags');
+
+            $table->unique(['activity_id', 'locale']);
         });
     }
 

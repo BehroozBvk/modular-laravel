@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Modules\Activity\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Activity\Models\Activity;
 
 /**
- * Main seeder for Activity module
+ * Seeder for Activity data
  */
-class ActivityDatabaseSeeder extends Seeder
+class ActivitySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            ActivitySeeder::class,
-        ]);
+        Activity::factory()->count(10)->create();
     }
 }
