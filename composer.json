@@ -12,6 +12,7 @@
         "php": "^8.2",
         "astrotomic/laravel-translatable": "^11.15",
         "darkaonline/l5-swagger": "^8.6",
+        "itsgoingd/clockwork": "^5.3",
         "laravel/framework": "^11.31",
         "laravel/passport": "^12.0",
         "laravel/tinker": "^2.9",
@@ -86,6 +87,14 @@
         ],
         "db-all": [
             "@php artisan migrate:fresh --seed --ansi"
+        ],
+        "security:sast": "phpstan analyse",
+        "security:phpcs": "phpcs --standard=PSR12,Security --extensions=php Modules",
+        "security:deps": "security-checker security:check",
+        "security:check": [
+            "@security:sast",
+            "@security:phpcs",
+            "@security:deps"
         ]
     },
     "extra": {

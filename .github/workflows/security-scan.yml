@@ -1,0 +1,42 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql
+          tools: composer:v2
+          
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+        
+      - name: SAST - PHPStan
+        run: composer security:sast
+        
+      - name: SAST - PHP_CodeSniffer
+        run: composer security:phpcs
+        
+      - name: SCA - Check dependencies
+        run: composer security:deps
+        
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high 
