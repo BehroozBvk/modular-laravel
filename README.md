@@ -12,6 +12,7 @@ A modern educational platform built with Laravel 11, featuring a modular archite
 - [Installation](#installation)
 - [Development](#development)
 - [API Documentation](#api-documentation)
+- [Log Viewer](#log-viewer)
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
@@ -35,6 +36,7 @@ Baraeim is an educational platform designed to connect students, teachers, and p
 - **Frequently Asked Questions**: Dynamic FAQ management
 - **Home Page**: Customizable home page content
 - **Multi-language Support**: Fully translatable content
+- **Log Management**: Integrated Log Viewer for easy debugging and monitoring
 
 ## 🛠️ Technology Stack
 
@@ -46,7 +48,8 @@ Baraeim is an educational platform designed to connect students, teachers, and p
 - **Translations**: Astrotomic Laravel Translatable
 - **Development Tools**: Laravel Pint, PHPStan, Rector, PHP CS Fixer
 - **Testing**: Pest PHP, PHPUnit
-- **Monitoring**: Laravel Telescope
+- **Monitoring**: Laravel Telescope, OPcodes Log Viewer
+- **Code Quality**: PHPMD, Duster, ESLint
 
 ## 📁 Project Structure
 
@@ -161,7 +164,13 @@ npm install
 npm run dev
 ```
 
-8. **Generate API documentation**
+8. **Publish Log Viewer assets**
+
+```bash
+php artisan log-viewer:publish
+```
+
+9. **Generate API documentation**
 
 ```bash
 php artisan scribe:generate
@@ -223,6 +232,28 @@ To regenerate the documentation after making changes:
 
 ```bash
 php artisan scribe:generate
+```
+
+## 📊 Log Viewer
+
+Baraeim integrates OPcodes's Log Viewer for elegant and powerful log management. It provides a user-friendly interface to view, search, and filter Laravel logs and other log types.
+
+### Features
+
+- View all Laravel logs with a beautiful UI
+- Search and filter log entries
+- Dark mode support
+- Mobile-friendly interface
+- Download & delete log files directly from the UI
+
+For detailed information and usage instructions, see [LOG-VIEWER.md](LOG-VIEWER.md).
+
+### Quick Access
+
+Log Viewer is available at:
+
+```
+http://localhost:8000/log-viewer
 ```
 
 ## 🧪 Testing
