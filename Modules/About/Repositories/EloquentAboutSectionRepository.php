@@ -43,7 +43,6 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
      */
     public function create(array $data): AboutSection
     {
-        // Get the highest order value and add 1
         $maxOrder = AboutSection::max('order') ?? 0;
 
         $section = AboutSection::create([
@@ -51,7 +50,6 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
             'order' => $data['order'] ?? $maxOrder + 1,
         ]);
 
-        // Create translations
         if (isset($data['translations']) && is_array($data['translations'])) {
             foreach ($data['translations'] as $translation) {
                 $section->translations()->create([
@@ -62,7 +60,8 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
             }
         }
 
-        return $section->load('translations');
+        $section->refresh();
+        return $section;
     }
 
     /**
@@ -90,7 +89,7 @@ final class EloquentAboutSectionRepository implements AboutSectionRepositoryInte
             }
         }
 
-        return $section->load('translations');
+        return $section->refresh();
     }
 
     /**

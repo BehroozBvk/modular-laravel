@@ -23,7 +23,7 @@ class AboutSectionResource extends JsonResource
         /** @var AboutSection $this */
         return [
             'id' => $this->id,
-            'icon_path' => $this->icon_path,
+            'icon' => $this->icon_path,
             'order' => $this->order,
             'title' => $this->getTranslation('title'),
             'description' => $this->getTranslation('description'),

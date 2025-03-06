@@ -23,7 +23,7 @@ class AboutTeamMemberResource extends JsonResource
         /** @var AboutTeamMember $this */
         return [
             'id' => $this->id,
-            'image_path' => $this->image_path,
+            'image' => $this->image_path,
             'order' => $this->order,
             'name' => $this->getTranslation('name'),
             'position' => $this->getTranslation('position'),

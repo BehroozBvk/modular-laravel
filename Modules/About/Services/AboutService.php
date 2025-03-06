@@ -28,6 +28,8 @@ final class AboutService
 
     /**
      * Get all about page data
+     * 
+     * @return array<string, mixed>
      */
     public function getAboutPageData(): array
     {
@@ -40,10 +42,8 @@ final class AboutService
         return [
             'intro' => $intro,
             'sections' => $sections,
-            'team' => [
-                'visible' => $teamSettings ? $teamSettings->visible : true,
-                'members' => $teamMembers,
-            ],
+            'team_settings' => $teamSettings ?? null,
+            'team_members' => $teamMembers,
             'partners' => $partners,
         ];
     }

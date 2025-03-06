@@ -6,8 +6,12 @@ namespace Modules\About\Http\Resources\Api\V1\AboutTeam;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\About\Models\AboutTeamSetting;
 
-class AboutTeamResource extends JsonResource
+/**
+ * @mixin AboutTeamSetting
+ */
+class AboutTeamSettingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +20,12 @@ class AboutTeamResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var AboutTeamSetting $this */
         return [
-            'visible' => $this['visible'],
-            'members' => AboutTeamMemberResource::collection($this['members']),
+            'id' => $this->id,
+            'visible' => $this->visible,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
